@@ -1,5 +1,5 @@
 "use server"
-import db from "@/utils/db"
+import db from "@/lib/db"
 
 export async function getAnimes(query?: string, limit: number = 12) {
     try {
