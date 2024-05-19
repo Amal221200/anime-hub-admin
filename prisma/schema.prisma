@@ -8,6 +8,27 @@ datasource db {
   relationMode = "prisma"
 }
 
+enum ANIME_STATUS {
+  ONGOING
+  COMPLETED
+}
+
+enum USER_ROLE {
+  ADMIN
+  USER
+}
+
+model User {
+  id             String    @id @default(uuid())
+  imageUrl       String    @db.Text
+  externalUserId String    @unique
+  username       String
+  email          String    @unique
+  role           USER_ROLE @default(USER)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
 model Anime {
   id              String       @id @default(uuid())
   title           String
@@ -35,25 +56,4 @@ model Review {
 
   @@index([animeId])
   @@index([userId])
-}
-
-model User {
-  id             String    @id @default(uuid())
-  imageUrl       String    @db.Text
-  externalUserId String    @unique
-  username       String
-  email          String    @unique
-  role           USER_ROLE @default(USER)
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-}
-
-enum ANIME_STATUS {
-  ONGOING
-  COMPLETED
-}
-
-enum USER_ROLE {
-  ADMIN
-  USER
 }
