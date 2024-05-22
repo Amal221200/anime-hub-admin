@@ -14,7 +14,7 @@ const MobileNavbar = () => {
             {
                 sidebarLinks.map((sidebarLink) => (
                     <Link key={sidebarLink.href} href={sidebarLink.href} className={cn('py-1 px-2 rounded-full', sidebarLink.href === pathname && 'bg-white/80 text-black backdrop-blur-md')}>
-                        <sidebarLink.icon size={15} />
+                        <sidebarLink.icon size={20} />
                     </Link>
                 ))
             }
