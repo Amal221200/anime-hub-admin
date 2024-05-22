@@ -3,7 +3,7 @@
 export default function Home() {
   return (
     <main>
-      <h1 className="text-center">Anime Hub Admin</h1>
+      <h1 className="">Anime Hub Admin</h1>
     </main>
   );
 }

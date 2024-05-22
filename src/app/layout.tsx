@@ -10,7 +10,10 @@ import QueryProvider from "@/components/providers/QueryProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Anime Hub | Admin",
+  title: {
+    default:"Anime Hub - Admin",
+    template: `"Anime Hub - Admin | %s"`
+  },
   description: "Application for admin users.",
   icons: [{
     url: "/favicon-dark.ico",
@@ -37,6 +40,6 @@ export default function RootLayout({
           </ThemeProvider>
         </body>
       </html>
-    </ClerkProvider>
+    </ClerkProvider> 
   );
 }
