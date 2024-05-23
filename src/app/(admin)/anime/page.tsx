@@ -1,6 +1,7 @@
-import React from 'react'
-import AnimeTable from './_components/AnimeTable'
+import React, { lazy, Suspense } from 'react'
 import { getAnimes } from '@/lib/actions/anime'
+import SkeletonSpinner from '@/components/SkeletonSpinner'
+const AnimeTable = lazy(() => import('./_components/AnimeTable'))
 
 const AnimesPage = async () => {
   const animesData = await getAnimes({})
@@ -11,7 +12,9 @@ const AnimesPage = async () => {
 
   return (
     <main>
-      <AnimeTable animesData={animesData} />
+      <Suspense fallback={<SkeletonSpinner className='h-[90vh]' />}>
+        <AnimeTable animesData={animesData} />
+      </Suspense>
     </main>
   )
 }

@@ -1,5 +1,4 @@
 "use client"
-
 import { useState } from "react"
 import {
     ColumnFiltersState,
@@ -32,20 +31,19 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { Anime } from "@prisma/client"
-import UserAvatar from "@/components/UserAvatar"
 import { animeColums } from "./merchandise-table-columns"
 import Link from "next/link"
 
 
 
-interface AnimeTableProps {
+interface MerchandiseTableProps {
     animesData: {
         animes: Anime[],
         totalPages: number
     }
 }
 
-export default function AnimeTable({ animesData }: AnimeTableProps) {
+export default function MerchandiseTable({ animesData }: MerchandiseTableProps) {
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
         []

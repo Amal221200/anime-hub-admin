@@ -1,5 +1,5 @@
 .box {
-    --primary-color: #ff2770;
+    --primary-color: rgb(212 212 216);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -14,7 +14,7 @@
 }
 
 .box::before {
-    --secondary-color: #45f3ff;
+    --secondary-color: rgb(212 212 216);
     content: '';
     position: absolute;
     top: 0;
