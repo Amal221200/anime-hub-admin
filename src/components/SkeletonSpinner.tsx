@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils'
 
 const SkeletonSpinner = ({ className, ...props }: ComponentProps<'div'>) => {
   return (
-    <div className={cn('flex h-screen items-center justify-center', className)} {...props}>
+    <div className={cn('flex h-[80vh] items-center justify-center', className)} {...props}>
       <Spinner />
     </div>
   )
