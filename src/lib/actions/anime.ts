@@ -1,7 +1,8 @@
 "use server"
 import db from "@/lib/db"
 
-export async function getAnimes(query?: string, limit: number = 12) {
+export async function getAnimes({ query, page = 1, totalAnimes = false }: { query?: string, page?: number, totalAnimes?: number | boolean }) {
+    const isLimit = typeof totalAnimes === 'number' ? totalAnimes : 0
     try {
         const animes = await db.anime.findMany(
             {
@@ -9,13 +10,20 @@ export async function getAnimes(query?: string, limit: number = 12) {
                     imageLink: { startsWith: process.env.NODE_ENV === 'development' ? "" : "" },
                     title: { contains: query ? query : '', mode: "insensitive" }
                 },
-                orderBy: { title: 'asc' },
-                take: limit
+                orderBy: { updatedAt: 'desc' },
+                take: isLimit || undefined,
+                skip: ((page - 1) * isLimit) || undefined
             }
         );
-        return animes
+
+        const animesLength = await db.anime.count({ where: { title: { contains: query ? query : '', mode: "insensitive" } } });
+
+        const totalPages = Math.ceil(animesLength / isLimit)
+
+        return { animes, totalPages }
     } catch (error) {
         console.log("getAnimes error");
+        return { animes: null, totalPages: 0 }
     }
 }
 

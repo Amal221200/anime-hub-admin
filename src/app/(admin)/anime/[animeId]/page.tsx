@@ -1,8 +1,17 @@
+import { getAnime } from '@/lib/actions/anime'
 import React from 'react'
 
-const AnimePage = ({ params: { animeId } }: { params: { animeId: string } }) => {
+const AnimePage = async ({ params: { animeId } }: { params: { animeId: string } }) => {
+  const anime = await getAnime(animeId);
+
+  if (!anime) {
+    return
+  }
+  
   return (
-    <div>AnimePage</div>
+    <div>
+      {anime.title}
+    </div>
   )
 }
 

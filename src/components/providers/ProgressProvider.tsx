@@ -6,7 +6,7 @@ const ProgressProvider = ({ children }: { children: React.ReactNode }) => {
     return (
         <>
             <Suspense>
-                <Next13ProgressBar height="2px" color="#eeeeee" options={{ showSpinner: true }} showOnShallow />
+                <Next13ProgressBar height="2px" color="#eeeeee" options={{ showSpinner: false }} showOnShallow />
             </Suspense>
             {children}
         </>

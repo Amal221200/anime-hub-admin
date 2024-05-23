@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import React from 'react'
-import { HomeIcon, ScanBarcodeIcon, ShellIcon, UserIcon } from "lucide-react"
+import { HomeIcon, PlusIcon, ScanBarcodeIcon, ShellIcon, UserIcon } from "lucide-react"
 import Link from 'next/link'
 import { UserButton } from '@clerk/nextjs'
 import NavItems from './NavItems'
@@ -27,12 +27,17 @@ export const sidebarLinks = [
     label: "Merchandise",
     icon: ScanBarcodeIcon
   },
+  {
+    href: "/anime/add",
+    label: "Add Anime",
+    icon: PlusIcon
+  },
 ]
 
 const DesktopSidebar = async () => {
   const user = await currentUser()
   return (
-    <aside className='absolute left-2 top-10 hidden h-[89vh] w-[200px] flex-col gap-y-4 rounded-md border bg-zinc-900/20 p-2 sm:flex md:left-7'>
+    <aside className='fixed left-2 top-10 hidden h-[89vh] w-[200px] flex-col gap-y-4 rounded-md border bg-zinc-900/20 p-2 sm:flex md:left-7'>
       <nav className='flex-1 space-y-4'>
         <div>
           <Link href="/">
@@ -45,7 +50,7 @@ const DesktopSidebar = async () => {
 
       <menu className='flex flex-col items-start pl-2'>
         <li className='flex items-center gap-x-2'>
-          <UserButton /> <span className="text-sm text-gray-300">@{user?.username}</span>
+          <UserButton showName />
         </li>
       </menu>
     </aside>

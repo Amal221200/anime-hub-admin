@@ -11,7 +11,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
-    default:"Anime Hub - Admin",
+    default: "Anime Hub - Admin",
     template: `"Anime Hub - Admin | %s"`
   },
   description: "Application for admin users.",
@@ -28,8 +28,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider appearance={{ baseTheme: dark }}afterSignOutUrl="/auth/sign-in">
-      <html lang="en">
+    <ClerkProvider appearance={{ baseTheme: dark }} >
+      <html lang="en" suppressHydrationWarning>
         <body className={inter.className}>
           <ThemeProvider attribute="class" defaultTheme="dark">
             <ProgressProvider>
@@ -40,6 +40,6 @@ export default function RootLayout({
           </ThemeProvider>
         </body>
       </html>
-    </ClerkProvider> 
+    </ClerkProvider>
   );
 }
