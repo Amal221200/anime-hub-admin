@@ -60,6 +60,9 @@ export async function POST(req: NextRequest) {
                 email: payload.data.email_addresses[0].email_address
             }
         })
+
+        console.log("USER CREATED");
+        
     }
 
     if (eventType === "user.updated") {

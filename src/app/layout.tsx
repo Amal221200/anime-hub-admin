@@ -28,7 +28,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider appearance={{ baseTheme: dark }} >
+    <ClerkProvider appearance={{ baseTheme: dark }}afterSignOutUrl="/auth/sign-in">
       <html lang="en">
         <body className={inter.className}>
           <ThemeProvider attribute="class" defaultTheme="dark">
