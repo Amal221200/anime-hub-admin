@@ -1,12 +1,9 @@
-import Spinner from '@/components/spinner'
-import React from 'react'
+import SkeletonSpinner from '@/components/SkeletonSpinner'
 
-const AnimePageLoading = () => {
+const UserPageLoading = () => {
     return (
-        <div className='flex h-screen items-center justify-center'>
-            <Spinner />
-        </div>
+        <SkeletonSpinner />
     )
 }
 
-export default AnimePageLoading
+export default UserPageLoading
