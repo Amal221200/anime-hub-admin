@@ -62,8 +62,8 @@ const AnimeForm = ({ anime }: AnimeFormProps) => {
 
     return (
         <Form {...form} >
-            <form onSubmit={form.handleSubmit(onSubmit)} className="mx-auto max-w-[1000px]">
-                <div className="mb-3 grid grid-cols-2 gap-2">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="mx-auto mb-16 max-w-[380px] sm:mb-0 sm:max-w-[1000px]">
+                <div className="mb-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
                     <FormField
                         control={form.control}
                         name="title"
@@ -238,7 +238,7 @@ const AnimeForm = ({ anime }: AnimeFormProps) => {
                         name="description"
 
                         render={({ field }) => (
-                            <FormItem className="col-span-2">
+                            <FormItem className="sm:col-span-2">
                                 <FormLabel>
                                     Description
                                 </FormLabel>
@@ -251,7 +251,7 @@ const AnimeForm = ({ anime }: AnimeFormProps) => {
                     />
                 </div>
                 <Button type="submit"
-                    disabled={form.formState.isDirty || form.formState.isLoading || form.formState.isSubmitting || form.formState.isValidating}>
+                    disabled={form.formState.isDirty || form.formState.isLoading || form.formState.isSubmitting || form.formState.isValidating} className="block w-full sm:w-max">
                     Submit
                 </Button>
             </form>
