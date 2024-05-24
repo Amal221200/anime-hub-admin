@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import {
     ColumnFiltersState,
     PaginationState,
@@ -31,34 +31,24 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { User } from "@prisma/client"
-import { animeColums } from "./user-table-columns"
-import Link from "next/link"
+import { userColumns } from "./user-table-columns"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { fetchUsers } from "./functions"
 import SkeletonSpinner from "@/components/SkeletonSpinner"
 
 
-
-interface UserTableProps {
-    users: User[]
-}
-
-export default function UserTable({ }: UserTableProps) {
+export default function UserTable() {
     const queryClient = useQueryClient()
     const [sorting, setSorting] = useState<SortingState>([])
-    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
-        []
-    )
-    const [columnVisibility, setColumnVisibility] =
-        useState<VisibilityState>({ id: false })
-    // const [rowSelection, setRowSelection] = useState({})
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ id: false })
     const [pagination, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize: 6 })
-    const { data: users, isLoading } = useQuery({ queryKey: ['users'], queryFn: fetchUsers }, queryClient)
+    const [mounted, setMounted] = useState(false);
+    const { data: users, isLoading } = useQuery({ queryKey: ['fetch_users'], queryFn: fetchUsers }, queryClient)
 
     const table = useReactTable({
         data: users || [],
-        columns: animeColums,
+        columns: userColumns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
         getCoreRowModel: getCoreRowModel(),
@@ -66,22 +56,28 @@ export default function UserTable({ }: UserTableProps) {
         getSortedRowModel: getSortedRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
         onColumnVisibilityChange: setColumnVisibility,
-        // onRowSelectionChange: setRowSelection,
         onPaginationChange: setPagination,
         state: {
             sorting,
             columnFilters,
             columnVisibility,
-            // rowSelection,
             pagination
         },
     })
+
+    useEffect(() => {
+        setMounted(true)
+    }, [])
+
+    if (!mounted) {
+        return null
+    }
 
     return (
         <div className="w-full">
             <div className="flex flex-col items-center gap-2 py-4 sm:flex-row">
                 <Input
-                    placeholder="Filter anime..."
+                    placeholder="Filter user..."
                     value={(table.getColumn("username")?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
                         table.getColumn("username")?.setFilterValue(event.target.value)
@@ -160,7 +156,7 @@ export default function UserTable({ }: UserTableProps) {
                                     ) : (
                                         <TableRow>
                                             <TableCell
-                                                colSpan={animeColums.length}
+                                                colSpan={userColumns.length}
                                                 className="h-24 text-center"
                                             >
                                                 No results.
@@ -172,7 +168,6 @@ export default function UserTable({ }: UserTableProps) {
                         </div>
                         <div className="flex items-center justify-end space-x-2 py-4">
                             <div className="flex-1 text-sm text-muted-foreground">
-                                {/* {table.getFilteredSelectedRowModel().rows.length} of{" "} */}
                                 {table.getFilteredRowModel().rows.length} users
                             </div>
                             <div className="space-x-2">

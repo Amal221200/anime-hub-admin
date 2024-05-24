@@ -18,7 +18,7 @@ const StatusDropdown = ({ row }: { row: Row<Anime> }) => {
     const { mutateAsync } = useMutation({
         mutationKey: ['anime_status'], mutationFn: onStatusChange(row.getValue('id')),
         async onSuccess() {
-            await queryClient.invalidateQueries({ queryKey: ['animes'] })
+            await queryClient.invalidateQueries({ queryKey: ['fetch_animes'] })
             toast({
                 title: "STATUS CHANGED", description: `Status of ${row.getValue('title')} has changed to ${status}`, variant: "success",
                 duration: 4000

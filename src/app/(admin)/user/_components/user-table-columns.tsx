@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import RoleDropdown from "./RoleDropdown";
 import UserAvatar from "@/components/UserAvatar";
 
-export const animeColums: ColumnDef<User>[] = [
+export const userColumns: ColumnDef<User>[] = [
     {
         accessorKey: "id",
         header: "",

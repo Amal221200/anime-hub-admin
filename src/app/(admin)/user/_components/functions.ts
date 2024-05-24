@@ -3,7 +3,7 @@ import axios from "axios";
 
 export async function fetchUsers(): Promise<User[]> {
     const users = await axios.get('/api/user');
-    return users.data
+    return users.data;
 }
 
 export function onRoleChange(userId: string) {

@@ -1,8 +1,6 @@
 import getCurrentUser from "@/app/auth/getCurrentUser";
 import { getAnime } from "@/lib/actions/anime";
 import db from "@/lib/db";
-import { currentUser } from "@clerk/nextjs/server";
-import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 interface AnimeParams {

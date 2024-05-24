@@ -1,5 +1,4 @@
 "use client";
-
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { User, USER_ROLE } from '@prisma/client';
@@ -18,7 +17,7 @@ const RoleDropdown = ({ row }: { row: Row<User> }) => {
         mutationKey: ['user_role'],
         mutationFn: onRoleChange(row.getValue('id')),
         async onSuccess() {
-            await queryClient.invalidateQueries({ queryKey: ['users'] })
+            await queryClient.invalidateQueries({ queryKey: ['fetch_users'] })
             toast({ title: "ROLE UPDATED", description: `${row.getValue('username')} role is updated.`, variant: 'success', duration: 4000 })
         },
         onError(error: AxiosError) {
@@ -34,7 +33,7 @@ const RoleDropdown = ({ row }: { row: Row<User> }) => {
     const handleRole = useCallback(async (role: USER_ROLE) => {
         await mutateAsync({ role })
     }, [mutateAsync])
-    
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild className="text-xs sm:text-sm" onClick={(e) => e.stopPropagation()}>

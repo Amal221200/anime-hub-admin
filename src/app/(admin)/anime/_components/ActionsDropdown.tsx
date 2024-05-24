@@ -1,5 +1,4 @@
 "use client"
-
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
@@ -19,7 +18,7 @@ const ActionsDropdown = ({ row }: { row: Row<Anime> }) => {
         mutationKey: ['anime_delete'],
         mutationFn: deleteAnime(row.getValue('id')),
         async onSuccess() {
-            await queryClient.invalidateQueries({ queryKey: ['animes'] })
+            await queryClient.invalidateQueries({ queryKey: ['fetch_animes'] })
             toast({ title: "ANIME DELETED", description: `${row.getValue('title')} is deleted.`, variant: 'success', duration: 4000 })
         },
         onError(error: AxiosError, variables, context) {

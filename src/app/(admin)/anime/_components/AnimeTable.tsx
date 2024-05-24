@@ -34,35 +34,21 @@ import {
 } from "@/components/ui/table"
 import { Anime } from "@prisma/client"
 import { animeColums } from "./anime-table-columns"
-import Link from "next/link"
-import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { fetchAnimes } from "./functions"
 import SkeletonSpinner from "@/components/SkeletonSpinner"
-
-
-
-interface AnimeTableProps {
-    animesData: {
-        animes: Anime[],
-        totalPages: number
-    }
-}
 
 export default function AnimeTable() {
     const queryClient = useQueryClient()
     const [sorting, setSorting] = useState<SortingState>([])
-    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
-        []
-    )
-    const [mounted, setMounted] = useState(false);
-    const match = useMediaQuery('(min-width:640px)')
-
-    const [columnVisibility, setColumnVisibility] =
-        useState<VisibilityState>({ studio: match, artist: match })
-    // const [rowSelection, setRowSelection] = useState({})
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
     const [pagination, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize: 6 })
-
-    const { data: animes, isLoading } = useQuery({ queryKey: ['animes'], queryFn: fetchAnimes }, queryClient)
+    
+    const match = useMediaQuery('(min-width:640px)')
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ studio: match, artist: match })
+    
+    const [mounted, setMounted] = useState(false);
+    const { data: animes, isLoading } = useQuery({ queryKey: ['fetch_animes'], queryFn: fetchAnimes, }, queryClient)
 
     const table = useReactTable({
         data: animes || [],
@@ -74,13 +60,11 @@ export default function AnimeTable() {
         getSortedRowModel: getSortedRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
         onColumnVisibilityChange: setColumnVisibility,
-        // onRowSelectionChange: setRowSelection,
         onPaginationChange: setPagination,
         state: {
             sorting,
             columnFilters,
             columnVisibility,
-            // rowSelection,
             pagination
         },
     })
