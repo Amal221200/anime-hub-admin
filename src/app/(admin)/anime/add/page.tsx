@@ -13,7 +13,7 @@ const AddAnimePage = () => {
   return (
     <div>
       <Suspense fallback={<SkeletonSpinner />}>
-        <AnimeForm />
+        <AnimeForm heading="Add Anime"/>
       </Suspense>
     </div>
   )

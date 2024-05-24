@@ -2,6 +2,8 @@
 import Image from "next/image"
 import { X } from "lucide-react"
 import { UploadDropzone } from "@/lib/uploadthing"
+import { cn } from "@/lib/utils"
+import useCurrentUser from "@/hooks/useCurrentUser"
 
 interface FileUploadProps {
     onChange: (url?: string) => void,
@@ -10,6 +12,7 @@ interface FileUploadProps {
 }
 
 const FileUpload: React.FC<FileUploadProps> = ({ endpoint, onChange, value }) => {
+    const { data: userData } = useCurrentUser()
     const fileType = value.split('.').at(-1)
 
     if (value && fileType !== 'pdf') {
@@ -23,7 +26,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ endpoint, onChange, value }) =>
         )
     }
     return (
-        <UploadDropzone endpoint={endpoint} className="upload-button cursor-pointer" appearance={{ uploadIcon: { display: 'none' }, label: { display: 'none' }, allowedContent: { display: 'none' }, container: { padding: 0, margin: 0, display: "block" }, button: { padding: 0, marginInline: 0, marginBlock: 10 } }}
+        <UploadDropzone endpoint={endpoint} className={cn("upload-button  cursor-pointer", userData?.role === 'USER' && 'cursor-not-allowed pointer-events-none opacity-60')} appearance={{ uploadIcon: { display: 'none' }, label: { display: 'none' }, allowedContent: { display: 'none' }, container: { padding: 0, margin: 0, display: "block" }, button: { padding: 0, marginInline: 0, marginBlock: 10 } }}
             onClientUploadComplete={(res) => {
                 onChange(res?.[0].url)
             }} onUploadError={(error) => {

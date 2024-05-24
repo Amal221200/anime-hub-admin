@@ -30,7 +30,7 @@ const AnimePage = async ({ params: { animeId } }: { params: { animeId: string } 
   return (
     <div>
       <Suspense fallback={<SkeletonSpinner />}>
-        <AnimeForm anime={anime} />
+        <AnimeForm anime={anime} heading={`Edit ${anime.title}`} />
       </Suspense>
     </div>
   )
