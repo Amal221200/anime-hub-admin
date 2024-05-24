@@ -1,6 +1,10 @@
+import SkeletonSpinner from '@/components/SkeletonSpinner';
 import { getAnime } from '@/lib/actions/anime'
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
+import { lazy, Suspense } from 'react';
+
+const AnimeForm = lazy(() => import('@/components/AnimeForm'))
 
 export async function generateMetadata({ params: { animeId } }: { params: { animeId: string } }): Promise<Metadata> {
   const anime = await getAnime(animeId);
@@ -8,7 +12,7 @@ export async function generateMetadata({ params: { animeId } }: { params: { anim
   if (!anime) {
     redirect('/404')
   }
-  
+
   return {
     title: anime.title,
     description: anime.description,
@@ -25,7 +29,9 @@ const AnimePage = async ({ params: { animeId } }: { params: { animeId: string } 
 
   return (
     <div>
-      {anime.title}
+      <Suspense fallback={<SkeletonSpinner />}>
+        <AnimeForm anime={anime} />
+      </Suspense>
     </div>
   )
 }

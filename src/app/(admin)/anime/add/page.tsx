@@ -1,5 +1,7 @@
+import SkeletonSpinner from "@/components/SkeletonSpinner"
 import { Metadata } from "next"
-
+import { lazy, Suspense } from "react"
+const AnimeForm = lazy(() => import('@/components/AnimeForm'))
 
 export const metadata: Metadata = {
   title: 'Add Anime',
@@ -9,7 +11,11 @@ export const metadata: Metadata = {
 
 const AddAnimePage = () => {
   return (
-    <div>AddAnimePage</div>
+    <div>
+      <Suspense fallback={<SkeletonSpinner />}>
+        <AnimeForm />
+      </Suspense>
+    </div>
   )
 }
 

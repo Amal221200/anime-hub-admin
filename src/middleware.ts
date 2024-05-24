@@ -4,6 +4,7 @@ import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 const routeMatcher = createRouteMatcher([
     '/auth(.*)',
     '/api/webhooks/(.*)',
+    '/api/uploadthing(.*)',
 ])
 
 export default clerkMiddleware((auth, req)=> {
