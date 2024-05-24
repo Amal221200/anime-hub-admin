@@ -1,24 +1,16 @@
 import { Anime } from "@prisma/client";
-
-import UserAvatar from "@/components/UserAvatar";
-
 import { ColumnDef } from "@tanstack/react-table";
-
+import { ArrowUpDown } from "lucide-react";
+import Link from "next/link";
+import UserAvatar from "@/components/UserAvatar";
+import StatusDropdown from "./StatusDropdown";
+import ActionsDropdown from "./ActionsDropdown";
 import { Button } from "@/components/ui/button";
-
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 
 export const animeColums: ColumnDef<Anime>[] = [
     {
         accessorKey: "imageLink",
-        header: ()=> (
+        header: () => (
             <h6 className="text-xs sm:text-sm">Image</h6>
         ),
         cell: ({ row }) => (
@@ -41,30 +33,16 @@ export const animeColums: ColumnDef<Anime>[] = [
             )
         },
         cell: ({ row }) => (
-            <p className="line-clamp-1 capitalize">{row.getValue("title")}</p>
+            <Link href={`/anime/${row.getValue('id')}`} className="line-clamp-1 capitalize transition-all hover:font-semibold hover:underline">{row.getValue("title")}</Link>
         ),
     },
     {
         accessorKey: "status",
-        header: ()=> (
+        header: () => (
             <h6 className="text-xs sm:text-sm">Status</h6>
         ),
         cell: ({ row }) => (
-            <DropdownMenu>
-                <DropdownMenuTrigger asChild className="ring-0 hover:bg-none">
-                    <Button variant="ghost" className="p-0 py-0 outline-none ring-0 hover:bg-none" size={'sm'}>
-                        {(row.getValue('status') as string).toLowerCase()}
-                    </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                    <DropdownMenuLabel>Status</DropdownMenuLabel>
-                    {
-                        ['Ongoing', 'Completed'].map((status) => (
-                            <DropdownMenuItem key={status}>{status}</DropdownMenuItem>
-                        ))
-                    }
-                </DropdownMenuContent>
-            </DropdownMenu>
+            <StatusDropdown row={row} />
         ),
     },
     {
@@ -107,21 +85,7 @@ export const animeColums: ColumnDef<Anime>[] = [
         accessorKey: "id",
         header: "",
         cell: ({ row }) => (
-            <DropdownMenu>
-                <DropdownMenuTrigger asChild className="">
-                    <Button variant="ghost" className="p-0 py-0 outline-none ring-0 hover:bg-none" size={'sm'}>
-                        <MoreHorizontal />
-                    </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="space-y-1">
-                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                    <DropdownMenuItem className="p-0">
-                        <Button variant="outline" size="sm" className="inline-block h-full w-full border-red-600 px-0 py-1 pl-2 text-left text-red-600 hover:text-red-600">
-                            Delete
-                        </Button>
-                    </DropdownMenuItem>
-                </DropdownMenuContent>
-            </DropdownMenu>
+            <ActionsDropdown row={row} />
         ),
     },
 ]

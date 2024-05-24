@@ -12,7 +12,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: {
     default: "Anime Hub - Admin",
-    template: `"Anime Hub - Admin | %s"`
+    template: `Anime Hub - Admin | %s`
   },
   description: "Application for admin users.",
   icons: [{

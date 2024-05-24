@@ -2,6 +2,7 @@ import React, { lazy, Suspense } from 'react'
 import MobileNavbar from './_components/MobileNavbar'
 import MobileUserButton from './_components/MobileUserButton'
 import SkeletonSpinner from '@/components/SkeletonSpinner'
+import { Toaster } from '@/components/ui/toaster'
 
 const DesktopSidebar = lazy(() => import('./_components/desktop-sidebar'))
 
@@ -20,6 +21,7 @@ function AdminLayout({ children }: { children: React.ReactNode }) {
                 </Suspense>
             </div>
             <MobileNavbar />
+            <Toaster />
         </div>
     )
 }

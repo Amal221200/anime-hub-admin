@@ -1,19 +1,19 @@
 import React, { lazy, Suspense } from 'react'
-import { getAnimes } from '@/lib/actions/anime'
 import SkeletonSpinner from '@/components/SkeletonSpinner'
+import { Metadata } from 'next'
 const AnimeTable = lazy(() => import('./_components/AnimeTable'))
 
-const AnimesPage = async () => {
-  const animesData = await getAnimes({})
+export const metadata: Metadata = {
+  title: 'Animes',
+  description: "All the Anime Hub animes.",
+}
 
-  if (!animesData.animes) {
-    return <h1>Animes not Fetched</h1>
-  }
+const AnimesPage = () => {
 
   return (
     <main>
       <Suspense fallback={<SkeletonSpinner className='h-[90vh]' />}>
-        <AnimeTable animesData={animesData} />
+        <AnimeTable  />
       </Suspense>
     </main>
   )

@@ -1,26 +1,19 @@
 import { User } from "@prisma/client";
-import UserAvatar from "@/components/UserAvatar";
+import { ArrowUpDown } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
-import { ArrowUpDown } from "lucide-react";
+import RoleDropdown from "./RoleDropdown";
+import UserAvatar from "@/components/UserAvatar";
 
 export const animeColums: ColumnDef<User>[] = [
     {
         accessorKey: "id",
         header: "",
         cell: "",
-        size:0
     },
     {
         accessorKey: "imageUrl",
-        header: ()=> (
+        header: () => (
             <h6 className="text-xs sm:text-sm">Image</h6>
         ),
         cell: ({ row }) => (
@@ -67,21 +60,7 @@ export const animeColums: ColumnDef<User>[] = [
         accessorKey: "role",
         header: "Role",
         cell: ({ row }) => (
-            <DropdownMenu >
-                <DropdownMenuTrigger asChild className="text-xs sm:text-sm" onClick={(e)=> e.stopPropagation()}>
-                    <Button variant="ghost" className="p-0 py-0 outline-none ring-0 hover:bg-none" size={'sm'}>
-                        {row.getValue('role')}
-                    </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="space-y-1">
-                    <DropdownMenuLabel>Roles</DropdownMenuLabel>
-                    {["ADMIN", "USER"].map((role)=> (
-                        <DropdownMenuItem className="text-xs sm:text-sm" key={role} onClick={(e)=> e.stopPropagation()}>
-                            {role}
-                        </DropdownMenuItem>
-                    ))}
-                </DropdownMenuContent>
-            </DropdownMenu>
+            <RoleDropdown row={row} />
         ),
     },
 ]

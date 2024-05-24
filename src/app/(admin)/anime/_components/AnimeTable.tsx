@@ -35,6 +35,9 @@ import {
 import { Anime } from "@prisma/client"
 import { animeColums } from "./anime-table-columns"
 import Link from "next/link"
+import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query"
+import { fetchAnimes } from "./functions"
+import SkeletonSpinner from "@/components/SkeletonSpinner"
 
 
 
@@ -45,7 +48,8 @@ interface AnimeTableProps {
     }
 }
 
-export default function AnimeTable({ animesData }: AnimeTableProps) {
+export default function AnimeTable() {
+    const queryClient = useQueryClient()
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
         []
@@ -58,8 +62,10 @@ export default function AnimeTable({ animesData }: AnimeTableProps) {
     // const [rowSelection, setRowSelection] = useState({})
     const [pagination, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize: 6 })
 
+    const { data: animes, isLoading } = useQuery({ queryKey: ['animes'], queryFn: fetchAnimes }, queryClient)
+
     const table = useReactTable({
-        data: animesData.animes,
+        data: animes || [],
         columns: animeColums,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
@@ -79,11 +85,11 @@ export default function AnimeTable({ animesData }: AnimeTableProps) {
         },
     })
 
-    useEffect(()=> {
+    useEffect(() => {
         setMounted(true)
     }, [])
 
-    if(!mounted){
+    if (!mounted) {
         return null
     }
 
@@ -127,85 +133,89 @@ export default function AnimeTable({ animesData }: AnimeTableProps) {
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
-            <div className="rounded-md border">
-                <Table>
-                    <TableHeader>
-                        {table.getHeaderGroups().map((headerGroup) => (
-                            <TableRow key={headerGroup.id}>
-                                {headerGroup.headers.map((header) => {
-                                    return (
-                                        <TableHead key={header.id}>
-                                            {header.isPlaceholder
-                                                ? null
-                                                : flexRender(
-                                                    header.column.columnDef.header,
-                                                    header.getContext()
-                                                )}
-                                        </TableHead>
-                                    )
-                                })}
-                            </TableRow>
-                        ))}
-                    </TableHeader>
-                    <TableBody>
-                        {table.getRowModel().rows?.length ? (
-                            table.getRowModel().rows.map((row) => (
-                                <TableRow
-                                    key={row.id}
-                                    data-state={row.getIsSelected() && "selected"}
-                                >
-                                    {row.getVisibleCells().map((cell) => (
-                                        <TableCell key={cell.id} className="p-0">
-                                            <Link href={`/anime/${row.getValue('id')}`} className="inline-block h-full w-full p-4">
-                                                {flexRender(
-                                                    cell.column.columnDef.cell,
-                                                    cell.getContext()
-                                                )}
-                                            </Link>
-                                        </TableCell>
+            {
+                isLoading ? <SkeletonSpinner /> : (
+                    <>
+                        <div className="rounded-md border">
+                            <Table>
+                                <TableHeader>
+                                    {table.getHeaderGroups().map((headerGroup) => (
+                                        <TableRow key={headerGroup.id}>
+                                            {headerGroup.headers.map((header) => {
+                                                return (
+                                                    <TableHead key={header.id}>
+                                                        {header.isPlaceholder
+                                                            ? null
+                                                            : flexRender(
+                                                                header.column.columnDef.header,
+                                                                header.getContext()
+                                                            )}
+                                                    </TableHead>
+                                                )
+                                            })}
+                                        </TableRow>
                                     ))}
-                                </TableRow>
-                            ))
-                        ) : (
-                            <TableRow>
-                                <TableCell
-                                    colSpan={animeColums.length}
-                                    className="h-24 text-center"
+                                </TableHeader>
+                                <TableBody>
+                                    {table.getRowModel().rows?.length ? (
+                                        table.getRowModel().rows.map((row) => (
+                                            <TableRow
+                                                key={row.id}
+                                                data-state={row.getIsSelected() && "selected"}
+                                            >
+                                                {row.getVisibleCells().map((cell) => (
+                                                    <TableCell key={cell.id} className="">
+                                                        {flexRender(
+                                                            cell.column.columnDef.cell,
+                                                            cell.getContext()
+                                                        )}
+                                                    </TableCell>
+                                                ))}
+                                            </TableRow>
+                                        ))
+                                    ) : (
+                                        <TableRow>
+                                            <TableCell
+                                                colSpan={animeColums.length}
+                                                className="h-24 text-center"
+                                            >
+                                                No results.
+                                            </TableCell>
+                                        </TableRow>
+                                    )}
+                                </TableBody>
+                            </Table>
+                        </div>
+                        <div className="flex items-center justify-end space-x-2 py-4">
+                            <div className="flex-1 text-sm text-muted-foreground">
+                                {/* {table.getFilteredSelectedRowModel().rows.length} of{" "} */}
+                                {table.getFilteredRowModel().rows.length} animes.
+                            </div>
+                            <div className="space-x-2">
+                                <span className="text-xs sm:text-base">
+                                    Page {pagination.pageIndex + 1} / {table.getPageCount()}
+                                </span>
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => table.previousPage()}
+                                    disabled={!table.getCanPreviousPage()}
                                 >
-                                    No results.
-                                </TableCell>
-                            </TableRow>
-                        )}
-                    </TableBody>
-                </Table>
-            </div>
-            <div className="flex items-center justify-end space-x-2 py-4">
-                <div className="flex-1 text-sm text-muted-foreground">
-                    {/* {table.getFilteredSelectedRowModel().rows.length} of{" "} */}
-                    {table.getFilteredRowModel().rows.length} animes.
-                </div>
-                <div className="space-x-2">
-                    <span className="text-xs sm:text-base">
-                        Page {pagination.pageIndex + 1} / {table.getPageCount()}
-                    </span>
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => table.previousPage()}
-                        disabled={!table.getCanPreviousPage()}
-                    >
-                        Previous
-                    </Button>
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => table.nextPage()}
-                        disabled={!table.getCanNextPage()}
-                    >
-                        Next
-                    </Button>
-                </div>
-            </div>
+                                    Previous
+                                </Button>
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => table.nextPage()}
+                                    disabled={!table.getCanNextPage()}
+                                >
+                                    Next
+                                </Button>
+                            </div>
+                        </div>
+                    </>
+                )
+            }
         </div>
     )
 }

@@ -1,4 +1,11 @@
-import React from 'react'
+import { Metadata } from "next"
+
+
+export const metadata: Metadata = {
+  title: 'Add Anime',
+  description: "Add anime data.",
+}
+
 
 const AddAnimePage = () => {
   return (
