@@ -1,3 +1,4 @@
+import { ANIME_FORM_TYPE } from '@/lib/types';
 import SkeletonSpinner from '@/components/SkeletonSpinner';
 import { getAnime } from '@/lib/actions/anime'
 import { Metadata } from 'next';
@@ -30,7 +31,7 @@ const AnimePage = async ({ params: { animeId } }: { params: { animeId: string } 
   return (
     <div>
       <Suspense fallback={<SkeletonSpinner />}>
-        <AnimeForm anime={anime} heading={`Edit ${anime.title}`} />
+        <AnimeForm anime={anime} heading={`Edit ${anime.title}`} type={ANIME_FORM_TYPE.EDIT} />
       </Suspense>
     </div>
   )

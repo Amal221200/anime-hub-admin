@@ -3,7 +3,7 @@ import { Shell, User } from "lucide-react";
 
 export default async function Home() {
   const animeCount = await db.anime.count()
-  const userCount = await db.user.count()
+  const userCount = await db.user.count({ where: { role: { not: 'SUPER_ADMIN' } } })
   return (
     <main>
       <div className="grid grid-cols-[repeat(1,200px)] justify-center gap-3 sm:grid-cols-[repeat(5,300px)] sm:justify-start">

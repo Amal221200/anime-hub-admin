@@ -1,3 +1,4 @@
+import { ANIME_FORM_TYPE } from '@/lib/types';
 import SkeletonSpinner from "@/components/SkeletonSpinner"
 import { Metadata } from "next"
 import { lazy, Suspense } from "react"
@@ -13,7 +14,7 @@ const AddAnimePage = () => {
   return (
     <div>
       <Suspense fallback={<SkeletonSpinner />}>
-        <AnimeForm heading="Add Anime"/>
+        <AnimeForm heading="Add Anime" type={ANIME_FORM_TYPE.ADD}/>
       </Suspense>
     </div>
   )
