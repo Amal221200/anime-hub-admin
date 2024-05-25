@@ -2,8 +2,8 @@ import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 
 
 const routeMatcher = createRouteMatcher([
-    '/auth(.*)',
-    '/api(.*)',
+    "/auth(.*)",
+    "/api(.*)",
 ])
 
 export default clerkMiddleware((auth, req) => {
