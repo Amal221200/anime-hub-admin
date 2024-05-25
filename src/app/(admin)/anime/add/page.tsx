@@ -1,7 +1,8 @@
-import { ANIME_FORM_TYPE } from '@/lib/types';
-import SkeletonSpinner from "@/components/SkeletonSpinner"
 import { Metadata } from "next"
 import { lazy, Suspense } from "react"
+import { ANIME_FORM_TYPE } from '@/lib/types'
+import SkeletonSpinner from "@/components/SkeletonSpinner"
+
 const AnimeForm = lazy(() => import('@/components/AnimeForm'))
 
 export const metadata: Metadata = {

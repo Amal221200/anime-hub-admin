@@ -9,11 +9,16 @@ import { Row } from '@tanstack/react-table'
 import { Anime } from '@prisma/client'
 import { useToast } from '@/components/ui/use-toast'
 import { AxiosError } from 'axios'
-import { ToastProps } from '@/components/ui/toast'
+import useCurrentUser from '@/hooks/useCurrentUser'
+import useAlertModal from '@/hooks/useAlertModal'
 
 const ActionsDropdown = ({ row }: { row: Row<Anime> }) => {
     const queryClient = useQueryClient();
+    const { data: userData } = useCurrentUser()
+    
+    const { onOpen } = useAlertModal()
     const { toast } = useToast()
+    
     const { mutateAsync } = useMutation({
         mutationKey: ['anime_delete'],
         mutationFn: deleteAnime(row.getValue('id')),
@@ -21,20 +26,17 @@ const ActionsDropdown = ({ row }: { row: Row<Anime> }) => {
             await queryClient.invalidateQueries({ queryKey: ['fetch_animes'] })
             toast({ title: "ANIME DELETED", description: `${row.getValue('title')} is deleted.`, variant: 'success', duration: 4000 })
         },
-        onError(error: AxiosError, variables, context) {
-            const toastOptions: ToastProps = { duration: 4000, variant: "destructive" }
-            if (error.response?.status === 401) {
-                toast({ ...toastOptions, title: 'Unauthoried User', description: "Only admins are allowed to change the anime" })
-            } else if (error.response?.status === 500) {
-                toast({ ...toastOptions, title: 'Internal Server Error', description: "There was a problem in the server." })
-            }
+        onError(error: AxiosError) {
+            onOpen({ title: 'Internal Server Error', description: error.message })
         },
-
     }, queryClient)
 
     const handleDelete = useCallback(async () => {
+        if (userData?.role === 'USER') {
+            return onOpen({ title: 'Unauthorized', description: 'Users with administration access are allowed to change the data.' })
+        }
         await mutateAsync()
-    }, [mutateAsync])
+    }, [mutateAsync, userData, onOpen])
 
     return (
         <DropdownMenu>

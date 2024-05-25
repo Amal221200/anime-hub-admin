@@ -8,13 +8,15 @@ import { onStatusChange } from './functions'
 import { Row } from '@tanstack/react-table'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useToast } from '@/components/ui/use-toast'
-import { ToastProps } from '@/components/ui/toast'
 import { AxiosError } from 'axios'
+import useCurrentUser from '@/hooks/useCurrentUser'
+import useAlertModal from '@/hooks/useAlertModal'
 
 const StatusDropdown = ({ row }: { row: Row<Anime> }) => {
     const queryClient = useQueryClient()
+    const { onOpen } = useAlertModal()
     const { toast } = useToast()
-
+    const { data: userData } = useCurrentUser()
     const { mutateAsync } = useMutation({
         mutationKey: ['anime_status'], mutationFn: onStatusChange(row.getValue('id')),
         async onSuccess() {
@@ -25,18 +27,18 @@ const StatusDropdown = ({ row }: { row: Row<Anime> }) => {
             })
         },
         onError(error: AxiosError) {
-            const toastOptions: ToastProps = { duration: 4000, variant: "destructive" }
-            if (error.response?.status === 401) {
-                toast({ ...toastOptions, title: 'Unauthoried User', description: "Only admins are allowed to change the anime" })
-            } else if (error.response?.status === 500) {
-                toast({ ...toastOptions, title: 'Internal Server Error', description: "There was a problem in the server." })
-            }
+            onOpen({ title: 'Internal Server Error', description: error.message })
         },
     })
 
+    console.log(userData);
     const handleStatus = useCallback(async (status: ANIME_STATUS) => {
+        
+        if (userData?.role === 'USER') {
+            return onOpen({ title: 'Unauthorized', description: 'Users with administration access are allowed to change the data.' })
+        }
         await mutateAsync({ status })
-    }, [mutateAsync])
+    }, [mutateAsync, userData, onOpen])
 
     return (
         <DropdownMenu>

@@ -1,8 +1,8 @@
-import { User } from "@prisma/client";
+import { AdminUser } from "@prisma/client";
 import axios from "axios";
 
-export async function fetchCurrentUser(): Promise<User> {
-    const response = await axios.get('/api/user/currentUser');
+export async function fetchCurrentUser(): Promise<AdminUser> {
+    const response = await axios.get('/api/admin-user/currentUser');
 
     return response.data
 }

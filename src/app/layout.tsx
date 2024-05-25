@@ -36,8 +36,8 @@ export default function RootLayout({
       <html lang="en" suppressHydrationWarning>
         <body className={inter.className}>
           <ThemeProvider attribute="class" defaultTheme="dark">
-            <ProgressProvider>
-              <QueryProvider>
+            <QueryProvider>
+              <ProgressProvider>
                 <NextSSRPlugin
                   /**
                    * The `extractRouterConfig` will extract **only** the route configs
@@ -48,8 +48,8 @@ export default function RootLayout({
                   routerConfig={extractRouterConfig(ourFileRouter)}
                 />
                 {children}
-              </QueryProvider>
-            </ProgressProvider>
+              </ProgressProvider>
+            </QueryProvider>
           </ThemeProvider>
         </body>
       </html>

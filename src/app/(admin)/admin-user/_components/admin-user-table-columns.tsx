@@ -1,10 +1,11 @@
-import { User } from "@prisma/client";
+import { AdminUser } from "@prisma/client";
 import { ArrowUpDown } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
+import RoleDropdown from "./RoleDropdown";
 import UserAvatar from "@/components/UserAvatar";
 
-const userColumns: ColumnDef<User>[] = [
+const adminUserColumns: ColumnDef<AdminUser>[] = [
     {
         accessorKey: "id",
         header: "",
@@ -54,7 +55,14 @@ const userColumns: ColumnDef<User>[] = [
         cell: ({ row }) => (
             <p className="text-xs sm:text-sm">{row.getValue("email")}</p>
         ),
-    }
+    },
+    {
+        accessorKey: "role",
+        header: "Role",
+        cell: ({ row }) => (
+            <RoleDropdown row={row} />
+        ),
+    },
 ]
 
-export default userColumns;
+export default adminUserColumns;

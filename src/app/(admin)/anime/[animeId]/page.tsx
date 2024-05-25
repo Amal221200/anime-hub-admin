@@ -1,9 +1,9 @@
-import { ANIME_FORM_TYPE } from '@/lib/types';
-import SkeletonSpinner from '@/components/SkeletonSpinner';
-import { getAnime } from '@/lib/actions/anime'
 import { Metadata } from 'next';
-import { redirect } from 'next/navigation';
 import { lazy, Suspense } from 'react';
+import { redirect } from 'next/navigation';
+import { ANIME_FORM_TYPE } from '@/lib/types';
+import { getAnime } from '@/lib/actions/anime'
+import SkeletonSpinner from '@/components/SkeletonSpinner';
 
 const AnimeForm = lazy(() => import('@/components/AnimeForm'))
 

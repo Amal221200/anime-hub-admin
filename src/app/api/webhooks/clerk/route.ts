@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
     const eventType = evt.type;
 
     if (eventType === 'user.created') {
-        await db.user.create({
+        await db.adminUser.create({
             data: {
                 externalUserId: payload.data.id,
                 username: payload.data.username,
@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
     }
 
     if (eventType === "user.updated") {
-        await db.user.update({
+        await db.adminUser.update({
             where: {
                 externalUserId: payload.data.id,
             },
@@ -78,7 +78,7 @@ export async function POST(req: NextRequest) {
     }
 
     if (eventType === "user.deleted") {
-        await db.user.delete({
+        await db.adminUser.delete({
             where: {
                 externalUserId: payload.data.id,
             }

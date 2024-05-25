@@ -78,3 +78,11 @@
   }
 
 }
+
+.rdp [aria-hidden="true"] {
+  @apply hidden;
+}
+
+.rdp-vhidden {
+  @apply hidden;
+}

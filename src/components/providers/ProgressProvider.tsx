@@ -1,8 +1,10 @@
 'use client';
+import useCurrentUser from '@/hooks/useCurrentUser';
 import { Next13ProgressBar } from 'next13-progressbar';
 import { Suspense } from 'react';
 
 const ProgressProvider = ({ children }: { children: React.ReactNode }) => {
+    useCurrentUser()
     return (
         <>
             <Suspense>

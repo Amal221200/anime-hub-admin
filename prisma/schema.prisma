@@ -20,6 +20,17 @@ enum USER_ROLE {
 }
 
 model User {
+  id             String   @id @default(uuid())
+  imageUrl       String   @db.Text
+  externalUserId String   @unique
+  username       String
+  email          String   @unique
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  Review         Review[]
+}
+
+model AdminUser {
   id             String    @id @default(uuid())
   imageUrl       String    @db.Text
   externalUserId String    @unique
@@ -40,11 +51,12 @@ model Anime {
   artist          String
   episodes        Int
   episodeDuration Int
-  release         Int
+  release         DateTime
   genre           String[]
   imageLink       String       @db.Text
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
+  Review          Review[]
 }
 
 model Review {
@@ -54,6 +66,9 @@ model Review {
   animeId   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  anime Anime @relation(fields: [animeId], references: [id], onDelete: Cascade)
 
   @@index([animeId])
   @@index([userId])

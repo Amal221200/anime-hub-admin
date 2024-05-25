@@ -8,7 +8,7 @@ export default async function getCurrentUser() {
         redirect('/auth/sign-in')
     }
 
-    const userData = await db.user.findUnique({ where: { externalUserId: user.id } });
+    const userData = await db.adminUser.findUnique({ where: { externalUserId: user.id } });
 
     return userData
 }

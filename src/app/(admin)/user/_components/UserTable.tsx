@@ -14,7 +14,6 @@ import {
     useReactTable,
 } from "@tanstack/react-table"
 import { ChevronDown } from "lucide-react"
-
 import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
@@ -31,7 +30,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { userColumns } from "./user-table-columns"
+import userColumns from "./user-table-columns"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { fetchUsers } from "./functions"
 import SkeletonSpinner from "@/components/SkeletonSpinner"

@@ -3,11 +3,10 @@ import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 
 const routeMatcher = createRouteMatcher([
     '/auth(.*)',
-    '/api/webhooks/(.*)',
-    '/api/uploadthing(.*)',
+    '/api(.*)',
 ])
 
-export default clerkMiddleware((auth, req)=> {
+export default clerkMiddleware((auth, req) => {
     if (!routeMatcher(req)) auth().protect();
 })
 

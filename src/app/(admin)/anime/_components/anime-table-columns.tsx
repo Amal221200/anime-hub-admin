@@ -7,7 +7,7 @@ import StatusDropdown from "./StatusDropdown";
 import ActionsDropdown from "./ActionsDropdown";
 import { Button } from "@/components/ui/button";
 
-export const animeColums: ColumnDef<Anime>[] = [
+const animeColums: ColumnDef<Anime>[] = [
     {
         accessorKey: "imageLink",
         header: () => (
@@ -89,3 +89,5 @@ export const animeColums: ColumnDef<Anime>[] = [
         ),
     },
 ]
+
+export default animeColums;

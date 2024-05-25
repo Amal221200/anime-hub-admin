@@ -15,16 +15,18 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
-import { Textarea } from "./ui/textarea"
-import FileUpload from "./FileUpload"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
+import { Textarea } from "../ui/textarea"
+import FileUpload from "../FileUpload"
 import useCurrentUser from "@/hooks/useCurrentUser"
-import { useToast } from "./ui/use-toast"
-import { addAnime, editAnime } from "./functions"
+import { useToast } from "../ui/use-toast"
+import { addAnime, editAnime } from "../functions"
 import { ANIME_FORM_TYPE } from "@/lib/types"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { AxiosError } from "axios"
 import { useRouter } from "next/navigation"
+import useAlertModal from "@/hooks/useAlertModal"
+import DateInput from "./DateInput"
 
 interface AnimeFormProps {
     anime?: Anime,
@@ -32,26 +34,23 @@ interface AnimeFormProps {
     type: ANIME_FORM_TYPE
 }
 
-// const formActions = {
-//     [ANIME_FORM_TYPE.ADD]: addAnime,
-//     [ANIME_FORM_TYPE.EDIT]: editAnime,
-// }
-
 const AnimeForm = ({ anime, heading, type }: AnimeFormProps) => {
     const router = useRouter()
     const queryClient = useQueryClient()
+    const { onOpen } = useAlertModal()
     const { data: userData } = useCurrentUser()
     const { toast } = useToast()
+
     const form = useForm<z.infer<typeof animeFormSchema>>({
         resolver: zodResolver(animeFormSchema),
         defaultValues: {
-            title: anime?.title || "",
-            artist: anime?.artist || "",
-            genre: anime?.genre ? anime.genre.reduce((prev, current) => `${prev}, ${current}`) : "",
-            studio: anime?.studio || "",
-            status: anime?.status || "",
-            watchLink: anime?.watchLink || "",
-            release: anime?.release.toString() || '',
+            title: anime?.title || '',
+            artist: anime?.artist || '',
+            genre: anime?.genre?.reduce((prev, current) => `${prev}, ${current}`) || '',
+            studio: anime?.studio || '',
+            status: anime?.status || '',
+            watchLink: anime?.watchLink || '',
+            release: anime?.release,
             episodes: anime?.episodes.toString() || '',
             episodeDuration: anime?.episodeDuration.toString() || '',
             imageLink: anime?.imageLink || '',
@@ -63,14 +62,12 @@ const AnimeForm = ({ anime, heading, type }: AnimeFormProps) => {
         mutationKey: [`anime_${type}`.toLowerCase()],
         mutationFn: type === ANIME_FORM_TYPE.ADD ? addAnime : editAnime(anime?.id as string),
         onError(error: AxiosError) {
-            if (error?.response?.status === 401) {
-                toast({ title: 'Unautorized', description: "Admins are allowed to add/edit anime." })
-            }
+            onOpen({ title: 'Internal Server Error', description: error.message })
         },
         async onSuccess() {
-            await queryClient.invalidateQueries({ queryKey: [`fetch_animes`] });
+            await queryClient.invalidateQueries({ queryKey: ["fetch_animes"] });
             toast({
-                title: type === ANIME_FORM_TYPE.ADD ? `CREATED` : `EDITED ${anime?.title}`,
+                title: type === ANIME_FORM_TYPE.ADD ? `CREATED` : `EDITED ${form.getValues().title}`,
                 description: type === ANIME_FORM_TYPE.ADD ? `Successfully added ${form.getValues().title}` : `Successfully edited ${anime?.title}`,
                 variant: 'success'
             })
@@ -82,15 +79,19 @@ const AnimeForm = ({ anime, heading, type }: AnimeFormProps) => {
     }, queryClient)
 
     const onSubmit = useCallback(async (values: z.infer<typeof animeFormSchema>) => {
-        const payload = animeSchema.parse({ ...values, genre: values.genre.split(','), episodes: parseInt(values.episodes), episodeDuration: parseInt(values.episodeDuration), release: parseInt(values.release) })
+        console.log({ ...values, genre: values.genre.split(','), episodes: parseInt(values.episodes), episodeDuration: parseInt(values.episodeDuration) });
+
+        const payload = animeSchema.parse({ ...values, genre: values.genre.split(','), episodes: parseInt(values.episodes), episodeDuration: parseInt(values.episodeDuration) })
+        console.log(payload);
+        
         await mutateAsync({ data: payload })
     }, [mutateAsync])
 
     useEffect(() => {
         if (userData?.role === 'USER') {
-            toast({ title: 'Notice', description: "You don't have the permission to add/edit anime", variant: "destructive", duration: 10_000 })
+            onOpen({ title: 'Notice', description: 'You cannot add/edit anime, nor you upload any images since you are not an administrator' })
         }
-    }, [userData, toast])
+    }, [userData, onOpen])
 
     return (
         <Form {...form}>
@@ -208,21 +209,6 @@ const AnimeForm = ({ anime, heading, type }: AnimeFormProps) => {
 
                     <FormField
                         control={form.control}
-                        name="release"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>
-                                    Release
-                                </FormLabel>
-                                <FormControl>
-                                    <Input {...field} placeholder="eg: 1985" />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
                         name="episodes"
                         render={({ field }) => (
                             <FormItem>
@@ -236,6 +222,7 @@ const AnimeForm = ({ anime, heading, type }: AnimeFormProps) => {
                             </FormItem>
                         )}
                     />
+
                     <FormField
                         control={form.control}
                         name="episodeDuration"
@@ -246,6 +233,22 @@ const AnimeForm = ({ anime, heading, type }: AnimeFormProps) => {
                                 </FormLabel>
                                 <FormControl>
                                     <Input {...field} placeholder="eg: 23 mins" />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="release"
+                        render={({ field }) => (
+                            <FormItem className="flex flex-col">
+                                <FormLabel>
+                                    Release
+                                </FormLabel>
+                                <FormControl>
+                                    <DateInput field={field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>

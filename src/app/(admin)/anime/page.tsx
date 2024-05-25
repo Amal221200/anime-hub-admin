@@ -1,6 +1,7 @@
+import { Metadata } from 'next'
 import React, { lazy, Suspense } from 'react'
 import SkeletonSpinner from '@/components/SkeletonSpinner'
-import { Metadata } from 'next'
+
 const AnimeTable = lazy(() => import('./_components/AnimeTable'))
 
 export const metadata: Metadata = {

@@ -12,7 +12,6 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table"
-import { useMediaQuery } from "usehooks-ts"
 import { ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -30,26 +29,24 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import animeColums  from "./anime-table-columns"
+import adminUserColumns from "./admin-user-table-columns"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { fetchAnimes } from "./functions"
+import { fetchUsers } from "./functions"
 import SkeletonSpinner from "@/components/SkeletonSpinner"
 
-export default function AnimeTable() {
+
+export default function UserTable() {
     const queryClient = useQueryClient()
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ id: false })
     const [pagination, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize: 6 })
-    
-    const match = useMediaQuery('(min-width:640px)')
-    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ studio: match, artist: match })
-    
     const [mounted, setMounted] = useState(false);
-    const { data: animes, isLoading } = useQuery({ queryKey: ['fetch_animes'], queryFn: fetchAnimes, }, queryClient)
+    const { data: users, isLoading } = useQuery({ queryKey: ['fetch_admin_users'], queryFn: fetchUsers }, queryClient)
 
     const table = useReactTable({
-        data: animes || [],
-        columns: animeColums,
+        data: users || [],
+        columns: adminUserColumns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
         getCoreRowModel: getCoreRowModel(),
@@ -78,10 +75,10 @@ export default function AnimeTable() {
         <div className="w-full">
             <div className="flex flex-col items-center gap-2 py-4 sm:flex-row">
                 <Input
-                    placeholder="Filter anime..."
-                    value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
+                    placeholder="Filter user..."
+                    value={(table.getColumn("username")?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
-                        table.getColumn("title")?.setFilterValue(event.target.value)
+                        table.getColumn("username")?.setFilterValue(event.target.value)
                     }
                     className="max-w-sm"
                 />
@@ -145,7 +142,7 @@ export default function AnimeTable() {
                                                 data-state={row.getIsSelected() && "selected"}
                                             >
                                                 {row.getVisibleCells().map((cell) => (
-                                                    <TableCell key={cell.id} className="">
+                                                    <TableCell key={cell.id}>
                                                         {flexRender(
                                                             cell.column.columnDef.cell,
                                                             cell.getContext()
@@ -157,7 +154,7 @@ export default function AnimeTable() {
                                     ) : (
                                         <TableRow>
                                             <TableCell
-                                                colSpan={animeColums.length}
+                                                colSpan={adminUserColumns.length}
                                                 className="h-24 text-center"
                                             >
                                                 No results.
@@ -169,11 +166,10 @@ export default function AnimeTable() {
                         </div>
                         <div className="flex items-center justify-end space-x-2 py-4">
                             <div className="flex-1 text-sm text-muted-foreground">
-                                {/* {table.getFilteredSelectedRowModel().rows.length} of{" "} */}
-                                {table.getFilteredRowModel().rows.length} animes.
+                                {table.getFilteredRowModel().rows.length} users
                             </div>
                             <div className="space-x-2">
-                                <span className="text-xs sm:text-base">
+                                <span>
                                     Page {pagination.pageIndex + 1} / {table.getPageCount()}
                                 </span>
                                 <Button
