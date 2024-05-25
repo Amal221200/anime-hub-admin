@@ -69,14 +69,15 @@ const AnimeForm = ({ anime, heading, type }: AnimeFormProps) => {
         },
         async onSuccess() {
             await queryClient.invalidateQueries({ queryKey: [`fetch_animes`] });
-            if (type === ANIME_FORM_TYPE.ADD) {
-                form.reset()
-            }
             toast({
                 title: type === ANIME_FORM_TYPE.ADD ? `CREATED` : `EDITED ${anime?.title}`,
                 description: type === ANIME_FORM_TYPE.ADD ? `Successfully added ${form.getValues().title}` : `Successfully edited ${anime?.title}`,
                 variant: 'success'
             })
+            if (type === ANIME_FORM_TYPE.ADD) {
+                form.reset()
+            }
+            router.refresh()
         }
     }, queryClient)
 
