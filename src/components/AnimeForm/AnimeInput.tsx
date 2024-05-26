@@ -1,15 +1,15 @@
-import React from 'react'
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
-import { Input } from '../ui/input'
-import { UseFormReturn } from 'react-hook-form'
-import { z } from 'zod'
-import { animeFormSchema } from '@/lib/schema'
-import { cn } from '@/lib/utils'
+// import React from 'react'
+// import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
+// import { Input } from '../ui/input'
+// import { UseFormReturn } from 'react-hook-form'
+// import { z } from 'zod'
+// import { animeFormSchema } from '@/lib/schema'
+// import { cn } from '@/lib/utils'
 
-interface AnimeInputProps {
-    form: UseFormReturn<z.infer<typeof animeFormSchema>>,
-    name: "title" | "artist" | "genre" | "studio" | "status" | "watchLink" | "release" | "episodes" | "episodeDuration" | "imageLink" | "description"
-}
+// interface AnimeInputProps {
+//     form: UseFormReturn<z.infer<typeof animeFormSchema>>,
+//     name: "title" | "artist" | "genre" | "studio" | "status" | "watchLink" | "release" | "episodes" | "episodeDuration" | "imageLink" | "description"
+// }
 
 // const AnimeInput = ({ form, name }: AnimeInputProps) => {
 //     return (
@@ -31,4 +31,4 @@ interface AnimeInputProps {
 //     )
 // }
 
-export default AnimeInput
+// export default AnimeInput
