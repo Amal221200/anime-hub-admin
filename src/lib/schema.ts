@@ -11,7 +11,7 @@ export const animeFormSchema = z.object({
     episodes: z.string().regex(/^[1-9][0-9]*$/, "Enter a valid number"),
     episodeDuration: z.string().regex(/^[1-9][0-9]*$/, "Enter a valid duration"),
     imageLink: z.string().min(5, "Image Link is required.").trim(),
-    description: z.string().min(1, "Image Link is required.").trim(),
+    description: z.string().min(1, "Description is required.").trim(),
 })
 
 export const animeSchema = z.object({
@@ -25,5 +25,5 @@ export const animeSchema = z.object({
     episodes: z.number().min(1, "Episodes is required").int("Enter a valid number"),
     episodeDuration: z.number().min(1, "Episode duration is required").int("Enter a valid number"),
     imageLink: z.string().min(5, "Image Link is required.").trim(),
-    description: z.string().min(1, "Image Link is required.").trim(),
+    description: z.string().min(1, "Description is required.").trim(),
 })
