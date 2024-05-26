@@ -48,6 +48,7 @@ const DateInput = ({ field }: DateInputProps) => {
                     captionLayout="dropdown-buttons"
                     fromYear={1900}
                     toYear={(new Date(Date.now())).getFullYear()}
+                    defaultMonth={field.value}
                     classNames={{
                         month: 'space-y-4',
                         caption: 'flex justify-center pt-1 relative items-center gap-2 px-2',
