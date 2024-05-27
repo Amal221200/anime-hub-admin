@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import {
     ColumnFiltersState,
     PaginationState,
@@ -41,7 +41,6 @@ export default function UserTable() {
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ id: false })
     const [pagination, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize: 6 })
-    const [mounted, setMounted] = useState(false);
     const { data: users, isLoading } = useQuery({ queryKey: ['fetch_admin_users'], queryFn: fetchUsers }, queryClient)
 
     const table = useReactTable({
@@ -62,14 +61,6 @@ export default function UserTable() {
             pagination
         },
     })
-
-    useEffect(() => {
-        setMounted(true)
-    }, [])
-
-    if (!mounted) {
-        return null
-    }
 
     return (
         <div className="w-full">

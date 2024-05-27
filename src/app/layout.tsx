@@ -8,7 +8,7 @@ import { Inter } from "next/font/google";
 import ThemeProvider from "@/components/providers/ThemeProvider";
 import ProgressProvider from "@/components/providers/ProgressProvider";
 import QueryProvider from "@/components/providers/QueryProvider";
-import { ourFileRouter } from "./api/uploadthing/core";
+import { ourFileRouter } from "../lib/uploadthing/core";
 import { extractRouterConfig } from "uploadthing/server";
 
 const inter = Inter({ subsets: ["latin"] });

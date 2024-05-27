@@ -287,7 +287,7 @@ const AnimeForm = ({ anime, heading, type }: AnimeFormProps) => {
                     />
                 </div>
                 <Button type="submit"
-                    disabled={form.formState.isLoading || form.formState.isSubmitting || userData?.role === 'USER'} className="block w-full disabled:cursor-not-allowed disabled:opacity-60 sm:w-max">
+                    disabled={form.formState.isLoading || form.formState.isSubmitting || userData?.role === 'USER'} className="block w-full disabled:cursor-null disabled:opacity-60 sm:w-max">
                     Submit
                 </Button>
             </form>

@@ -10,11 +10,13 @@ import { AxiosError } from 'axios';
 import { useCallback } from 'react';
 import useCurrentUser from '@/hooks/useCurrentUser';
 import useAlertModal from '@/hooks/useAlertModal';
+import useDialogModal from '@/hooks/useDialogModal';
 
 const RoleDropdown = ({ row }: { row: Row<AdminUser> }) => {
     const queryClient = useQueryClient()
     const { data: userData } = useCurrentUser();
-    const { onOpen } = useAlertModal()
+    const { onOpen: onAlertOpen } = useAlertModal()
+    const { onOpen: onDialogOpen } = useDialogModal()
     const { toast } = useToast()
     const { mutateAsync } = useMutation({
         mutationKey: ['user_role'],
@@ -24,16 +26,30 @@ const RoleDropdown = ({ row }: { row: Row<AdminUser> }) => {
             toast({ title: "ROLE UPDATED", description: `${row.getValue('username')} role is updated.`, variant: 'success', duration: 4000 })
         },
         onError(error: AxiosError) {
-            onOpen({ title: 'Internal Server Error', description: error.message })
+            onAlertOpen({ title: 'Internal Server Error', description: error.message })
         },
     }, queryClient)
 
-    const handleRole = useCallback(async (role: USER_ROLE) => {
+    const handleRole = useCallback(async (role: USER_ROLE) => {        
         if (userData?.role !== 'SUPER_ADMIN') {
-            return onOpen({ title: 'Unauthorized', description: 'Super Admins are allowed to grant roles to the user.' })
+            return onAlertOpen({ title: 'Unauthorized', description: 'Super Admins are allowed to grant roles to the user.' })
         }
-        await mutateAsync({ role })
-    }, [mutateAsync, userData, onOpen])
+        
+        if (row.getValue('role') === role) {
+            return onAlertOpen({
+                title: `Redundant action`,
+                description: `Role is already ${role}.`
+            })
+        }
+        
+        onDialogOpen({
+            title: 'Are you sure?',
+            description: "Do yo want to change the role of the user?",
+            async action() {
+                await mutateAsync({ role })
+            }
+        })
+    }, [mutateAsync, userData, onAlertOpen, onDialogOpen, row])
 
     return (
         <DropdownMenu>

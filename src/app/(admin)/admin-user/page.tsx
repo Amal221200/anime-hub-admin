@@ -1,14 +1,16 @@
-import React, { lazy, Suspense } from 'react'
+import { Suspense } from 'react'
 import SkeletonSpinner from '@/components/SkeletonSpinner';
 import { Metadata } from 'next';
-const AdminUserTable = lazy(() => import('./_components/AdminUserTable'))
+import dynamic from 'next/dynamic';
+
+const AdminUserTable = dynamic(() => import('./_components/AdminUserTable'), { ssr: false })
 
 export const metadata: Metadata = {
   title: 'Users',
   description: "All the Anime Hub users.",
 }
 
-const UsersPage = () => {
+const AdminUsersPage = () => {
 
   return (
     <main>
@@ -19,4 +21,4 @@ const UsersPage = () => {
   )
 }
 
-export default UsersPage
+export default AdminUsersPage

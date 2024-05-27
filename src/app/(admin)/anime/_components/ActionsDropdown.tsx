@@ -11,14 +11,16 @@ import { useToast } from '@/components/ui/use-toast'
 import { AxiosError } from 'axios'
 import useCurrentUser from '@/hooks/useCurrentUser'
 import useAlertModal from '@/hooks/useAlertModal'
+import useDialogModal from '@/hooks/useDialogModal'
 
 const ActionsDropdown = ({ row }: { row: Row<Anime> }) => {
     const queryClient = useQueryClient();
     const { data: userData } = useCurrentUser()
-    
-    const { onOpen } = useAlertModal()
+
+    const { onOpen: onAlertOpen } = useAlertModal()
+    const { onOpen: onDialogOpen } = useDialogModal()
     const { toast } = useToast()
-    
+
     const { mutateAsync } = useMutation({
         mutationKey: ['anime_delete'],
         mutationFn: deleteAnime(row.getValue('id')),
@@ -27,16 +29,18 @@ const ActionsDropdown = ({ row }: { row: Row<Anime> }) => {
             toast({ title: "ANIME DELETED", description: `${row.getValue('title')} is deleted.`, variant: 'success', duration: 4000 })
         },
         onError(error: AxiosError) {
-            onOpen({ title: 'Internal Server Error', description: error.message })
+            onAlertOpen({ title: 'Internal Server Error', description: error.message })
         },
     }, queryClient)
 
     const handleDelete = useCallback(async () => {
         if (userData?.role === 'USER') {
-            return onOpen({ title: 'Unauthorized', description: 'Users with administration access are allowed to change the data.' })
+            return onAlertOpen({
+                title: 'Unauthorized', description: 'Users with administration access are allowed to change the data.'
+            })
         }
-        await mutateAsync()
-    }, [mutateAsync, userData, onOpen])
+        onDialogOpen({ title: 'Are you sure?', description: "Once done, it's irreversible.", action: mutateAsync })
+    }, [mutateAsync, userData, onAlertOpen, onDialogOpen])
 
     return (
         <DropdownMenu>

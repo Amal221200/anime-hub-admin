@@ -1,7 +1,8 @@
-import React, { lazy, Suspense } from 'react'
+import { Suspense } from 'react'
 import SkeletonSpinner from '@/components/SkeletonSpinner';
 import { Metadata } from 'next';
-const UserTable = lazy(() => import('./_components/UserTable'))
+import dynamic from 'next/dynamic';
+const UserTable = dynamic(() => import('./_components/UserTable'), { ssr: false })
 
 export const metadata: Metadata = {
   title: 'Users',

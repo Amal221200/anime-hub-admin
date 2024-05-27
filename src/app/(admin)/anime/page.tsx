@@ -1,8 +1,9 @@
 import { Metadata } from 'next'
-import React, { lazy, Suspense } from 'react'
+import { Suspense } from 'react'
 import SkeletonSpinner from '@/components/SkeletonSpinner'
+import dynamic from 'next/dynamic'
 
-const AnimeTable = lazy(() => import('./_components/AnimeTable'))
+const AnimeTable = dynamic(() => import('./_components/AnimeTable'), { ssr: false })
 
 export const metadata: Metadata = {
   title: 'Animes',
@@ -14,7 +15,7 @@ const AnimesPage = () => {
   return (
     <main>
       <Suspense fallback={<SkeletonSpinner className='h-[90vh]' />}>
-        <AnimeTable  />
+        <AnimeTable />
       </Suspense>
     </main>
   )

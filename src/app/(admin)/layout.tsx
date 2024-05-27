@@ -1,11 +1,13 @@
-import React, { lazy, Suspense } from 'react'
+import React, { Suspense } from 'react'
 import MobileNavbar from './_components/MobileNavbar'
 import MobileUserButton from './_components/MobileUserButton'
 import SkeletonSpinner from '@/components/SkeletonSpinner'
-import { Toaster } from '@/components/ui/toaster'
-import AlertModal from '@/components/modal/AlertModal'
+import dynamic from 'next/dynamic'
 
-const DesktopSidebar = lazy(() => import('./_components/desktop-sidebar'))
+const DesktopSidebar = dynamic(() => import('./_components/desktop-sidebar'))
+const DialogModal = dynamic(() => import("@/components/modal/DialogModal"), { ssr: false })
+const AlertModal = dynamic(() => import('@/components/modal/AlertModal'), { ssr: false })
+const Toaster = dynamic(() => import('@/components/ui/toaster'), { ssr: false })
 
 function AdminLayout({ children }: { children: React.ReactNode }) {
     return (
@@ -21,9 +23,12 @@ function AdminLayout({ children }: { children: React.ReactNode }) {
                     {children}
                 </Suspense>
             </div>
-            <MobileNavbar />
-            <AlertModal />
-            <Toaster />
+            <Suspense>
+                <MobileNavbar />
+                <AlertModal />
+                <DialogModal />
+                <Toaster />
+            </Suspense>
         </div>
     )
 }

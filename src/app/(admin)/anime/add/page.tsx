@@ -1,9 +1,10 @@
 import { Metadata } from "next"
-import { lazy, Suspense } from "react"
+import { Suspense } from "react"
 import { ANIME_FORM_TYPE } from '@/lib/types'
 import SkeletonSpinner from "@/components/SkeletonSpinner"
+import dynamic from "next/dynamic"
 
-const AnimeForm = lazy(() => import('@/components/AnimeForm'))
+const AnimeForm = dynamic(() => import('@/components/AnimeForm'), { ssr: false })
 
 export const metadata: Metadata = {
   title: 'Add Anime',
@@ -15,7 +16,7 @@ const AddAnimePage = () => {
   return (
     <div>
       <Suspense fallback={<SkeletonSpinner />}>
-        <AnimeForm heading="Add Anime" type={ANIME_FORM_TYPE.ADD}/>
+        <AnimeForm heading="Add Anime" type={ANIME_FORM_TYPE.ADD} />
       </Suspense>
     </div>
   )

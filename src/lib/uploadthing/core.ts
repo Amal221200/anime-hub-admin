@@ -16,6 +16,9 @@ export const ourFileRouter = {
     animeImage: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
         .middleware(() => handleAuth())
         .onUploadComplete(() => { }),
+    animeBlogImage: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
+        .middleware(() => handleAuth())
+        .onUploadComplete(() => { }),
 
     messageFile: f(["image", "pdf"])
         .middleware(() => handleAuth())

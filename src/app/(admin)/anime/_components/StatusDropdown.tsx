@@ -1,5 +1,4 @@
 "use client"
-
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Anime, ANIME_STATUS } from '@prisma/client'
@@ -11,10 +10,12 @@ import { useToast } from '@/components/ui/use-toast'
 import { AxiosError } from 'axios'
 import useCurrentUser from '@/hooks/useCurrentUser'
 import useAlertModal from '@/hooks/useAlertModal'
+import useDialogModal from '@/hooks/useDialogModal'
 
 const StatusDropdown = ({ row }: { row: Row<Anime> }) => {
     const queryClient = useQueryClient()
-    const { onOpen } = useAlertModal()
+    const { onOpen: onAlertOpen } = useAlertModal()
+    const { onOpen: onDialogOpen } = useDialogModal()
     const { toast } = useToast()
     const { data: userData } = useCurrentUser()
     const { mutateAsync } = useMutation({
@@ -27,18 +28,33 @@ const StatusDropdown = ({ row }: { row: Row<Anime> }) => {
             })
         },
         onError(error: AxiosError) {
-            onOpen({ title: 'Internal Server Error', description: error.message })
+            onAlertOpen({ title: 'Internal Server Error', description: error.message })
         },
     })
 
-    console.log(userData);
     const handleStatus = useCallback(async (status: ANIME_STATUS) => {
-        
         if (userData?.role === 'USER') {
-            return onOpen({ title: 'Unauthorized', description: 'Users with administration access are allowed to change the data.' })
+            return onAlertOpen({
+                title: 'Unauthorized',
+                description: 'Users with administration access are allowed to change the data.'
+            })
         }
-        await mutateAsync({ status })
-    }, [mutateAsync, userData, onOpen])
+        
+        if (row.getValue('status') === status) {
+            return onAlertOpen({
+                title: `Redundant action`,
+                description: `Status is already ${status}.`
+            })
+        }
+
+        onDialogOpen({
+            title: 'Are you sure',
+            description: `Do you want to change the status from ${status === 'ONGOING' ? '"COMPLETED"' : '"ONGOING"'} to ${status === 'ONGOING' ? '"ONGOING"' : '"COMPLETED"'}`,
+            async action() {
+                await mutateAsync({ status })
+            }
+        })
+    }, [mutateAsync, userData, onAlertOpen, onDialogOpen, row])
 
     return (
         <DropdownMenu>

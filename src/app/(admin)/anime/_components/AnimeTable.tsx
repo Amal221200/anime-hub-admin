@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import {
     ColumnFiltersState,
     PaginationState,
@@ -43,8 +43,6 @@ export default function AnimeTable() {
     
     const match = useMediaQuery('(min-width:640px)')
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ studio: match, artist: match })
-    
-    const [mounted, setMounted] = useState(false);
     const { data: animes, isLoading } = useQuery({ queryKey: ['fetch_animes'], queryFn: fetchAnimes, }, queryClient)
 
     const table = useReactTable({
@@ -65,14 +63,6 @@ export default function AnimeTable() {
             pagination
         },
     })
-
-    useEffect(() => {
-        setMounted(true)
-    }, [])
-
-    if (!mounted) {
-        return null
-    }
 
     return (
         <div className="w-full">
