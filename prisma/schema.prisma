@@ -30,7 +30,7 @@ model User {
   updatedAt      DateTime     @updatedAt
 
   Review         Review[]
-  BlogReview     BlogReview[]
+  // BlogReview     BlogReview[]
 }
 
 model AdminUser {
@@ -43,7 +43,7 @@ model AdminUser {
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 
-  Blog           Blog[]
+  // Blog           Blog[]
 }
 
 model Anime {
@@ -64,35 +64,35 @@ model Anime {
   Review          Review[]
 }
 
-model Blog {
-  id          String   @id @default(uuid())
-  title       String
-  description String
-  content     String?  @db.Text
-  authorId    String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+// model Blog {
+//   id          String   @id @default(uuid())
+//   title       String
+//   description String
+//   content     String?  @db.Text
+//   authorId    String
+//   createdAt   DateTime @default(now())
+//   updatedAt   DateTime @updatedAt
 
-  author     AdminUser         @relation(fields: [authorId], references: [id])
-  BlogReview BlogReview[]
+//   author     AdminUser         @relation(fields: [authorId], references: [id])
+//   BlogReview BlogReview[]
 
-  @@index([authorId])
-}
+//   @@index([authorId])
+// }
 
-model BlogReview {
-  id        String   @id @default(uuid())
-  review    String   @db.Text
-  userId    String
-  blogId    String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+// model BlogReview {
+//   id        String   @id @default(uuid())
+//   review    String   @db.Text
+//   userId    String
+//   blogId    String
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  blog Blog @relation(fields: [blogId], references: [id], onDelete: Cascade)
+//   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   blog Blog @relation(fields: [blogId], references: [id], onDelete: Cascade)
 
-  @@index([blogId])
-  @@index([userId])
-}
+//   @@index([blogId])
+//   @@index([userId])
+// }
 
 model Review {
   id        String   @id @default(uuid())
