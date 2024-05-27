@@ -1,4 +1,9 @@
+import SkeletonSpinner from "@/components/SkeletonSpinner"
 import { Metadata } from "next"
+import dynamic from "next/dynamic"
+import { Suspense } from "react"
+
+const MerchandiseTable = dynamic(() => import('./_components/MerchandiseTable'), { ssr: false })
 
 export const metadata: Metadata = {
   title: 'Merchandise',
@@ -7,7 +12,11 @@ export const metadata: Metadata = {
 
 const MerchandisePage = () => {
   return (
-    <div>Merchandise Page</div>
+    <main>
+      <Suspense fallback={<SkeletonSpinner />}>
+        <MerchandiseTable />
+      </Suspense>
+    </main>
   )
 }
 

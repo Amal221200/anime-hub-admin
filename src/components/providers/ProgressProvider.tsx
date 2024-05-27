@@ -1,5 +1,5 @@
 'use client';
-import useCurrentUser from '@/hooks/useCurrentUser';
+import useCurrentUser from '@/hooks/current-user/useCurrentUser';
 import { Next13ProgressBar } from 'next13-progressbar';
 import { Suspense } from 'react';
 

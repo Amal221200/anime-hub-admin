@@ -1,37 +1,29 @@
 "use client"
-import { Button } from '@/components/ui/button'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { MoreHorizontal } from 'lucide-react'
 import { useCallback } from 'react'
-import { deleteAnime } from './functions'
-import { Row } from '@tanstack/react-table'
 import { Anime } from '@prisma/client'
-import { useToast } from '@/components/ui/use-toast'
-import { AxiosError } from 'axios'
-import useCurrentUser from '@/hooks/useCurrentUser'
+import { Row } from '@tanstack/react-table'
+
+import { Button } from '@/components/ui/button'
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
+
+import { MoreHorizontal } from 'lucide-react'
+import useCurrentUser from '@/hooks/current-user/useCurrentUser'
 import useAlertModal from '@/hooks/useAlertModal'
 import useDialogModal from '@/hooks/useDialogModal'
+import useDeleteAnime from '@/hooks/anime/useDeleteAnime'
 
 const ActionsDropdown = ({ row }: { row: Row<Anime> }) => {
-    const queryClient = useQueryClient();
     const { data: userData } = useCurrentUser()
 
-    const { onOpen: onAlertOpen } = useAlertModal()
     const { onOpen: onDialogOpen } = useDialogModal()
-    const { toast } = useToast()
-
-    const { mutateAsync } = useMutation({
-        mutationKey: ['anime_delete'],
-        mutationFn: deleteAnime(row.getValue('id')),
-        async onSuccess() {
-            await queryClient.invalidateQueries({ queryKey: ['fetch_animes'] })
-            toast({ title: "ANIME DELETED", description: `${row.getValue('title')} is deleted.`, variant: 'success', duration: 4000 })
-        },
-        onError(error: AxiosError) {
-            onAlertOpen({ title: 'Internal Server Error', description: error.message })
-        },
-    }, queryClient)
+    const { onOpen: onAlertOpen } = useAlertModal()
+    const { mutateAsync, isPending } = useDeleteAnime({ animeId: row.getValue('id'), title: row.getValue('title') })
 
     const handleDelete = useCallback(async () => {
         if (userData?.role === 'USER') {

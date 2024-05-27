@@ -6,7 +6,7 @@ export async function fetchAnimes(): Promise<Anime[]> {
     return animes.data
 }
 
-export function onStatusChange(animeId: string) {
+export function onAnimeStatusChange(animeId: string) {
     return async ({ status }: { status: ANIME_STATUS }) => {
         const response = await axios.patch(`/api/anime/${animeId}`, { status })
         return response.data

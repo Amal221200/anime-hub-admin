@@ -18,7 +18,7 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 import { Textarea } from "../ui/textarea"
 import FileUpload from "../FileUpload"
-import useCurrentUser from "@/hooks/useCurrentUser"
+import useCurrentUser from "@/hooks/current-user/useCurrentUser"
 import { useToast } from "../ui/use-toast"
 import { addAnime, editAnime } from "../functions"
 import { ANIME_FORM_TYPE } from "@/lib/types"
@@ -27,6 +27,7 @@ import { AxiosError } from "axios"
 import { useRouter } from "next/navigation"
 import useAlertModal from "@/hooks/useAlertModal"
 import DateInput from "./DateInput"
+import useAnimeForm from "@/hooks/anime/useSubmitAnimeForm"
 
 interface AnimeFormProps {
     anime?: Anime,
@@ -35,55 +36,13 @@ interface AnimeFormProps {
 }
 
 const AnimeForm = ({ anime, heading, type }: AnimeFormProps) => {
-    const router = useRouter()
-    const queryClient = useQueryClient()
     const { onOpen } = useAlertModal()
     const { data: userData } = useCurrentUser()
-    const { toast } = useToast()
-
-    const form = useForm<z.infer<typeof animeFormSchema>>({
-        resolver: zodResolver(animeFormSchema),
-        defaultValues: {
-            title: anime?.title || '',
-            artist: anime?.artist || '',
-            genre: anime?.genre?.reduce((prev, current) => `${prev}, ${current}`) || '',
-            studio: anime?.studio || '',
-            status: anime?.status || '',
-            watchLink: anime?.watchLink || '',
-            release: anime?.release,
-            episodes: anime?.episodes.toString() || '',
-            episodeDuration: anime?.episodeDuration.toString() || '',
-            imageLink: anime?.imageLink || '',
-            description: anime?.description || '',
-        },
-    })
-
-    const { mutateAsync } = useMutation({
-        mutationKey: [`anime_${type}`.toLowerCase()],
-        mutationFn: type === ANIME_FORM_TYPE.ADD ? addAnime : editAnime(anime?.id as string),
-        onError(error: AxiosError) {
-            onOpen({ title: 'Internal Server Error', description: error.message })
-        },
-        async onSuccess() {
-            await queryClient.invalidateQueries({ queryKey: ["fetch_animes"] });
-            toast({
-                title: type === ANIME_FORM_TYPE.ADD ? `CREATED` : `EDITED ${form.getValues().title}`,
-                description: type === ANIME_FORM_TYPE.ADD ? `Successfully added ${form.getValues().title}` : `Successfully edited ${anime?.title}`,
-                variant: 'success'
-            })
-            if (type === ANIME_FORM_TYPE.ADD) {
-                form.reset()
-            }
-            router.refresh()
-        }
-    }, queryClient)
-
+    const { form, mutateAsync } = useAnimeForm(type, type === ANIME_FORM_TYPE.ADD ? addAnime : editAnime(anime?.id as string), anime)
+    
     const onSubmit = useCallback(async (values: z.infer<typeof animeFormSchema>) => {
-        console.log({ ...values, genre: values.genre.split(','), episodes: parseInt(values.episodes), episodeDuration: parseInt(values.episodeDuration) });
-
         const payload = animeSchema.parse({ ...values, genre: values.genre.split(','), episodes: parseInt(values.episodes), episodeDuration: parseInt(values.episodeDuration) })
-        console.log(payload);
-        
+
         await mutateAsync({ data: payload })
     }, [mutateAsync])
 

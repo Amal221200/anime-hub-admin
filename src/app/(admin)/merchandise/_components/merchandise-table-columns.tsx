@@ -1,11 +1,8 @@
 import { Anime } from "@prisma/client";
-
 import UserAvatar from "@/components/UserAvatar";
-
 import { ColumnDef } from "@tanstack/react-table";
-
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+
 import {
     DropdownMenu,
     DropdownMenuContent,

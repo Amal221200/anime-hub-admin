@@ -3,7 +3,7 @@ import Image from "next/image"
 import { X } from "lucide-react"
 import { UploadDropzone } from "@/lib/uploadthing"
 import { cn } from "@/lib/utils"
-import useCurrentUser from "@/hooks/useCurrentUser"
+import useCurrentUser from "@/hooks/current-user/useCurrentUser"
 
 interface FileUploadProps {
     onChange: (url?: string) => void,
