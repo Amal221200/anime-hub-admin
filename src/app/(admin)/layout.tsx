@@ -7,7 +7,7 @@ import dynamic from 'next/dynamic'
 const DesktopSidebar = dynamic(() => import('./_components/desktop-sidebar'))
 const DialogModal = dynamic(() => import("@/components/modal/DialogModal"), { ssr: false })
 const AlertModal = dynamic(() => import('@/components/modal/AlertModal'), { ssr: false })
-const Toaster = dynamic(() => import('@/components/ui/toaster'), { ssr: false })
+const Toaster = dynamic(() => import('@/components/ui/sonner'), { ssr: false })
 
 function AdminLayout({ children }: { children: React.ReactNode }) {
     return (
@@ -27,7 +27,7 @@ function AdminLayout({ children }: { children: React.ReactNode }) {
                 <MobileNavbar />
                 <AlertModal />
                 <DialogModal />
-                <Toaster />
+                <Toaster richColors position='top-right' closeButton />
             </Suspense>
         </div>
     )

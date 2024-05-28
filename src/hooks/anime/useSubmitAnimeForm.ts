@@ -1,4 +1,4 @@
-import { useToast } from "@/components/ui/use-toast"
+import { toast } from "sonner"
 import { animeFormSchema, animeSchema } from "@/lib/schema"
 import { ANIME_FORM_TYPE } from "@/lib/types"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -10,12 +10,11 @@ import { z } from "zod"
 import { AxiosError } from "axios"
 import useAlertModal from "../useAlertModal"
 
-export default function useAnimeForm( type: ANIME_FORM_TYPE,
+export default function useAnimeForm(type: ANIME_FORM_TYPE,
     action: (data: { data: z.infer<typeof animeSchema> }) => Promise<void>, anime?: Anime) {
-     
+
     const queryClient = useQueryClient()
     const router = useRouter()
-    const { toast } = useToast()
     const { onOpen } = useAlertModal()
 
     const form = useForm<z.infer<typeof animeFormSchema>>({
@@ -43,11 +42,11 @@ export default function useAnimeForm( type: ANIME_FORM_TYPE,
         },
         async onSuccess() {
             await queryClient.invalidateQueries({ queryKey: ["fetch_animes"] });
-            toast({
-                title: type === ANIME_FORM_TYPE.ADD ? `CREATED` : `EDITED ${form.getValues().title}`,
-                description: type === ANIME_FORM_TYPE.ADD ? `Successfully added ${form.getValues().title}` : `Successfully edited ${anime?.title}`,
-                variant: 'success'
-            })
+            toast.success(type === ANIME_FORM_TYPE.ADD ? `CREATED` : `EDITED ${form.getValues().title}`,
+                {
+                    description: type === ANIME_FORM_TYPE.ADD ? `Successfully added ${form.getValues().title}` : `Successfully edited ${anime?.title}`
+                })
+
             if (type === ANIME_FORM_TYPE.ADD) {
                 form.reset()
             }
