@@ -7,7 +7,7 @@ const AlertModal = () => {
     const { open, onClose, title, description } = useAlertModal()
 
     return (
-        <AlertDialog open={!open}>
+        <AlertDialog open={open}>
             <AlertDialogContent className='border-zinc-800 bg-[rgb(5,0,0)]'>
                 <AlertDialogHeader>
                     <AlertDialogTitle className='text-red-600'>{title}</AlertDialogTitle>
