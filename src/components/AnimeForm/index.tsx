@@ -131,7 +131,7 @@ const AnimeForm = ({ anime, heading, type }: AnimeFormProps) => {
                         }
                     </AnimeInputWrapper>
                     
-                    <AnimeInputWrapper name="description" label="Description" form={form} className="col-span-2">
+                    <AnimeInputWrapper name="description" label="Description" form={form} className="sm:col-span-2">
                         {
                             (field) => (
                                 <Textarea {...field} placeholder="eg: This is the legend of a young kid called Son Goku..." rows={6} 
