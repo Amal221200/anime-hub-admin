@@ -10,11 +10,11 @@ import {
 import useDialogModal from "@/hooks/useDialogModal";
 import { Button } from "../ui/button";
 
-export default function AlertDialogDemo() {
+export default function DialogModal() {
     const { open, onClose, title, description, disabled } = useDialogModal()
     return (
         <AlertDialog open={open}>
-            <AlertDialogContent className='bg-[rgb(5,0,0)]'>
+            <AlertDialogContent className='border-zinc-800 bg-[rgb(5,0,0)]'>
                 <AlertDialogHeader>
                     <AlertDialogTitle className='text-red-600'>{title}</AlertDialogTitle>
                     <AlertDialogDescription className='text-red-600'>
