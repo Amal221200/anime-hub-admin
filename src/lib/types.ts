@@ -1,4 +1,4 @@
-export enum ANIME_FORM_TYPE {
+export enum FORM_TYPE {
     EDIT,
     ADD
 }

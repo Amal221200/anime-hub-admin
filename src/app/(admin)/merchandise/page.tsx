@@ -1,9 +1,8 @@
 import SkeletonSpinner from "@/components/SkeletonSpinner"
 import { Metadata } from "next"
 import dynamic from "next/dynamic"
-import { Suspense } from "react"
 
-const MerchandiseTable = dynamic(() => import('./_components/MerchandiseTable'), { ssr: false })
+const MerchandiseTable = dynamic(() => import('./_components/MerchandiseTable'), { ssr: false,loading: () => <SkeletonSpinner className="h-[90vh]" /> })
 
 export const metadata: Metadata = {
   title: 'Merchandise',
@@ -13,9 +12,7 @@ export const metadata: Metadata = {
 const MerchandisePage = () => {
   return (
     <main>
-      <Suspense fallback={<SkeletonSpinner />}>
         <MerchandiseTable />
-      </Suspense>
     </main>
   )
 }

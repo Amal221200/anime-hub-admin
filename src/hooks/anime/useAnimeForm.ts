@@ -1,6 +1,6 @@
 import { toast } from "sonner"
 import { animeFormSchema, animeSchema } from "@/lib/schema"
-import { ANIME_FORM_TYPE } from "@/lib/types"
+import { FORM_TYPE } from "@/lib/types"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Anime } from "@prisma/client"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
@@ -10,7 +10,7 @@ import { z } from "zod"
 import { AxiosError } from "axios"
 import useAlertModal from "../useAlertModal"
 
-export default function useAnimeForm(type: ANIME_FORM_TYPE,
+export default function useAnimeForm(type: FORM_TYPE,
     action: (data: { data: z.infer<typeof animeSchema> }) => Promise<void>, anime?: Anime) {
 
     const queryClient = useQueryClient()
@@ -27,8 +27,8 @@ export default function useAnimeForm(type: ANIME_FORM_TYPE,
             status: anime?.status || '',
             watchLink: anime?.watchLink || '',
             release: anime?.release,
-            episodes: anime?.episodes.toString() || '',
-            episodeDuration: anime?.episodeDuration.toString() || '',
+            episodes: anime?.episodes || 0,
+            episodeDuration: anime?.episodeDuration || 0,
             imageLink: anime?.imageLink || '',
             description: anime?.description || '',
         },
@@ -42,12 +42,12 @@ export default function useAnimeForm(type: ANIME_FORM_TYPE,
         },
         async onSuccess() {
             await queryClient.invalidateQueries({ queryKey: ["fetch_animes"] });
-            toast.success(type === ANIME_FORM_TYPE.ADD ? `CREATED` : `EDITED ${form.getValues().title}`,
+            toast.success(type === FORM_TYPE.ADD ? `CREATED` : `EDITED ${form.getValues().title}`,
                 {
-                    description: type === ANIME_FORM_TYPE.ADD ? `Successfully added ${form.getValues().title}` : `Successfully edited ${anime?.title}`
+                    description: type === FORM_TYPE.ADD ? `Successfully added ${form.getValues().title}` : `Successfully edited ${anime?.title}`
                 })
 
-            if (type === ANIME_FORM_TYPE.ADD) {
+            if (type === FORM_TYPE.ADD) {
                 form.reset()
             }
             router.refresh()

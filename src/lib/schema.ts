@@ -8,8 +8,14 @@ export const animeFormSchema = z.object({
     status: z.string().min(1, "Status is required.").trim().toUpperCase(),
     watchLink: z.string().url('Watch link should be a valid url').min(10, "Watch Link is required.").trim(),
     release: z.date({ required_error: "A release date is required." }),
-    episodes: z.string().regex(/^[1-9][0-9]*$/, "Enter a valid number"),
-    episodeDuration: z.string().regex(/^[1-9][0-9]*$/, "Enter a valid duration"),
+    episodes: z.number({ required_error: "Episodes is required" }).positive("Episodes should be more than zero").gt(0, "Episodes should be more than zero"),
+    episodeDuration: z.number({ required_error: "Episode duration is required" }).positive("Episode duration should be more than zero").gt(0, "Episode duration should be more than zero"),
+    imageLink: z.string().min(5, "Image Link is required.").trim(),
+    description: z.string().min(1, "Description is required.").trim(),
+})
+
+export const blogSchema = z.object({
+    title: z.string().min(1, "Title is required.").trim(),
     imageLink: z.string().min(5, "Image Link is required.").trim(),
     description: z.string().min(1, "Description is required.").trim(),
 })

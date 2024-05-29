@@ -8,7 +8,7 @@ import useCurrentUser from "@/hooks/current-user/useCurrentUser"
 interface FileUploadProps {
     onChange: (url?: string) => void,
     value: string,
-    endpoint: "animeImage" | "messageFile"
+    endpoint: "animeImage" | "messageFile" | "animeBlogImage" | "animeBlogContentImage"
 }
 
 const FileUpload: React.FC<FileUploadProps> = ({ endpoint, onChange, value }) => {

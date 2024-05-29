@@ -14,26 +14,30 @@ import { Textarea } from "../ui/textarea"
 import FileUpload from "../FileUpload"
 import useCurrentUser from "@/hooks/current-user/useCurrentUser"
 import { addAnime, editAnime } from "../functions"
-import { ANIME_FORM_TYPE } from "@/lib/types"
+import { FORM_TYPE } from "@/lib/types"
 import useAlertModal from "@/hooks/useAlertModal"
 import DateInput from "../DateInput"
-import useAnimeForm from "@/hooks/anime/useSubmitAnimeForm"
+import useAnimeForm from "@/hooks/anime/useAnimeForm"
 import AnimeInputWrapper from "./AnimeInputWrapper"
+import NumberInput from "../NumberInput"
+import { useRouter } from "next/navigation"
+import { ChevronLeft } from "lucide-react"
 
 interface AnimeFormProps {
     anime?: Anime,
     heading?: string,
-    type: ANIME_FORM_TYPE
+    type: FORM_TYPE
 }
 
 const AnimeForm = ({ anime, heading, type }: AnimeFormProps) => {
+    const router = useRouter()
     const { onOpen } = useAlertModal()
     const { data: userData } = useCurrentUser()
-    const { form, mutateAsync } = useAnimeForm(type, type === ANIME_FORM_TYPE.ADD ? addAnime : editAnime(anime?.id as string), anime)
+    const { form, mutateAsync } = useAnimeForm(type, type === FORM_TYPE.ADD ? addAnime : editAnime(anime?.id as string), anime)
 
     const onSubmit = useCallback(async (values: z.infer<typeof animeFormSchema>) => {
-        const payload = animeSchema.parse({ ...values, genre: values.genre.split(','), episodes: parseInt(values.episodes), episodeDuration: parseInt(values.episodeDuration) })
-        
+        const payload = animeSchema.parse({ ...values, genre: values.genre.split(',') })
+
         await mutateAsync({ data: payload })
     }, [mutateAsync])
 
@@ -46,7 +50,9 @@ const AnimeForm = ({ anime, heading, type }: AnimeFormProps) => {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="mx-auto mb-16 max-w-[380px] space-y-3 sm:mb-0 sm:max-w-[1000px]">
-                <h1 className="text-3xl font-semibold sm:text-5xl">{heading}</h1>
+                <h1 className="flex items-center gap-x-2 text-xl font-semibold sm:text-5xl">
+                    {type === FORM_TYPE.EDIT && <ChevronLeft className="relative transform cursor-pointer transition-transform hover:-translate-x-1" onClick={() => router.back()} />} {heading}
+                </h1>
                 <div className="mb-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
                     <AnimeInputWrapper name="title" form={form} label="Title">
                         {(field) => (
@@ -102,7 +108,9 @@ const AnimeForm = ({ anime, heading, type }: AnimeFormProps) => {
                     <AnimeInputWrapper name="episodes" label="Episodes" form={form}>
                         {
                             (field) => (
-                                <Input {...field} placeholder="eg: 131" />
+                                <NumberInput {...field} value={field.value} onValueChange={(value) => {
+                                    field.onChange(value)
+                                }} placeholder="eg: 131" />
                             )
                         }
                     </AnimeInputWrapper>
@@ -110,7 +118,9 @@ const AnimeForm = ({ anime, heading, type }: AnimeFormProps) => {
                     <AnimeInputWrapper name="episodeDuration" label="Episode Duration" form={form}>
                         {
                             (field) => (
-                                <Input {...field} placeholder="eg: 23 mins" />
+                                <NumberInput {...field} value={field.value} onValueChange={(value) => {
+                                    field.onChange(value)
+                                }} placeholder="eg: 23 mins" />
                             )
                         }
                     </AnimeInputWrapper>
@@ -122,7 +132,7 @@ const AnimeForm = ({ anime, heading, type }: AnimeFormProps) => {
                             )
                         }
                     </AnimeInputWrapper>
-                    
+
                     <AnimeInputWrapper name="imageLink" label="Image Link" form={form}>
                         {
                             (field) => (
@@ -130,12 +140,12 @@ const AnimeForm = ({ anime, heading, type }: AnimeFormProps) => {
                             )
                         }
                     </AnimeInputWrapper>
-                    
+
                     <AnimeInputWrapper name="description" label="Description" form={form} className="sm:col-span-2">
                         {
                             (field) => (
-                                <Textarea {...field} placeholder="eg: This is the legend of a young kid called Son Goku..." rows={6} 
-                                className="no-scrollbar"/>
+                                <Textarea {...field} placeholder="eg: This is the legend of a young kid called Son Goku..." rows={6}
+                                    className="no-scrollbar" />
                             )
                         }
                     </AnimeInputWrapper>

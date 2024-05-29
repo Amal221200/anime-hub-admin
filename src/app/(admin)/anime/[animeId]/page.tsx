@@ -1,11 +1,12 @@
 import { Metadata } from 'next';
 import { lazy, Suspense } from 'react';
 import { redirect } from 'next/navigation';
-import { ANIME_FORM_TYPE } from '@/lib/types';
+import { FORM_TYPE } from '@/lib/types';
 import { getAnime } from '@/lib/actions/anime'
 import SkeletonSpinner from '@/components/SkeletonSpinner';
+import dynamic from 'next/dynamic';
 
-const AnimeForm = lazy(() => import('@/components/AnimeForm'))
+const AnimeForm = dynamic(() => import('@/components/AnimeForm'), { ssr: false, loading: () => <SkeletonSpinner className='h-[80vh]' /> })
 
 export async function generateMetadata({ params: { animeId } }: { params: { animeId: string } }): Promise<Metadata> {
   const anime = await getAnime(animeId);
@@ -30,9 +31,7 @@ const AnimePage = async ({ params: { animeId } }: { params: { animeId: string } 
 
   return (
     <div>
-      <Suspense fallback={<SkeletonSpinner />}>
-        <AnimeForm anime={anime} heading={`Edit ${anime.title}`} type={ANIME_FORM_TYPE.EDIT} />
-      </Suspense>
+      <AnimeForm anime={anime} heading={`Edit ${anime.title}`} type={FORM_TYPE.EDIT} />
     </div>
   )
 }

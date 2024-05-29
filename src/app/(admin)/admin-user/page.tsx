@@ -1,9 +1,8 @@
-import { Suspense } from 'react'
 import SkeletonSpinner from '@/components/SkeletonSpinner';
 import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 
-const AdminUserTable = dynamic(() => import('./_components/AdminUserTable'), { ssr: false })
+const AdminUserTable = dynamic(() => import('./_components/AdminUserTable'), { ssr: false, loading: () => <SkeletonSpinner className='h-[90vh]' /> })
 
 export const metadata: Metadata = {
   title: 'Users',
@@ -14,9 +13,7 @@ const AdminUsersPage = () => {
 
   return (
     <main>
-      <Suspense fallback={<SkeletonSpinner className='h-[90vh]' />}>
-        <AdminUserTable />
-      </Suspense>
+      <AdminUserTable />
     </main>
   )
 }
