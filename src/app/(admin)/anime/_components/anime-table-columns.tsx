@@ -33,7 +33,9 @@ const animeColums: ColumnDef<Anime>[] = [
             )
         },
         cell: ({ row }) => (
-            <Link href={`/anime/${row.getValue('id')}`} className="line-clamp-1 capitalize transition-all hover:font-semibold hover:underline">{row.getValue("title")}</Link>
+            <Link href={`/anime/${row.getValue('id')}`} className="line-clamp-1 capitalize transition-all hover:font-semibold hover:underline">
+                {row.getValue("title")}
+            </Link>
         ),
     },
     {

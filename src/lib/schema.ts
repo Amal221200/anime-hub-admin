@@ -18,6 +18,7 @@ export const blogSchema = z.object({
     title: z.string().min(1, "Title is required.").trim(),
     imageLink: z.string().min(5, "Image Link is required.").trim(),
     description: z.string().min(1, "Description is required.").trim(),
+    content: z.string().optional().default(''),
 })
 
 export const animeSchema = z.object({

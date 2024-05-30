@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import React from 'react'
-import { CircleUserIcon, HomeIcon, PlusIcon, ScanBarcodeIcon, ShellIcon, UserIcon } from "lucide-react"
+import { CircleUserIcon, HomeIcon, NewspaperIcon, PlusIcon, ScanBarcodeIcon, ShellIcon, UserIcon } from "lucide-react"
 import Link from 'next/link'
 import { UserButton } from '@clerk/nextjs'
 import NavItems from './NavItems'
@@ -28,13 +28,18 @@ export const sidebarLinks = [
     icon: ShellIcon
   },
   {
+    href: "/blog",
+    label: "Blog",
+    icon: NewspaperIcon
+  },
+  {
     href: "/merchandise",
     label: "Merchandise",
     icon: ScanBarcodeIcon
   },
   {
-    href: "/anime/add",
-    label: "Add Anime",
+    href: "/add",
+    label: "Add",
     icon: PlusIcon
   },
 ]

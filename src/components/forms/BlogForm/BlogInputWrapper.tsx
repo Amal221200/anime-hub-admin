@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../ui/form'
 import { ControllerRenderProps, UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
 import { animeFormSchema, blogSchema } from '@/lib/schema'
