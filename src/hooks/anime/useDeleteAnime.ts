@@ -9,7 +9,7 @@ export default function useDeleteAnime(anime: { animeId: string, title: string }
     const { onOpen: onAlertOpen } = useAlertModal()
 
     const { mutateAsync, isPending } = useMutation({
-        mutationKey: ['anime_delete'],
+        mutationKey: ['anime_delete', anime.animeId],
         mutationFn: deleteAnime(anime.animeId),
         async onSuccess() {
             await queryClient.invalidateQueries({ queryKey: ['fetch_animes'] })

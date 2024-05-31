@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { fetchUsers } from "../actions/users";
+import { fetchUsers } from "../actions/user";
 
 export default function useFetchUsers(){
     const queryClient = useQueryClient()

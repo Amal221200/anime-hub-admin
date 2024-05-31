@@ -9,7 +9,7 @@ export default function useChangeAnimeStatus(anime: { animeId: string, title: st
     const queryClient = useQueryClient()
     const { onOpen: onAlertOpen } = useAlertModal()
     const { mutateAsync, isPending } = useMutation({
-        mutationKey: ['anime_status'], mutationFn: onAnimeStatusChange(anime.animeId),
+        mutationKey: ['anime_status', anime.animeId], mutationFn: onAnimeStatusChange(anime.animeId),
         async onSuccess() {
             await queryClient.invalidateQueries({ queryKey: ['fetch_animes'] })
             toast.success("STATUS CHANGED", {

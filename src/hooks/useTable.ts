@@ -1,11 +1,11 @@
 import { ColumnDef, ColumnFiltersState, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, PaginationState, SortingState, useReactTable, VisibilityState } from "@tanstack/react-table"
 import { useState } from "react"
 
-export default function useTable<T>(data: Array<T>, columns: ColumnDef<T>[], visibility?: VisibilityState) {
+export default function useTable<T>(data: Array<T>, columns: ColumnDef<T>[], options?: { visibility?: VisibilityState }) {
 
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(visibility || {})
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(options?.visibility || {})
     const [pagination, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize: 6 })
 
     const table = useReactTable({

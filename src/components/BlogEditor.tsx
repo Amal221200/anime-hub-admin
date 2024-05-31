@@ -1,11 +1,10 @@
 "use client";
 import "@blocknote/core/fonts/inter.css";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect } from "react";
 import { BlockNoteView } from "@blocknote/mantine"
 import { cn } from "@/lib/utils";
 import "@blocknote/mantine/style.css";
 import useBlogEditor from "@/hooks/useBlogEditor";
-import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useDebounceCallback } from "usehooks-ts";
 import useCurrentUser from "@/hooks/current-user/useCurrentUser";
@@ -21,6 +20,7 @@ const BlogEditor = ({ title, content, blogId }: BlogEditorProps) => {
     const { data: user } = useCurrentUser()
     const { editor, isUploading, saveBlog } = useBlogEditor({ trailingBlock: !Boolean(content), blogId })
     const router = useRouter()
+
     const debouncedSave = useDebounceCallback(async () => {
         const html = await editor.blocksToHTMLLossy();
         if (html === content) {

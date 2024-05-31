@@ -5,7 +5,7 @@ import { addBlog, getBlogs } from "@/lib/actions/blog";
 
 export async function GET(_request: NextRequest) {
     try {
-        const blogs = await getBlogs()!;
+        const blogs = await getBlogs();
 
         return NextResponse.json(blogs)
     } catch (error) {

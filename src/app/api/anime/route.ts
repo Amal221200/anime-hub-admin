@@ -1,14 +1,13 @@
 import getCurrentUser from "@/lib/actions/getCurrentUser";
 import { addAnime, getAnimes } from "@/lib/actions/anime";
-import db from "@/lib/db";
 import { animeSchema } from "@/lib/schema";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(_request: NextRequest) {
     try {
-        const animes = await getAnimes({});
+        const animes = await getAnimes();
         
-        return NextResponse.json(animes.animes)
+        return NextResponse.json(animes)
     } catch (error) {
         return NextResponse.json("Internal Server Error at GET ANIME", { status: 500 })
     }

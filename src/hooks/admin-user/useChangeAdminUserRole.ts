@@ -9,7 +9,7 @@ export default function useChangeAdminUserRole(user: { userId: string, username:
     const { onOpen: onAlertOpen } = useAlertModal()
 
     const { mutateAsync, isPending } = useMutation({
-        mutationKey: ['user_role'],
+        mutationKey: ['user_role', user.userId],
         mutationFn: onAdminRoleChange(user.userId),
         async onSuccess() {
             await queryClient.invalidateQueries({ queryKey: ['fetch_admin_users'] })

@@ -1,9 +1,10 @@
 import db from "@/lib/db";
-import { GraduationCap, Shell, User } from "lucide-react";
+import { GraduationCap, Newspaper, Shell, User } from "lucide-react";
 import Link from "next/link";
 
 export default async function Home() {
   const animeCount = await db.anime.count()
+  const blogCount = await db.blog.count()
   const userCount = await db.user.count()
   const adminUserCount = await db.adminUser.count({ where: { role: { not: 'SUPER_ADMIN' } } })
  
@@ -24,6 +25,14 @@ export default async function Home() {
           </h3>
           <div>
             <p>Count - {userCount}</p>
+          </div>
+        </Link>
+        <Link href="/blog" className="space-y-3 rounded border p-2">
+          <h3>
+            <Newspaper /> Blogs
+          </h3>
+          <div>
+            <p>Count - {blogCount}</p>
           </div>
         </Link>
         <Link href="/admin-user" className="space-y-3 rounded border p-2">

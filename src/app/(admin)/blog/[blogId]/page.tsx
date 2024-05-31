@@ -14,6 +14,7 @@ const BlogPage = async ({ params: { blogId } }: { params: { blogId: string } }) 
     if (!blog) {
         redirect('/404')
     }
+    
     return (
         <div className='mb-6 space-y-8'>
             <BlogForm heading={`Add a blog`} type={FORM_TYPE.EDIT} blog={blog} />

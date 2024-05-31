@@ -8,7 +8,7 @@ import ReactTable from "@/components/ReactTable"
 export default function UserTable() {
     const { users, isLoading } = useFetchUsers()
 
-    const { table, pagination } = useTable(users || [], userColumns, { id: false })
+    const { table, pagination } = useTable(users || [], userColumns, { visibility: { id: false } })
 
     return (
         <ReactTable table={table} pagination={pagination} isLoading={isLoading}

@@ -35,7 +35,7 @@ export default function useAnimeForm(type: FORM_TYPE,
     })
 
     const { mutateAsync, isPending } = useMutation({
-        mutationKey: [`anime_${type}`.toLowerCase()],
+        mutationKey: [`anime_${type}`.toLowerCase(), anime?.id],
         mutationFn: action,
         onError(error: AxiosError) {
             onOpen({ title: 'Internal Server Error', description: error.message })

@@ -26,7 +26,7 @@ export default function useBlogForm(type: FORM_TYPE,
     })
 
     const { mutateAsync, isPending } = useMutation({
-        mutationKey: [`blog_${type}`.toLowerCase()],
+        mutationKey: [`blog_${type}`.toLowerCase(), blog?.id],
         mutationFn: action,
         onError(error: AxiosError) {
             onOpen({ title: 'Internal Server Error', description: error.message })

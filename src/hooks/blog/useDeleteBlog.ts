@@ -9,7 +9,7 @@ export default function useDeleteblog(blog: { blogId: string, title: string }) {
     const { onOpen: onAlertOpen } = useAlertModal()
 
     const { mutateAsync, isPending } = useMutation({
-        mutationKey: ['blog_delete'],
+        mutationKey: ['blog_delete', blog.blogId],
         mutationFn: deleteBlog(blog.blogId),
         async onSuccess() {
             await queryClient.invalidateQueries({ queryKey: ['fetch_blogs'] })
