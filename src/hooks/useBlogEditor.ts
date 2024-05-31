@@ -1,10 +1,15 @@
+import { editBlogContent } from "@/components/forms/form-actions/blog";
 import { useUploadThing } from "@/lib/uploadthing";
 import { useCreateBlockNote } from "@blocknote/react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
+import { toast } from "sonner";
+import { AxiosError } from "axios";
+import useAlertModal from "./useAlertModal";
 
-export default function useBlogEditor({ trailingBlock }: { trailingBlock?: boolean }) {
+export default function useBlogEditor({ trailingBlock, blogId }: { trailingBlock?: boolean, blogId: string }) {
     const queryClient = useQueryClient()
+    const { onOpen: onAlertOpen } = useAlertModal()
     const { startUpload, isUploading } = useUploadThing("animeBlogContentImage", {
         onClientUploadComplete: () => {
             console.log("uploaded successfully!");
@@ -33,8 +38,22 @@ export default function useBlogEditor({ trailingBlock }: { trailingBlock?: boole
         trailingBlock
     })
 
+    const { mutateAsync, isPending } = useMutation({
+        mutationKey: [`blog_content`, blogId],
+        mutationFn: editBlogContent(blogId),
+        async onSuccess() {
+            await queryClient.invalidateQueries({ queryKey: ['fetch_blogs'] })
+            toast.success("BLOG SAVED", {})
+        },
+        onError(error: AxiosError) {
+            onAlertOpen({ title: 'Internal Server Error', description: error.message })
+        },
+    })
+
     return {
         editor,
-        isUploading
+        isUploading,
+        saveBlog: mutateAsync,
+        isPending
     }
 }
