@@ -1,27 +1,23 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { AxiosError } from "axios";
 import useAlertModal from "../useAlertModal";
-import { deleteBlog } from "../actions/blog";
+import { use, useCallback } from "react";
+import { ActionsContext } from "@/components/providers/ActionsProvider";
+import { ActionsProviderType } from "@/lib/types";
 
-export default function useDeleteblog(blog: { blogId: string, title: string }) {
-    const queryClient = useQueryClient();
+export default function useDeleteblog(blog: { title: string }) {
     const { onOpen: onAlertOpen } = useAlertModal()
+    const { actions } = use(ActionsContext) as ActionsProviderType;
 
-    const { mutateAsync, isPending } = useMutation({
-        mutationKey: ['blog_delete', blog.blogId],
-        mutationFn: deleteBlog(blog.blogId),
-        async onSuccess() {
-            await queryClient.invalidateQueries({ queryKey: ['fetch_blogs'] })
-            toast("BLOG DELETED", { description: `${blog.title} is deleted.` })
-        },
-        onError(error: AxiosError) {
+    const onDelete = useCallback((blogId: string) => {
+        try {
+            actions.deleteBlog(blogId)
+            toast.success("BLOG DELETED", { description: `${blog.title} is deleted.` })
+        } catch (error: any) {
             onAlertOpen({ title: 'Internal Server Error', description: error.message })
-        },
-    }, queryClient)
+        }
+    }, [onAlertOpen, blog.title, actions])
 
     return {
-        mutateAsync,
-        isPending
+        onDelete
     }
 }

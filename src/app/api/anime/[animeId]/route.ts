@@ -3,6 +3,7 @@ import { deleteAnime, getAnime, updateAnime } from "@/lib/actions/anime";
 import db from "@/lib/db";
 import { animeSchema } from "@/lib/schema";
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 
 interface AnimeParams {
     params: {
@@ -13,7 +14,7 @@ interface AnimeParams {
 export async function GET(request: NextRequest, { params: { animeId } }: AnimeParams) {
     try {
         const anime = await getAnime(animeId);
-
+        revalidatePath("/anime")
         return NextResponse.json(anime, { status: 200 })
     } catch (error) {
 
@@ -42,7 +43,7 @@ export async function PATCH(request: NextRequest, { params: { animeId } }: Anime
                 status: body.status || animeExist.status
             }
         })
-
+        revalidatePath("/anime")
         return NextResponse.json({ message: "Anime patched" }, { status: 200 })
     } catch (error) {
         return NextResponse.json({ message: "Internal Server Error at PATCH anime [animeId]" }, { status: 500 })
@@ -64,7 +65,7 @@ export async function DELETE(_request: NextRequest, { params: { animeId } }: Ani
         }
 
         await deleteAnime(animeId)
-
+        revalidatePath("/anime")
         return NextResponse.json("Anime deleted", { status: 200 })
     } catch (error) {
         return NextResponse.json("Internal Server Error at DELETE ANIME [animeId]", { status: 500 })
@@ -89,7 +90,7 @@ export async function PUT(request: NextRequest, { params: { animeId } }: AnimePa
         const animeData = animeSchema.parse({ ...body.data, release: new Date(body.data.release) });
 
         const updatedAnime = await updateAnime(animeId, animeData);
-
+        revalidatePath("/anime")
         return NextResponse.json(updatedAnime, { status: 200 })
     } catch (error) {
         return NextResponse.json("Internal Server Error at Update Anime [animeId]", { status: 500 })

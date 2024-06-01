@@ -2,7 +2,6 @@
 import { useCallback } from 'react'
 import { Anime, ANIME_STATUS } from '@prisma/client'
 import { Row } from '@tanstack/react-table'
-
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -11,7 +10,6 @@ import {
     DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
-
 import useCurrentUser from '@/hooks/current-user/useCurrentUser'
 import useAlertModal from '@/hooks/useAlertModal'
 import useDialogModal from '@/hooks/useDialogModal'
@@ -22,7 +20,7 @@ const StatusDropdown = ({ row }: { row: Row<Anime> }) => {
     const { onOpen: onDialogOpen } = useDialogModal()
     const { data: userData } = useCurrentUser()
 
-    const { mutateAsync } = useChangeAnimeStatus({
+    const { onStatusChange } = useChangeAnimeStatus({
         animeId: row.getValue('id'), title: row.getValue('title'), status: row.getValue('status')
     })
 
@@ -45,10 +43,10 @@ const StatusDropdown = ({ row }: { row: Row<Anime> }) => {
             title: 'Are you sure',
             description: `Do you want to change the status from ${status === 'ONGOING' ? '"COMPLETED"' : '"ONGOING"'} to ${status === 'ONGOING' ? '"ONGOING"' : '"COMPLETED"'}`,
             async action() {
-                await mutateAsync({ status })
+                await onStatusChange(row.getValue('id'), status)
             }
         })
-    }, [mutateAsync, userData, onAlertOpen, onDialogOpen, row])
+    }, [onStatusChange, userData, onAlertOpen, onDialogOpen, row])
 
     return (
         <DropdownMenu>

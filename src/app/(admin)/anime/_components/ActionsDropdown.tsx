@@ -23,7 +23,7 @@ const ActionsDropdown = ({ row }: { row: Row<Anime> }) => {
 
     const { onOpen: onDialogOpen } = useDialogModal()
     const { onOpen: onAlertOpen } = useAlertModal()
-    const { mutateAsync, isPending } = useDeleteAnime({ animeId: row.getValue('id'), title: row.getValue('title') })
+    const { onDelete } = useDeleteAnime({ animeId: row.getValue('id'), title: row.getValue('title') })
 
     const handleDelete = useCallback(async () => {
         if (userData?.role === 'USER') {
@@ -31,8 +31,15 @@ const ActionsDropdown = ({ row }: { row: Row<Anime> }) => {
                 title: 'Unauthorized', description: 'Users with administration access are allowed to change the data.'
             })
         }
-        onDialogOpen({ title: 'Are you sure?', description: "Once done, it's irreversible.", action: mutateAsync })
-    }, [mutateAsync, userData, onAlertOpen, onDialogOpen])
+        
+        onDialogOpen({
+            title: 'Are you sure?',
+            description: "Once done, it's irreversible.",
+            async action() {
+                await onDelete(row.getValue('id'))
+            }
+        })
+    }, [onDelete, userData, onAlertOpen, onDialogOpen, row])
 
     return (
         <DropdownMenu>

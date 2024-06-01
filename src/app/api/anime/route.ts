@@ -2,6 +2,7 @@ import getCurrentUser from "@/lib/actions/getCurrentUser";
 import { addAnime, getAnimes } from "@/lib/actions/anime";
 import { animeSchema } from "@/lib/schema";
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 
 export async function GET(_request: NextRequest) {
     try {
@@ -28,6 +29,7 @@ export async function POST(request: NextRequest) {
 
         const newAnime = await addAnime(animeData)
 
+        revalidatePath("/anime")
         return NextResponse.json(newAnime, { status: 201 })
     }
 

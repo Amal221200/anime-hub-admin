@@ -26,8 +26,7 @@ const BlogEditor = ({ title, content, blogId }: BlogEditorProps) => {
         if (html === content) {
             return
         }
-
-        await saveBlog({ content: html })
+        await saveBlog(html)
         router.refresh()
     }, 4000)
 

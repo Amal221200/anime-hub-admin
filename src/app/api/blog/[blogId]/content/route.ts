@@ -1,5 +1,6 @@
 import { getBlog, updateBlogContent } from "@/lib/actions/blog";
 import getCurrentUser from "@/lib/actions/getCurrentUser";
+import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 
@@ -26,7 +27,7 @@ export async function PUT(request: NextRequest, { params: { blogId } }: BlogPara
         }
 
         const updatedBlog = await updateBlogContent(blogId, body.content);
-
+        revalidatePath("/blog")
         return NextResponse.json(updatedBlog, { status: 200 })
     } catch (error) {
         return NextResponse.json("Internal Server Error at Update Blog [blogId]", { status: 500 })

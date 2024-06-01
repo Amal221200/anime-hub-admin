@@ -29,17 +29,17 @@ const BlogForm = ({ heading, blog, type }: BlogFormProps) => {
     const { onOpen } = useAlertModal()
     const { data: userData } = useCurrentUser()
     
-    const { form, mutateAsync } = useBlogForm(type, type === FORM_TYPE.ADD ? addBlog : editBlog(blog?.id as string), blog)
+    const { form, onSubmit } = useBlogForm(type,  blog)
 
-    const onSubmit = useCallback(async (values: z.infer<typeof blogSchema>) => {
+    const handleSubmit = useCallback(async (values: z.infer<typeof blogSchema>) => {
         const payload = { ...values }
 
-        await mutateAsync({ data: payload })
-    }, [mutateAsync])
+        await onSubmit(payload )
+    }, [onSubmit])
     
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="mx-auto mb-16 max-w-[380px] space-y-3 sm:mb-0 sm:max-w-[1000px]">
+            <form onSubmit={form.handleSubmit(handleSubmit)} className="mx-auto mb-16 max-w-[380px] space-y-3 sm:mb-0 sm:max-w-[1000px]">
                 <h1 className="flex items-center gap-x-2 text-xl font-semibold sm:text-5xl">
                     {type === FORM_TYPE.EDIT && <ChevronLeft className="relative transform cursor-pointer transition-transform hover:-translate-x-1" onClick={() => router.back()} />} {heading}
                 </h1>

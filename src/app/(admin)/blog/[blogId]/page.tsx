@@ -2,9 +2,8 @@ import SkeletonSpinner from '@/components/SkeletonSpinner'
 import { getBlog } from '@/lib/actions/blog'
 import { FORM_TYPE } from '@/lib/types'
 import dynamic from 'next/dynamic'
-import { redirect } from 'next/navigation'
 
-const BlogForm = dynamic(() => import('@/components/forms/BlogForm'), { ssr: false, loading: () => <SkeletonSpinner className='h-[40vh]' /> })
+const BlogForm = dynamic(() => import('@/components/forms/BlogForm'), { ssr: true, loading: () => <SkeletonSpinner className='h-[40vh]' /> })
 
 const BlogEditor = dynamic(() => import('@/components/BlogEditor'), { ssr: false, loading: () => <SkeletonSpinner className='h-[50vh]' /> })
 
@@ -12,7 +11,7 @@ const BlogPage = async ({ params: { blogId } }: { params: { blogId: string } }) 
     const blog = await getBlog(blogId);
     
     if (!blog) {
-        redirect('/404')
+        return <h1>{"Couldn't"} fetch blog</h1>
     }
     
     return (

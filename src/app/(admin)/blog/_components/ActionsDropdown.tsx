@@ -16,13 +16,15 @@ import useAlertModal from '@/hooks/useAlertModal'
 import useDialogModal from '@/hooks/useDialogModal'
 import useDeleteAnime from '@/hooks/anime/useDeleteAnime'
 import { BlogType } from '@/lib/types'
+import useDeleteblog from '@/hooks/blog/useDeleteBlog'
 
 const ActionsDropdown = ({ row }: { row: Row<BlogType> }) => {
     const { data: userData } = useCurrentUser()
 
     const { onOpen: onDialogOpen } = useDialogModal()
     const { onOpen: onAlertOpen } = useAlertModal()
-    const { mutateAsync, isPending } = useDeleteAnime({ animeId: row.getValue('id'), title: row.getValue('title') })
+    
+    const { onDelete } = useDeleteblog({ title: row.getValue('title') })
 
     const handleDelete = useCallback(async () => {
         if (userData?.role === 'USER') {
@@ -30,8 +32,13 @@ const ActionsDropdown = ({ row }: { row: Row<BlogType> }) => {
                 title: 'Unauthorized', description: 'Users with administration access are allowed to change the data.'
             })
         }
-        onDialogOpen({ title: 'Are you sure?', description: "Once done, it's irreversible.", action: mutateAsync })
-    }, [mutateAsync, userData, onAlertOpen, onDialogOpen])
+        onDialogOpen({
+            title: 'Are you sure?', description: "Once done, it's irreversible.", async action() {
+                onDelete(row.getValue("id"))
+            }
+        })
+
+    }, [onDelete, userData, onAlertOpen, onDialogOpen, row])
 
     return (
         <DropdownMenu>

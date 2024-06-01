@@ -1,14 +1,13 @@
-import { editBlogContent } from "@/components/forms/form-actions/blog";
 import { useUploadThing } from "@/lib/uploadthing";
 import { useCreateBlockNote } from "@blocknote/react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useCallback } from "react";
+import { use, useCallback } from "react";
 import { toast } from "sonner";
-import { AxiosError } from "axios";
 import useAlertModal from "./useAlertModal";
+import { ActionsContext } from "@/components/providers/ActionsProvider";
+import { ActionsProviderType } from "@/lib/types";
 
 export default function useBlogEditor({ trailingBlock, blogId }: { trailingBlock?: boolean, blogId: string }) {
-    const queryClient = useQueryClient()
+    const { actions } = use(ActionsContext) as ActionsProviderType;
     const { onOpen: onAlertOpen } = useAlertModal()
     const { startUpload, isUploading } = useUploadThing("animeBlogContentImage", {
         onClientUploadComplete: () => {
@@ -38,22 +37,18 @@ export default function useBlogEditor({ trailingBlock, blogId }: { trailingBlock
         trailingBlock
     })
 
-    const { mutateAsync, isPending } = useMutation({
-        mutationKey: [`blog_content`, blogId],
-        mutationFn: editBlogContent(blogId),
-        async onSuccess() {
-            await queryClient.invalidateQueries({ queryKey: ['fetch_blogs'] })
+    const onSubmit = useCallback(async (blogContent: string) => {
+        try {
+            actions.updateBlogContent(blogId, blogContent)
             toast.success("BLOG SAVED", {})
-        },
-        onError(error: AxiosError) {
+        } catch (error: any) {
             onAlertOpen({ title: 'Internal Server Error', description: error.message })
-        },
-    })
+        }
+    }, [actions, onAlertOpen, blogId])
 
     return {
         editor,
         isUploading,
-        saveBlog: mutateAsync,
-        isPending
+        saveBlog: onSubmit,
     }
 }

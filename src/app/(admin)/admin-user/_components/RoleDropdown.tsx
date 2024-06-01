@@ -1,6 +1,12 @@
 "use client";
 import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu';
 import { AdminUser, USER_ROLE } from '@prisma/client';
 import { Row } from '@tanstack/react-table';
 import { useCallback } from 'react';
@@ -13,9 +19,9 @@ const RoleDropdown = ({ row }: { row: Row<AdminUser> }) => {
     const { data: userData } = useCurrentUser();
     const { onOpen: onAlertOpen } = useAlertModal()
     const { onOpen: onDialogOpen } = useDialogModal()
-    
-    const { mutateAsync } = useChangeAdminUserRole({ userId: row.getValue('id'), username: row.getValue('username') })
-    
+
+    const { onRoleChange } = useChangeAdminUserRole({ username: row.getValue('username') })
+
     const handleRole = useCallback(async (role: USER_ROLE) => {
         if (userData?.role !== 'SUPER_ADMIN') {
             return onAlertOpen({ title: 'Unauthorized', description: 'Super Admins are allowed to grant roles to the user.' })
@@ -32,10 +38,10 @@ const RoleDropdown = ({ row }: { row: Row<AdminUser> }) => {
             title: 'Are you sure?',
             description: "Do yo want to change the role of the user?",
             async action() {
-                await mutateAsync({ role })
+                await onRoleChange(row.getValue('id'), role)
             }
         })
-    }, [mutateAsync, userData, onAlertOpen, onDialogOpen, row])
+    }, [onRoleChange, userData, onAlertOpen, onDialogOpen, row])
 
     return (
         <DropdownMenu>

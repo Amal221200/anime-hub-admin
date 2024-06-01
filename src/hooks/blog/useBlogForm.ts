@@ -1,19 +1,18 @@
 import { blogSchema } from "@/lib/schema";
-import { FORM_TYPE } from "@/lib/types";
+import { ActionsProviderType, FORM_TYPE } from "@/lib/types";
 import { Blog } from "@prisma/client";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
 import { z } from "zod";
 import useAlertModal from "../useAlertModal";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { AxiosError } from "axios";
+import { ActionsContext } from "@/components/providers/ActionsProvider";
+import { use, useCallback } from "react";
+import useCurrentUser from "../current-user/useCurrentUser";
 
-export default function useBlogForm(type: FORM_TYPE,
-    action: (data: { data: z.infer<typeof blogSchema> }) => Promise<void>, blog?: Blog) {
-    const queryClient = useQueryClient()
-    const router = useRouter()
+export default function useBlogForm(type: FORM_TYPE, blog?: Blog) {
+    const { actions } = use(ActionsContext) as ActionsProviderType;
+    const { data: user } = useCurrentUser()
     const { onOpen } = useAlertModal()
 
     const form = useForm<z.infer<typeof blogSchema>>({
@@ -25,29 +24,25 @@ export default function useBlogForm(type: FORM_TYPE,
         },
     })
 
-    const { mutateAsync, isPending } = useMutation({
-        mutationKey: [`blog_${type}`.toLowerCase(), blog?.id],
-        mutationFn: action,
-        onError(error: AxiosError) {
-            onOpen({ title: 'Internal Server Error', description: error.message })
-        },
-        async onSuccess() {
-            await queryClient.invalidateQueries({ queryKey: ["fetch_blogs"] });
+    const onSubmit = useCallback(async (blogData: z.infer<typeof blogSchema>) => {
+        try {
+            if (type === FORM_TYPE.ADD) {
+                await actions.addBlog(blogData, user?.id!)
+            } else {
+                await actions.updateBlog(blog?.id!, blogData)
+            }
+
             toast.success(type === FORM_TYPE.ADD ? `CREATED` : `EDITED ${form.getValues().title}`,
                 {
                     description: type === FORM_TYPE.ADD ? `Successfully added ${form.getValues().title}` : `Successfully edited ${blog?.title}`
                 })
-
-            if (type === FORM_TYPE.ADD) {
-                form.reset()
-            }
-            router.refresh()
+        } catch (error: any) {
+            onOpen({ title: 'Internal Server Error', description: error.message })
         }
-    }, queryClient)
+    }, [type, actions, blog, form, onOpen, user])
 
     return {
         form,
-        mutateAsync,
-        isPending
+        onSubmit
     }
 }

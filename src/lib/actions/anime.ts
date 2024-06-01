@@ -2,6 +2,8 @@
 import db from "@/lib/db"
 import { z } from "zod";
 import { animeSchema } from "../schema";
+import { revalidatePath } from "next/cache";
+import { ANIME_STATUS } from "@prisma/client";
 
 export async function getAnimes() {
     try {
@@ -13,7 +15,7 @@ export async function getAnimes() {
                 orderBy: { updatedAt: 'desc' },
             }
         );
-       return animes
+        return animes
     } catch (error) {
         console.log("getAnimes error");
         return null
@@ -47,7 +49,24 @@ export async function addAnime(anime: z.infer<typeof animeSchema>) {
             }
         })
 
+        revalidatePath("/anime")
         return newAnime
+    } catch (error) {
+        console.log("getAnime error");
+        return null
+    }
+}
+
+export async function updateAnimeStatus(id: string, status: ANIME_STATUS) {
+    try {
+        const updatedAnime = await db.anime.update({
+            where: { id }, data: {
+                status
+            }
+        })
+        
+        revalidatePath("/anime")
+        return updatedAnime
     } catch (error) {
         console.log("getAnime error");
         return null
@@ -57,6 +76,7 @@ export async function addAnime(anime: z.infer<typeof animeSchema>) {
 export async function deleteAnime(animeId: string) {
     try {
         const anime = await db.anime.delete({ where: { id: animeId } })
+        revalidatePath("/anime")
         return anime
     } catch (error) {
         console.log("deleteAnime error");
@@ -81,6 +101,8 @@ export async function updateAnime(animeId: string, animeData: z.infer<typeof ani
                 watchLink: animeData.watchLink,
             }
         })
+
+        revalidatePath(`/anime/${animeId}`)
         return updatedAnime
     } catch (error) {
         console.log("updateAnime error");

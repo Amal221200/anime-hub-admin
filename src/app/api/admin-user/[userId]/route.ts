@@ -1,6 +1,7 @@
 import getCurrentUser from "@/lib/actions/getCurrentUser";
-import { getAdminUser, getUser } from "@/lib/actions/user";
+import { getAdminUser } from "@/lib/actions/admin-user";
 import db from "@/lib/db";
+import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 interface UserParams {
@@ -29,7 +30,8 @@ export async function PATCH(request: NextRequest, { params: { userId } }: UserPa
                 role: body.role || userExist.role
             }
         })
-
+        
+        revalidatePath("/admin-user")
         return NextResponse.json({ message: "User patched" }, { status: 200 })
     } catch (error) {
         return NextResponse.json("Internal Server error at PATCH ADMIN_USER [userId]", { status: 500 })

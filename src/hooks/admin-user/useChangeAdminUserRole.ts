@@ -1,27 +1,25 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useAlertModal from "../useAlertModal";
 import { toast } from "sonner";
-import { onAdminRoleChange } from "../actions/admin-users";
 import { AxiosError } from "axios";
+import { use, useCallback } from "react";
+import { ActionsContext } from "@/components/providers/ActionsProvider";
+import { ActionsProviderType } from "@/lib/types";
+import { USER_ROLE } from "@prisma/client";
 
-export default function useChangeAdminUserRole(user: { userId: string, username: string }) {
-    const queryClient = useQueryClient()
+export default function useChangeAdminUserRole(user: { username: string }) {
+    const { actions } = use(ActionsContext) as ActionsProviderType
     const { onOpen: onAlertOpen } = useAlertModal()
 
-    const { mutateAsync, isPending } = useMutation({
-        mutationKey: ['user_role', user.userId],
-        mutationFn: onAdminRoleChange(user.userId),
-        async onSuccess() {
-            await queryClient.invalidateQueries({ queryKey: ['fetch_admin_users'] })
+    const onRoleChange = useCallback(async (userId: string, role: USER_ROLE) => {
+        try {
+            await actions.updateAdminUserRole(userId, role)
             toast.success("ROLE UPDATED", { description: `${user.username} role is updated.` })
-        },
-        onError(error: AxiosError) {
+        } catch (error: AxiosError | any) {
             onAlertOpen({ title: 'Internal Server Error', description: error.message })
-        },
-    }, queryClient)
+        }
+    }, [actions, user, onAlertOpen])
 
     return {
-        mutateAsync,
-        isPending
+        onRoleChange
     }
 }

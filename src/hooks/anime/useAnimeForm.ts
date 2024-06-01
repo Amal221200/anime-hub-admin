@@ -1,20 +1,16 @@
 import { toast } from "sonner"
 import { animeFormSchema, animeSchema } from "@/lib/schema"
-import { FORM_TYPE } from "@/lib/types"
+import { ActionsProviderType, FORM_TYPE } from "@/lib/types"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Anime } from "@prisma/client"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { AxiosError } from "axios"
 import useAlertModal from "../useAlertModal"
+import { use, useCallback } from "react"
+import { ActionsContext } from "@/components/providers/ActionsProvider"
 
-export default function useAnimeForm(type: FORM_TYPE,
-    action: (data: { data: z.infer<typeof animeSchema> }) => Promise<void>, anime?: Anime) {
-
-    const queryClient = useQueryClient()
-    const router = useRouter()
+export default function useAnimeForm(type: FORM_TYPE, anime?: Anime) {
+    const { actions } = use(ActionsContext) as ActionsProviderType
     const { onOpen } = useAlertModal()
 
     const form = useForm<z.infer<typeof animeFormSchema>>({
@@ -34,30 +30,25 @@ export default function useAnimeForm(type: FORM_TYPE,
         },
     })
 
-    const { mutateAsync, isPending } = useMutation({
-        mutationKey: [`anime_${type}`.toLowerCase(), anime?.id],
-        mutationFn: action,
-        onError(error: AxiosError) {
-            onOpen({ title: 'Internal Server Error', description: error.message })
-        },
-        async onSuccess() {
-            await queryClient.invalidateQueries({ queryKey: ["fetch_animes"] });
+    const onSubmit = useCallback(async (animeData: z.infer<typeof animeSchema>) => {
+        try {
+            if (type === FORM_TYPE.ADD) {
+                await actions.addAnime(animeData)
+            } else {
+                await actions.updateAnime(anime?.id!, animeData)
+            }
+
             toast.success(type === FORM_TYPE.ADD ? `CREATED` : `EDITED ${form.getValues().title}`,
                 {
                     description: type === FORM_TYPE.ADD ? `Successfully added ${form.getValues().title}` : `Successfully edited ${anime?.title}`
                 })
 
-            if (type === FORM_TYPE.ADD) {
-                form.reset()
-            }
-            router.refresh()
+        } catch (error: any) {
+            onOpen({ title: 'Internal Server Error', description: error.message })
         }
-    }, queryClient)
-
-
+    }, [type, actions, anime, form, onOpen])
     return {
         form,
-        mutateAsync,
-        isPending
+        onSubmit,
     }
 }

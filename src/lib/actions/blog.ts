@@ -3,6 +3,7 @@ import db from "@/lib/db"
 import { z } from "zod";
 import { blogSchema } from "../schema";
 import { BlogType } from "../types";
+import { revalidatePath } from "next/cache";
 
 export async function getBlogs(): Promise<BlogType[] | null> {
     try {
@@ -39,6 +40,7 @@ export async function addBlog(blog: z.infer<typeof blogSchema>, authorId: string
             }
         })
 
+        revalidatePath("/blog")
         return newBlog
     } catch (error) {
         console.log("getBlog error");
@@ -49,6 +51,7 @@ export async function addBlog(blog: z.infer<typeof blogSchema>, authorId: string
 export async function deleteBlog(blogId: string) {
     try {
         const blog = await db.blog.delete({ where: { id: blogId } })
+        revalidatePath("/blog")
         return blog
     } catch (error) {
         console.log("deleteBlog error");
@@ -65,6 +68,7 @@ export async function updateBlog(blogId: string, blogData: z.infer<typeof blogSc
                 imageLink: blogData.imageLink
             }
         })
+        revalidatePath(`/blog/${blogId}`)
         return updatedBlog
     } catch (error) {
         console.log("updateBlog error");
@@ -79,6 +83,7 @@ export async function updateBlogContent(blogId: string, content: string) {
                 content
             }
         })
+        revalidatePath(`/blog/${blogId}`)
         return updatedBlog
     } catch (error) {
         console.log("updateBlogContent error");

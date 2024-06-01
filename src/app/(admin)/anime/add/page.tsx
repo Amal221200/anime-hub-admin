@@ -4,7 +4,7 @@ import { FORM_TYPE } from '@/lib/types'
 import SkeletonSpinner from "@/components/SkeletonSpinner"
 import dynamic from "next/dynamic"
 
-const AnimeForm = dynamic(() => import('@/components/forms/AnimeForm'), { ssr: false })
+const AnimeForm = dynamic(() => import('@/components/forms/AnimeForm'), { ssr: true })
 
 export const metadata: Metadata = {
   title: 'Add Anime',

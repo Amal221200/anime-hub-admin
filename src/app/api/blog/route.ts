@@ -2,6 +2,7 @@ import getCurrentUser from "@/lib/actions/getCurrentUser";
 import { blogSchema } from "@/lib/schema";
 import { NextRequest, NextResponse } from "next/server";
 import { addBlog, getBlogs } from "@/lib/actions/blog";
+import { revalidatePath } from "next/cache";
 
 export async function GET(_request: NextRequest) {
     try {
@@ -27,7 +28,7 @@ export async function POST(request: NextRequest) {
         const blogData = blogSchema.parse({ ...body.data });
 
         const newBlog = await addBlog(blogData, user?.id)
-
+        revalidatePath("/blog")
         return NextResponse.json(newBlog, { status: 201 })
     }
 

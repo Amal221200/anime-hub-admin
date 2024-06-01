@@ -1,17 +1,13 @@
 "use client"
-
-import useFetchBlogs from "@/hooks/blog/useFetchBlogs"
 import useTable from "@/hooks/useTable"
 import blogColumns from "./blog-table-columns"
 import ReactTable from "@/components/ReactTable"
+import { BlogType } from "@/lib/types"
 
-export default function MerchandiseTable() {
-
-    const { blogs, isLoading } = useFetchBlogs()
+export default function BlogTable({ blogs }: { blogs: BlogType[] }) {
 
     const { table, pagination } = useTable(blogs || [], blogColumns)
     return (
-        <ReactTable table={table} pagination={pagination} 
-        isLoading={isLoading} columns={blogColumns} filterColumn="title" label="blog" />
+        <ReactTable table={table} pagination={pagination} columns={blogColumns} filterColumn="title" label="blog" />
     )
 }
