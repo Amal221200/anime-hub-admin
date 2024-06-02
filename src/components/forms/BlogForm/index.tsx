@@ -1,14 +1,12 @@
 "use client"
-
 import useBlogForm from "@/hooks/blog/useBlogForm"
 import useCurrentUser from "@/hooks/current-user/useCurrentUser"
 import useAlertModal from "@/hooks/useAlertModal"
 import { FORM_TYPE } from "@/lib/types"
 import { Blog } from "@prisma/client"
 import { useRouter } from "next/navigation"
-import { addBlog, editBlog } from "../form-actions/blog"
 import { blogSchema } from "@/lib/schema"
-import { useCallback } from "react"
+import { useCallback, useEffect } from "react"
 import { z } from "zod"
 import { Form } from "../../ui/form"
 import { ChevronLeft } from "lucide-react"
@@ -28,15 +26,21 @@ const BlogForm = ({ heading, blog, type }: BlogFormProps) => {
     const router = useRouter()
     const { onOpen } = useAlertModal()
     const { data: userData } = useCurrentUser()
-    
-    const { form, onSubmit } = useBlogForm(type,  blog)
+
+    const { form, onSubmit } = useBlogForm(type, blog)
 
     const handleSubmit = useCallback(async (values: z.infer<typeof blogSchema>) => {
         const payload = { ...values }
 
-        await onSubmit(payload )
+        await onSubmit(payload)
     }, [onSubmit])
-    
+
+    useEffect(() => {
+        if (type === FORM_TYPE.EDIT) {
+            onOpen({ title: "Notice", description: "The blog editor is under works, it will take few days." })
+        }
+    }, [onOpen, type])
+
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(handleSubmit)} className="mx-auto mb-16 max-w-[380px] space-y-3 sm:mb-0 sm:max-w-[1000px]">
@@ -56,8 +60,8 @@ const BlogForm = ({ heading, blog, type }: BlogFormProps) => {
                     </BlogInputWrapper>
                     <BlogInputWrapper name="description" form={form} label="Description" className="sm:col-span-2">
                         {(field) => (
-                             <Textarea {...field} placeholder="eg: This is the legend of a young kid called Son Goku..." rows={2}
-                             className="no-scrollbar" />
+                            <Textarea {...field} placeholder="eg: This is the legend of a young kid called Son Goku..." rows={2}
+                                className="no-scrollbar" />
                         )}
                     </BlogInputWrapper>
                 </div>
