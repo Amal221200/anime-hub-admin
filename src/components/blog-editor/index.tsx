@@ -1,33 +1,21 @@
 "use client"
-import { EditorContent, useEditor } from "@tiptap/react"
-import StarterKit from "@tiptap/starter-kit";
-import LinkKit from "@tiptap/extension-link"
-import ImageKit from "@tiptap/extension-image";
+import { EditorContent } from "@tiptap/react"
+import useBlogEditor from "@/hooks/useBlogEditor";
 import Toolbar from "./Toolbar";
-import { useState } from "react";
 
+interface BlogEditorProps {
+    title: string,
+    content?: string,
+    blogId: string
+}
 
-const BlogEditor = () => {
-    const extensions = [StarterKit, LinkKit, ImageKit.configure({ HTMLAttributes: { class: 'mx-auto rounded' } })];
-    const [content] = useState(`<h1>Hello World</h1>
-        <img src="https://res.cloudinary.com/daily-now/image/upload/f_auto,q_auto/v1/posts/77e7946c37c8e900ca7693e91a9f0f5d?_a=AQAEuiZ" alt="" />
-        <p></p>`)
-    const editor = useEditor({
-        extensions,
-        content,
-        editorProps: {
-            attributes: {
-                class: "p-2 w-full h-full bg-zinc-900 rounded outline-none border-2 border-zinc-700"
-            }
-        },
-        autofocus: 'end',
-        
-    })
+const BlogEditor = ({ title, content, blogId }: BlogEditorProps) => {
+    const { editor } = useBlogEditor({ initialContent: content, blogId })
 
     return (
-        <div className="mx-auto h-[500px] w-[500px] max-w-3xl prose-h1:text-3xl prose-h2:text-2xl prose-img:w-20">
+        <div className="mx-auto max-w-5xl prose-headings:font-medium prose-h1:mb-3 prose-h1:text-center prose-h1:text-5xl prose-h2:text-4xl prose-h3:text-3xl prose-h4:text-2xl prose-h5:text-xl prose-h6:text-xl prose-p:mb-4 prose-p:text-sm prose-img:my-3 sm:prose-p:text-base">
             <Toolbar editor={editor} />
-            <EditorContent editor={editor} className="h-full w-full" />
+            <EditorContent editor={editor} className="no-scrollbar h-[70vh] w-full overflow-y-auto rounded border-2 border-zinc-700 bg-zinc-900 outline-none" />
             {/* <FloatingMenu editor={editor}>This is the floating menu</FloatingMenu> */}
             {/* <BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu> */}
         </div>
