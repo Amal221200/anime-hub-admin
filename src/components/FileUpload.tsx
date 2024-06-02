@@ -8,14 +8,15 @@ import useCurrentUser from "@/hooks/current-user/useCurrentUser"
 interface FileUploadProps {
     onChange: (url?: string) => void,
     value: string,
-    endpoint: "animeImage" | "messageFile" | "animeBlogImage" | "animeBlogContentImage"
+    endpoint: "animeImage" | "messageFile" | "animeBlogImage" | "animeBlogContentImage",
+    preview?: boolean
 }
 
-const FileUpload: React.FC<FileUploadProps> = ({ endpoint, onChange, value }) => {
+const FileUpload: React.FC<FileUploadProps> = ({ endpoint, onChange, value, preview }) => {
     const { data: userData } = useCurrentUser()
     const fileType = value.split('.').at(-1)
 
-    if (value && fileType !== 'pdf') {
+    if (value && fileType !== 'pdf' && preview) {
         return (
             <div className="relative h-20 w-20">
                 <Image src={value} alt="server-image" fill className="rounded-full object-cover" />

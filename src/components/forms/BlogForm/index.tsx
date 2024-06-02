@@ -12,7 +12,7 @@ import { Form } from "../../ui/form"
 import { ChevronLeft } from "lucide-react"
 import BlogInputWrapper from "./BlogInputWrapper"
 import { Input } from "../../ui/input"
-import FileUpload from "../FileUpload"
+import FileUpload from "../../FileUpload"
 import { Textarea } from "../../ui/textarea"
 import { Button } from "../../ui/button"
 
@@ -36,10 +36,10 @@ const BlogForm = ({ heading, blog, type }: BlogFormProps) => {
     }, [onSubmit])
 
     useEffect(() => {
-        if (type === FORM_TYPE.EDIT) {
-            onOpen({ title: "Notice", description: "The blog editor is under works, it will take few days." })
+        if (userData?.role === 'USER') {
+            onOpen({ title: 'Notice', description: 'You cannot add/edit anime, nor you upload any images since you are not an administrator' })
         }
-    }, [onOpen, type])
+    }, [userData, onOpen])
 
     return (
         <Form {...form}>
@@ -55,7 +55,7 @@ const BlogForm = ({ heading, blog, type }: BlogFormProps) => {
                     </BlogInputWrapper>
                     <BlogInputWrapper name="imageLink" form={form} label="Image">
                         {(field) => (
-                            <FileUpload endpoint="animeBlogImage" value={field.value} onChange={field.onChange} />
+                            <FileUpload endpoint="animeBlogImage" value={field.value} onChange={field.onChange} preview />
                         )}
                     </BlogInputWrapper>
                     <BlogInputWrapper name="description" form={form} label="Description" className="sm:col-span-2">

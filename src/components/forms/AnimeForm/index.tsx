@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui/select"
 import { Textarea } from "../../ui/textarea"
-import FileUpload from "../FileUpload"
+import FileUpload from "../../FileUpload"
 import useCurrentUser from "@/hooks/current-user/useCurrentUser"
 import { addAnime, editAnime } from "../form-actions/anime"
 import { FORM_TYPE } from "@/lib/types"
@@ -135,7 +135,7 @@ const AnimeForm = ({ anime, heading, type }: AnimeFormProps) => {
                     <AnimeInputWrapper name="imageLink" label="Image Link" form={form}>
                         {
                             (field) => (
-                                <FileUpload endpoint="animeImage" value={field.value} onChange={field.onChange} />
+                                <FileUpload endpoint="animeImage" value={field.value} onChange={field.onChange} preview />
                             )
                         }
                     </AnimeInputWrapper>

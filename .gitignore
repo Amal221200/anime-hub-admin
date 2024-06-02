@@ -11,7 +11,7 @@
 .pnp.js
 .yarn/install-state.gz
 /seed.ts
-package-lock.json
+# package-lock.json
 
 # testing
 /coverage

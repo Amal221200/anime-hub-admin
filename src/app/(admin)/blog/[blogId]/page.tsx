@@ -17,7 +17,7 @@ const BlogPage = async ({ params: { blogId } }: { params: { blogId: string } }) 
     return (
         <div className='mb-6 space-y-8'>
             <BlogForm heading={`Add a blog`} type={FORM_TYPE.EDIT} blog={blog} />
-            {/* <BlogEditor title="Add a blog" content={blog.content} blogId={blog.id} /> */}
+            <BlogEditor title="Add a blog" content={blog.content} blogId={blog.id} />
         </div>
     )
 }
