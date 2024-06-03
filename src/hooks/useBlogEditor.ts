@@ -3,9 +3,6 @@ import StarterKit from "@tiptap/starter-kit";
 import LinkKit from "@tiptap/extension-link"
 import ImageKit from "@tiptap/extension-image";
 import TypographyKit from "@tiptap/extension-typography";
-import { useCallback, useRef } from "react";
-import { toast } from "sonner";
-import { LoaderPinwheel } from "lucide-react"
 import { updateBlogContent } from "@/lib/actions/blog";
 import useDebounce from "./useDebounce";
 
