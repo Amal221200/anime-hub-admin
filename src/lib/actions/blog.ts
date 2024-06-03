@@ -65,7 +65,8 @@ export async function updateBlog(blogId: string, blogData: z.infer<typeof blogSc
             where: { id: blogId }, data: {
                 title: blogData.title,
                 description: blogData.description,
-                imageLink: blogData.imageLink
+                imageLink: blogData.imageLink,
+                published: blogData.published
             }
         })
         revalidatePath(`/blog/${blogId}`)

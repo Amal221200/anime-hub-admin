@@ -20,10 +20,10 @@ function BlogInputWrapper<T extends inputTypes>({ form, name, children, label, c
             name={name}
             render={({ field }: { field: ControllerRenderProps<z.infer<typeof blogSchema>, T> }) => (
                 <FormItem className={cn('', className)}>
-                    <FormLabel>
+                    <FormLabel className='leading-3'>
                         {label}
                     </FormLabel>
-                    <FormControl>
+                    <FormControl className=''>
                         {children(field)}
                     </FormControl>
                     <FormMessage />

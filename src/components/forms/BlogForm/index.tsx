@@ -15,6 +15,7 @@ import { Input } from "../../ui/input"
 import FileUpload from "../../FileUpload"
 import { Textarea } from "../../ui/textarea"
 import { Button } from "../../ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 
 interface BlogFormProps {
     heading: string,
@@ -47,7 +48,7 @@ const BlogForm = ({ heading, blog, type }: BlogFormProps) => {
                 <h1 className="flex items-center gap-x-2 text-xl font-semibold sm:text-5xl">
                     {type === FORM_TYPE.EDIT && <ChevronLeft className="relative transform cursor-pointer transition-transform hover:-translate-x-1" onClick={() => router.back()} />} {heading}
                 </h1>
-                <div className="mb-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                <div className="mb-6 grid grid-cols-1 gap-2 sm:grid-cols-2">
                     <BlogInputWrapper name="title" form={form} label="Title">
                         {(field) => (
                             <Input {...field} placeholder="" />
@@ -62,6 +63,12 @@ const BlogForm = ({ heading, blog, type }: BlogFormProps) => {
                         {(field) => (
                             <Textarea {...field} placeholder="eg: This is the legend of a young kid called Son Goku..." rows={2}
                                 className="no-scrollbar" />
+                        )}
+                    </BlogInputWrapper>
+                    <BlogInputWrapper name="published" form={form} label="Publish" className="flex h-10 items-center gap-x-2">
+                        {(field) => (
+                            <Checkbox checked={field.value}
+                            onCheckedChange={field.onChange} className="" />
                         )}
                     </BlogInputWrapper>
                 </div>

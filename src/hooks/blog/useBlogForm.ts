@@ -1,5 +1,5 @@
 import { blogSchema } from "@/lib/schema";
-import {  FORM_TYPE } from "@/lib/types";
+import { FORM_TYPE } from "@/lib/types";
 import { Blog } from "@prisma/client";
 import { z } from "zod";
 import useAlertModal from "../useAlertModal";
@@ -20,6 +20,7 @@ export default function useBlogForm(type: FORM_TYPE, blog?: Blog) {
             title: blog?.title || '',
             imageLink: blog?.imageLink || '',
             description: blog?.description || '',
+            published: blog?.published || false
         },
     })
 

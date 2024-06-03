@@ -34,7 +34,7 @@ const PublishStatusDropdown = ({ row }: { row: Row<BlogType> }) => {
 
         if (userData?.username !== row.getValue('author')) {
             return onAlertOpen({
-                title: 'Tampering Data',
+                title: 'Data Tampering',
                 description: 'Only authors of the blog are allowed to change the publish status.'
             })
         }

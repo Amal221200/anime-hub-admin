@@ -5,9 +5,6 @@ import { Editor } from "@tiptap/react"
 import AddImage from "./AddImage"
 import { useCallback, useMemo } from "react"
 import AddLink from "./AddLink"
-import { Button } from "../ui/button"
-import { toast } from "sonner"
-import { updateBlogContent } from "@/lib/actions/blog"
 
 const Toolbar = ({ editor, blog }: { editor: Editor | null, blog: { content: string, blogId: string } }) => {
     const handleUpload = useCallback((url: string) => {
@@ -20,11 +17,6 @@ const Toolbar = ({ editor, blog }: { editor: Editor | null, blog: { content: str
     const handleAddLink = useCallback((link: string) => {
         editor?.chain().focus().setLink({ href: link }).run();
     }, [editor])
-
-    const handleSubmit = useCallback(async () => {
-        await updateBlogContent(blog.blogId, editor?.getHTML()!)
-        toast.success("Blog Saved");
-    }, [editor, blog])
 
     const isActive = useMemo(() => editor?.isActive("heading") || editor?.isActive("paragraph") || editor?.isActive("link"), [editor])
 
@@ -56,10 +48,6 @@ const Toolbar = ({ editor, blog }: { editor: Editor | null, blog: { content: str
                 <AddImage onUploadComplete={handleUpload} focused={isActive && editor.isFocused} />
                 <AddLink onAddLink={handleAddLink} focused={isActive && editor.isFocused} />
             </div>
-
-            <Button type="button" className="ml-auto disabled:cursor-not-allowed disabled:opacity-80" disabled={blog.content === editor.getHTML()} onClick={handleSubmit} size="sm">
-                Submit
-            </Button>
         </div>
     )
 }
