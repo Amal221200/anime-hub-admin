@@ -1,16 +1,15 @@
 import { toast } from "sonner"
 import { animeFormSchema, animeSchema } from "@/lib/schema"
-import { ActionsProviderType, FORM_TYPE } from "@/lib/types"
+import { FORM_TYPE } from "@/lib/types"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Anime } from "@prisma/client"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import useAlertModal from "../useAlertModal"
-import { use, useCallback } from "react"
-import { ActionsContext } from "@/components/providers/ActionsProvider"
+import { useCallback } from "react"
+import { addAnime, updateAnime } from "@/lib/actions/anime"
 
 export default function useAnimeForm(type: FORM_TYPE, anime?: Anime) {
-    const { actions } = use(ActionsContext) as ActionsProviderType
     const { onOpen } = useAlertModal()
 
     const form = useForm<z.infer<typeof animeFormSchema>>({
@@ -33,9 +32,9 @@ export default function useAnimeForm(type: FORM_TYPE, anime?: Anime) {
     const onSubmit = useCallback(async (animeData: z.infer<typeof animeSchema>) => {
         try {
             if (type === FORM_TYPE.ADD) {
-                await actions.addAnime(animeData)
+                await addAnime(animeData)
             } else {
-                await actions.updateAnime(anime?.id!, animeData)
+                await updateAnime(anime?.id!, animeData)
             }
 
             toast.success(type === FORM_TYPE.ADD ? `CREATED` : `EDITED ${form.getValues().title}`,
@@ -46,7 +45,7 @@ export default function useAnimeForm(type: FORM_TYPE, anime?: Anime) {
         } catch (error: any) {
             onOpen({ title: 'Internal Server Error', description: error.message })
         }
-    }, [type, actions, anime, form, onOpen])
+    }, [type, anime, form, onOpen])
     return {
         form,
         onSubmit,

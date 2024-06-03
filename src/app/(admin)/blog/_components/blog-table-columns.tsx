@@ -5,6 +5,7 @@ import { ArrowUpDown } from "lucide-react";
 import ActionsDropdown from "./ActionsDropdown";
 import { BlogType } from "@/lib/types";
 import Link from "next/link";
+import PublishStatusDropdown from "./PublishStatusDropdown";
 
 const blogColumns: ColumnDef<BlogType>[] = [
     {
@@ -46,7 +47,7 @@ const blogColumns: ColumnDef<BlogType>[] = [
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")} className="group text-xs sm:text-sm"
                     size="sm"
                 >
-                    Artist
+                    Author
                     <ArrowUpDown className="ml-2 hidden h-4 w-4 group-hover:block" />
                 </Button>
             )
@@ -56,12 +57,12 @@ const blogColumns: ColumnDef<BlogType>[] = [
         ),
     },
     {
-        accessorKey: "content",
+        accessorKey: "published",
         header: () => (
-            <h6 className="text-xs sm:text-sm">Content</h6>
+            <h6 className="text-xs sm:text-sm">Published</h6>
         ),
         cell: ({ row }) => (
-            <p className="font-semibold uppercase">{(row.getValue('content') as string).length > 30 ? 'true' : 'false'}</p>
+            <PublishStatusDropdown row={row} />
         ),
 
     },

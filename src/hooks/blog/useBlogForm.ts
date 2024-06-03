@@ -1,17 +1,16 @@
 import { blogSchema } from "@/lib/schema";
-import { ActionsProviderType, FORM_TYPE } from "@/lib/types";
+import {  FORM_TYPE } from "@/lib/types";
 import { Blog } from "@prisma/client";
 import { z } from "zod";
 import useAlertModal from "../useAlertModal";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { ActionsContext } from "@/components/providers/ActionsProvider";
-import { use, useCallback } from "react";
+import { useCallback } from "react";
 import useCurrentUser from "../current-user/useCurrentUser";
+import { addBlog, updateBlog } from "@/lib/actions/blog";
 
 export default function useBlogForm(type: FORM_TYPE, blog?: Blog) {
-    const { actions } = use(ActionsContext) as ActionsProviderType;
     const { data: user } = useCurrentUser()
     const { onOpen } = useAlertModal()
 
@@ -27,9 +26,9 @@ export default function useBlogForm(type: FORM_TYPE, blog?: Blog) {
     const onSubmit = useCallback(async (blogData: z.infer<typeof blogSchema>) => {
         try {
             if (type === FORM_TYPE.ADD) {
-                await actions.addBlog(blogData, user?.id!)
+                await addBlog(blogData, user?.id!)
             } else {
-                await actions.updateBlog(blog?.id!, blogData)
+                await updateBlog(blog?.id!, blogData)
             }
 
             toast.success(type === FORM_TYPE.ADD ? `CREATED` : `EDITED ${form.getValues().title}`,
@@ -39,7 +38,7 @@ export default function useBlogForm(type: FORM_TYPE, blog?: Blog) {
         } catch (error: any) {
             onOpen({ title: 'Internal Server Error', description: error.message })
         }
-    }, [type, actions, blog, form, onOpen, user])
+    }, [type, blog, form, onOpen, user])
 
     return {
         form,

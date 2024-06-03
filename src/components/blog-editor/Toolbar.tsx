@@ -3,16 +3,13 @@ import { Bold, Heading2, Italic } from "lucide-react"
 import { Toggle } from "@/components/ui/toggle"
 import { Editor } from "@tiptap/react"
 import AddImage from "./AddImage"
-import { use, useCallback, useMemo } from "react"
+import { useCallback, useMemo } from "react"
 import AddLink from "./AddLink"
 import { Button } from "../ui/button"
-import { ActionsContext } from "../providers/ActionsProvider"
-import { ActionsProviderType } from "@/lib/types"
 import { toast } from "sonner"
+import { updateBlogContent } from "@/lib/actions/blog"
 
 const Toolbar = ({ editor, blog }: { editor: Editor | null, blog: { content: string, blogId: string } }) => {
-    const { actions } = use(ActionsContext) as ActionsProviderType
-
     const handleUpload = useCallback((url: string) => {
         const imageNode = editor?.schema.nodes.image.create({ 'src': url })!
         const newDoc = editor?.$doc.content.addToEnd(imageNode)!
@@ -25,9 +22,9 @@ const Toolbar = ({ editor, blog }: { editor: Editor | null, blog: { content: str
     }, [editor])
 
     const handleSubmit = useCallback(async () => {
-        await actions.updateBlogContent(blog.blogId, editor?.getHTML()!)
+        await updateBlogContent(blog.blogId, editor?.getHTML()!)
         toast.success("Blog Saved");
-    }, [actions, editor, blog])
+    }, [editor, blog])
 
     const isActive = useMemo(() => editor?.isActive("heading") || editor?.isActive("paragraph") || editor?.isActive("link"), [editor])
 

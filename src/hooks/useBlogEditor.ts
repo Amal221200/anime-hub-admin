@@ -1,10 +1,16 @@
-import {  useEditor } from "@tiptap/react";
+import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import LinkKit from "@tiptap/extension-link"
 import ImageKit from "@tiptap/extension-image";
 import TypographyKit from "@tiptap/extension-typography";
 
-const extensions = [StarterKit, LinkKit.configure({ protocols: ['https', 'http'] }), ImageKit.configure({ HTMLAttributes: { class: 'mx-auto rounded' } }), TypographyKit];
+const extensions = [
+    StarterKit,
+    LinkKit.configure({ protocols: ['https', 'http'] }),
+    ImageKit.configure({ HTMLAttributes: { class: 'mx-auto rounded' } }),
+    TypographyKit,
+];
+
 export default function useBlogEditor({ initialContent }: { initialContent?: string, blogId: string }) {
 
     const editor = useEditor({

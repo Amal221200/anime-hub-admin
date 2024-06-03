@@ -1,7 +1,11 @@
+import getCurrentUser from "@/lib/actions/getCurrentUser";
 import { AdminUser } from "@prisma/client";
-import axios from "axios";
+import { redirect } from "next/navigation";
 
 export async function fetchCurrentUser(): Promise<AdminUser> {
-    const response = await axios.get('/api/current-user');
-    return response.data
+    const user = await getCurrentUser();
+    if (!user) {
+        redirect('/auth/sign-in')
+    }
+    return user
 }

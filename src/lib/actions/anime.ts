@@ -68,7 +68,7 @@ export async function updateAnimeStatus(id: string, status: ANIME_STATUS) {
         revalidatePath("/anime")
         return updatedAnime
     } catch (error) {
-        console.log("getAnime error");
+        console.log("updateAnimeStatus error");
         return null
     }
 }

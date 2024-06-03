@@ -76,6 +76,22 @@ export async function updateBlog(blogId: string, blogData: z.infer<typeof blogSc
     }
 }
 
+export async function updateBlogPublish(id: string, publish: boolean) {
+    try {
+        const updatedBlog = await db.blog.update({
+            where: { id }, data: {
+                published: publish
+            }
+        })
+
+        revalidatePath("/blog")
+        return updatedBlog
+    } catch (error) {
+        console.log("updateBlogPublish error");
+        return null
+    }
+}
+
 export async function updateBlogContent(blogId: string, content: string) {
     try {
         const updatedBlog = await db.blog.update({

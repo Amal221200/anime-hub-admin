@@ -9,19 +9,3 @@ export enum FORM_TYPE {
 }
 
 export type BlogType = Blog & { author: string };
-
-export interface ActionsType {
-    addAnime: typeof addAnime;
-    updateAnime: typeof updateAnime,
-    deleteAnime: typeof deleteAnime,
-    addBlog: typeof addBlog,
-    deleteBlog: typeof deleteBlog,
-    updateBlog: typeof updateBlog,
-    updateBlogContent: typeof updateBlogContent,
-    updateAdminUserRole: typeof updateAdminUserRole,
-    updateAnimeStatus: typeof updateAnimeStatus,
-}
-
-export interface ActionsProviderType {
-    actions: ActionsType
-}
