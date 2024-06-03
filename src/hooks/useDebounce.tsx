@@ -30,6 +30,7 @@ export default function useDebounce(callback: Function) {
     innerFunc.cancel = ()=>{
         clearTimeout(pending.current)
         toast.dismiss(id)
+        toast("AUTO SAVE WAS CANCELED")
     }
 
     return innerFunc
