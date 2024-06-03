@@ -65,12 +65,17 @@ const BlogForm = ({ heading, blog, type }: BlogFormProps) => {
                                 className="no-scrollbar" />
                         )}
                     </BlogInputWrapper>
-                    <BlogInputWrapper name="published" form={form} label="Publish" className="flex h-10 items-center gap-x-2">
-                        {(field) => (
-                            <Checkbox checked={field.value}
-                            onCheckedChange={field.onChange} className="" />
-                        )}
-                    </BlogInputWrapper>
+                    {
+                        type === FORM_TYPE.EDIT &&
+                        (
+                            <BlogInputWrapper name="published" form={form} label="Publish" className="flex h-10 items-center gap-x-2">
+                                {(field) => (
+                                    <Checkbox checked={field.value}
+                                        onCheckedChange={field.onChange} className="" />
+                                )}
+                            </BlogInputWrapper>
+                        )
+                    }
                 </div>
                 <Button type="submit"
                     disabled={form.formState.isLoading || form.formState.isSubmitting || userData?.role === 'USER'} className="block w-full disabled:cursor-null disabled:opacity-60 sm:w-max">

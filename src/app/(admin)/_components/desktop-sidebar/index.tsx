@@ -23,6 +23,11 @@ export const sidebarLinks = [
     icon: CircleUserIcon
   },
   {
+    href: "/add",
+    label: "Add",
+    icon: PlusIcon
+  },
+  {
     href: "/anime",
     label: "Anime",
     icon: ShellIcon
@@ -32,20 +37,14 @@ export const sidebarLinks = [
     label: "Blog",
     icon: NewspaperIcon
   },
-  {
-    href: "/merchandise",
-    label: "Merchandise",
-    icon: ScanBarcodeIcon
-  },
-  {
-    href: "/add",
-    label: "Add",
-    icon: PlusIcon
-  },
+  // {
+  //   href: "/merchandise",
+  //   label: "Merchandise",
+  //   icon: ScanBarcodeIcon
+  // },
 ]
 
-const DesktopSidebar = async () => {
-  // const user = await currentUser()
+const DesktopSidebar = () => {
   return (
     <aside className='fixed left-2 top-10 hidden h-[89vh] w-[200px] flex-col gap-y-4 rounded-md border bg-zinc-900/20 p-2 sm:flex md:left-7'>
       <nav className='flex-1 space-y-4'>
