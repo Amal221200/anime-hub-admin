@@ -7,6 +7,7 @@ import { useCallback, useRef } from "react";
 import { toast } from "sonner";
 import { LoaderPinwheel } from "lucide-react"
 import { updateBlogContent } from "@/lib/actions/blog";
+import useDebounce from "./useDebounce";
 
 const extensions = [
     StarterKit,
@@ -16,23 +17,9 @@ const extensions = [
 ];
 
 export default function useBlogEditor({ initialContent, blogId }: { initialContent?: string, blogId: string }) {
-    const pending = useRef<NodeJS.Timeout>()
-    const updateContent = useCallback((content: string) => {
-        const id = toast("Saving", {
-            action: 10_000, icon: <LoaderPinwheel className="animate-spin" />
-        })
-
-        if (pending.current) {
-            toast.dismiss(id)
-            clearTimeout(pending.current)
-        }
-
-        pending.current = setTimeout(async () => {
-            await updateBlogContent(blogId, content)
-            toast.success("Saved")
-            toast.dismiss(id)
-        }, 5000)
-    }, [blogId])
+    const updateContent = useDebounce(async (content: string) => {
+        await updateBlogContent(blogId, content)
+    })
 
     const editor = useEditor({
         extensions,
