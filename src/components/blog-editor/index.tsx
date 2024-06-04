@@ -27,13 +27,13 @@ const BlogEditor = ({ content, blogId }: BlogEditorProps) => {
     const { editor } = useBlogEditor({ initialContent: content, blogId })
     const { onOpen } = useAlertModal()
     const match1 = useMediaQuery('only screen and (max-width: 768px)');
-    const match2 = useMediaQuery('only screen and (max-width: 1024px) and (orientation: portrait)')
+    const isMobile = !(navigator.platform.includes('Win') || navigator.platform.includes('Mac') || navigator.platform.includes('Linux'))
 
     useEffect(() => {
-        if (match1 || match2) {
+        if (match1 || isMobile) {
             onOpen({ title: 'Notice', description: 'I would recommed you to use a computer for better editing experience, we will work on making the experience better for mobile devices' })
         }
-    }, [onOpen, match1, match2])
+    }, [onOpen, match1, isMobile])
 
     return (
         <div
