@@ -38,7 +38,7 @@ const extensions = [
     }),
     BubbleMenuKit.configure({
         pluginKey: bubbleMenuData.table.pluginKey,
-        element: document.querySelector(`.${bubbleMenuData.table.pluginKey}`) as HTMLElement,
+        element: document.querySelector(`.${bubbleMenuData.table.class}`) as HTMLElement,
     }),
     BubbleMenuKit.configure({
         pluginKey: bubbleMenuData.orderedList.pluginKey,
