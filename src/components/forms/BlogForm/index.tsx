@@ -45,7 +45,7 @@ const BlogForm = ({ heading, blog, type }: BlogFormProps) => {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(handleSubmit)} className="mx-auto mb-16 max-w-[380px] space-y-3 sm:mb-0 sm:max-w-[1000px]">
-                <h1 className="flex items-center gap-x-2 text-xl font-semibold sm:text-5xl">
+                <h1 className="flex items-center gap-x-2 text-xl font-semibold sm:text-3xl lg:text-5xl">
                     {type === FORM_TYPE.EDIT && <ChevronLeft className="relative transform cursor-pointer transition-transform hover:-translate-x-1" onClick={() => router.back()} />} {heading}
                 </h1>
                 <div className="mb-6 grid grid-cols-1 gap-2 sm:grid-cols-2">
