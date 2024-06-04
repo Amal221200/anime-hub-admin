@@ -1,24 +1,14 @@
 "use client"
-import { Bold, Heading2, Italic } from "lucide-react"
+import { AlignCenter, AlignLeft, AlignRight, Heading2, List, ListOrdered, Table2 } from "lucide-react"
 import { Toggle } from "@/components/ui/toggle"
 import { Editor } from "@tiptap/react"
 import AddImage from "./AddImage"
-import { useCallback, useMemo } from "react"
-import AddLink from "./AddLink"
+import { useCallback } from "react"
 
-const Toolbar = ({ editor, blog }: { editor: Editor | null, blog: { content: string, blogId: string } }) => {
-    const handleUpload = useCallback((url: string) => {
-        const imageNode = editor?.schema.nodes.image.create({ 'src': url })!
-        const newDoc = editor?.$doc.content.addToEnd(imageNode)!
-        const transaction = editor?.state.tr.replaceWith(0, editor.state.doc.content.size, newDoc)!
-        editor?.view.dispatch(transaction)
+const Toolbar = ({ editor }: { editor: Editor | null, blog: { content: string, blogId: string } }) => {
+    const handleUpload = useCallback((url: string, name: string) => {
+        editor?.chain().focus().setImage({ src: url, alt: `${name} ${crypto.randomUUID()}`}).run()
     }, [editor])
-
-    const handleAddLink = useCallback((link: string) => {
-        editor?.chain().focus().setLink({ href: link }).run();
-    }, [editor])
-
-    const isActive = useMemo(() => editor?.isActive("heading") || editor?.isActive("paragraph") || editor?.isActive("link"), [editor])
 
     if (!editor) {
         return null
@@ -27,26 +17,48 @@ const Toolbar = ({ editor, blog }: { editor: Editor | null, blog: { content: str
     return (
         <div className="mb-4 flex flex-wrap items-center justify-between gap-2 rounded-md border border-input bg-transparent p-2">
             <div className="flex flex-wrap items-center gap-x-3">
-                <Toggle size="sm" pressed={isActive && editor.isFocused} onPressedChange={() => {
+                <Toggle size="sm" title="heading" pressed={editor?.isActive("heading")} onPressedChange={() => {
                     editor.chain().focus().toggleHeading({ level: 2 }).run()
                 }}>
                     <Heading2 />
                 </Toggle>
-
-                <Toggle size="sm" pressed={isActive && editor.isFocused} onPressedChange={() => {
-                    editor.chain().focus().toggleBold().run()
+                <Toggle size="sm" title="table" pressed={editor?.isActive("table")} onPressedChange={() => {
+                    editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()
                 }}>
-                    <Bold />
+                    <Table2 />
+                </Toggle>
+                <Toggle size="sm" title="bullet-list" pressed={editor?.isActive("bulletList")} onPressedChange={() => {
+                    editor.chain().focus().toggleOrderedList().run()
+                    editor.chain().focus().toggleBulletList().run()
+                }}>
+                    <List />
+                </Toggle>
+                <Toggle size="sm" title="ordered-list" pressed={editor?.isActive("orderedList")} onPressedChange={() => {
+                    editor.chain().focus().toggleBulletList().run()
+                    editor.chain().focus().toggleOrderedList().run()
+                }}>
+                    <ListOrdered />
+                </Toggle>
+                <AddImage onUploadComplete={handleUpload} focused={editor?.isActive("image")} />
+            </div>
+            <div className="ml-auto flex items-center gap-x-3 rounded-md md:ml-0">
+                <Toggle title="left" className="p-2" pressed={editor?.isActive({ textAlign: 'left' })} onPressedChange={() => {
+                    editor.chain().focus().setTextAlign('left').run()
+                }}>
+                    <AlignLeft />
                 </Toggle>
 
-                <Toggle size="sm" pressed={isActive && editor.isFocused} onPressedChange={() => {
-                    editor.chain().focus().toggleItalic().run()
+                <Toggle title="center" pressed={editor?.isActive({ textAlign: 'center' })} onPressedChange={() => {
+                    editor.chain().focus().setTextAlign('center').run()
                 }}>
-                    <Italic />
+                    <AlignCenter />
                 </Toggle>
 
-                <AddImage onUploadComplete={handleUpload} focused={isActive && editor.isFocused} />
-                <AddLink onAddLink={handleAddLink} focused={isActive && editor.isFocused} />
+                <Toggle title="right" pressed={editor?.isActive({ textAlign: 'right' })} onPressedChange={() => {
+                    editor.chain().focus().setTextAlign('right').run()
+                }}>
+                    <AlignRight />
+                </Toggle>
             </div>
         </div>
     )

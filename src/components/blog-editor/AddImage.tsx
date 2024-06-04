@@ -2,35 +2,38 @@
 
 import { ImageIcon } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
-import { Button } from "../ui/button";
 import { useCallback, useState } from "react";
 import FileUpload from "../FileUpload";
 import { cn } from "@/lib/utils";
+import { Toggle } from "../ui/toggle";
 
-const AddImage = ({ onUploadComplete, bubble, focused }: { onUploadComplete: (url: string) => void, bubble?: boolean, focused?: boolean },) => {
+const AddImage = ({ onUploadComplete, bubble, focused }: { onUploadComplete: (url: string, name: string) => void, bubble?: boolean, focused?: boolean },) => {
     const [open, setOpen] = useState(false)
 
     const onOpenChage = (open: boolean) => {
-        setOpen(!open);
+        setOpen(open);
     }
 
-    const onHandleUpload = useCallback((url: string) => {
-        onUploadComplete(url)
-        onOpenChage(true)
+    const onHandleUpload = useCallback((url: string, name: string) => {
+        onUploadComplete(url, name)
+        onOpenChage(false)
     }, [onUploadComplete])
 
     return (
         <Popover onOpenChange={onOpenChage} open={open} >
-            <PopoverTrigger>
-                <Button variant={'ghost'} size={bubble ? 'xs' : 'icon'} className={cn(focused && "bg-zinc-800")} onClick={(e) => {
-                    e.stopPropagation()
-                    onOpenChage(open)
-                }}  >
+            <PopoverTrigger asChild>
+                <Toggle  title="image" size={bubble ? 'xs' : 'sm'} className={cn(focused && "bg-zinc-800")} onClick={(e) => {
+                     if (focused) {
+                        onHandleUpload('','')
+                        return onOpenChage(false)
+                    }
+                    onOpenChage(true)
+                }}>
                     <ImageIcon size={bubble ? 15 : 20} />
-                </Button>
+                </Toggle>
             </PopoverTrigger>
             <PopoverContent align="start" side="top" sideOffset={10} className="w-max p-2">
-                <FileUpload endpoint="animeBlogContentImage" onChange={(url) => onHandleUpload(url!)} value="" />
+                <FileUpload endpoint="animeBlogContentImage" onChange={(url, name) => onHandleUpload(url!, name!)} value="" />
             </PopoverContent>
         </Popover>
     )

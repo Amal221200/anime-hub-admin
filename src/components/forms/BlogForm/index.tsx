@@ -56,7 +56,7 @@ const BlogForm = ({ heading, blog, type }: BlogFormProps) => {
                     </BlogInputWrapper>
                     <BlogInputWrapper name="imageLink" form={form} label="Image">
                         {(field) => (
-                            <FileUpload endpoint="animeBlogImage" value={field.value} onChange={field.onChange} preview />
+                            <FileUpload endpoint="animeBlogImage" value={field.value} onChange={(url) => field.onChange(url)} preview />
                         )}
                     </BlogInputWrapper>
                     <BlogInputWrapper name="description" form={form} label="Description" className="sm:col-span-2">

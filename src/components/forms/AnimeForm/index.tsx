@@ -135,7 +135,7 @@ const AnimeForm = ({ anime, heading, type }: AnimeFormProps) => {
                     <AnimeInputWrapper name="imageLink" label="Image Link" form={form}>
                         {
                             (field) => (
-                                <FileUpload endpoint="animeImage" value={field.value} onChange={field.onChange} preview />
+                                <FileUpload endpoint="animeImage" value={field.value} onChange={(url) => field.onChange(url)} preview />
                             )
                         }
                     </AnimeInputWrapper>

@@ -5,6 +5,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { FormEvent, useCallback, useState } from "react";
 import { Input } from "../ui/input";
 import { cn } from "@/lib/utils";
+import { Toggle } from "../ui/toggle";
 
 const AddLink = ({ onAddLink, bubble, focused }: { onAddLink: (url: string) => void, bubble?: boolean, focused?: boolean }) => {
     const [open, setOpen] = useState(false)
@@ -26,11 +27,16 @@ const AddLink = ({ onAddLink, bubble, focused }: { onAddLink: (url: string) => v
     return (
         <Popover onOpenChange={onOpenChage} open={open} >
             <PopoverTrigger asChild>
-                <Button variant={'ghost'} size={bubble ? 'xs' : 'icon'} className={cn(focused && "bg-zinc-800")} onClick={(e) => {
+                <Toggle title="link" size={bubble ? "xs" : 'sm'} className={cn(focused && "bg-zinc-800")} onClick={(e) => {
+                    e.stopPropagation()
+                    if (focused) {
+                        onAddLink('')
+                        return onOpenChage(false)
+                    }
                     onOpenChage(true)
                 }}  >
                     <LinkIcon size={bubble ? 15 : 20} />
-                </Button>
+                </Toggle>
             </PopoverTrigger>
             <PopoverContent align="start" side="top" sideOffset={10} className="w-max p-2">
                 <form className="space-y-3" onSubmit={onSubmit}>
