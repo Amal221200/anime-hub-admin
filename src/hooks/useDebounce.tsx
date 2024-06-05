@@ -3,16 +3,16 @@ import { useRef } from "react"
 import { toast } from "sonner"
 
 
-export default function useDebounce(callback: Function) {
+export default function useDebounce(callback: Function, options?: { delay?: number }) {
     const pending = useRef<NodeJS.Timeout>()
     let id: string | number;
     let parameters: any[];
     const innerFunc = async (...params: any[]) => {
         parameters = params
 
-        id = toast("Saving", {
-            action: 10_000, icon: <LoaderPinwheel className="animate-spin" />
-        })
+        // id = toast("Saving", {
+        //     action: 10_000, icon: <LoaderPinwheel className="animate-spin" />
+        // })
 
         if (pending.current) {
             toast.dismiss(id)
@@ -20,12 +20,32 @@ export default function useDebounce(callback: Function) {
             pending.current = undefined
         }
 
-        pending.current = setTimeout(async () => {
-            await callback(...params)
-            toast.success("Saved")
-            toast.dismiss(id)
-            pending.current = undefined
-        }, 5000)
+        const promise: () => Promise<{ title: string }> = () => new Promise((resolve, reject) => {
+            pending.current = setTimeout(async () => {
+                try {
+                    await callback(...params)
+                    resolve({ title: 'SAVED' })
+                } catch (error: any) {
+                    reject(error.message)
+                } finally {
+                    toast.dismiss(id)
+                    clearTimeout(pending.current)
+                    pending.current = undefined
+                }
+            }, options?.delay || 5000)
+        });
+
+        id = toast.promise(promise, {
+            loading:
+                <div className="flex w-full gap-x-2">
+                    <LoaderPinwheel className="animate-spin" />
+                    <p>SAVING...</p>
+                </div>
+            ,
+            success: (data: { title: string }) => data.title,
+            duration: 5000,
+            error: (error) => error,
+        })
     }
 
     innerFunc.isPending = () => {
@@ -43,7 +63,7 @@ export default function useDebounce(callback: Function) {
         if (!parameters) {
             return
         }
-        
+
         clearTimeout(pending.current)
         pending.current = undefined
         callback(...parameters).then(() => {

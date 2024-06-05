@@ -97,7 +97,7 @@ export default function useBlogEditor({ initialContent, blogId }: { initialConte
                 class: "p-4 w-full h-full overflow-y-auto bg-zinc-900 rounded outline-none no-scrollbar"
             }
         },
-        onUpdate({ editor }) {
+        onUpdate({ editor }) {            
             updateContent(editor.getHTML())
         },
         autofocus: 'end',
