@@ -49,7 +49,7 @@ export async function addAnime(anime: z.infer<typeof animeSchema>) {
             }
         })
 
-        revalidatePath("/anime")
+       
         return newAnime
     } catch (error) {
         console.log("getAnime error");
@@ -65,7 +65,7 @@ export async function updateAnimeStatus(id: string, status: ANIME_STATUS) {
             }
         })
         
-        revalidatePath("/anime")
+       
         return updatedAnime
     } catch (error) {
         console.log("updateAnimeStatus error");
@@ -76,7 +76,7 @@ export async function updateAnimeStatus(id: string, status: ANIME_STATUS) {
 export async function deleteAnime(animeId: string) {
     try {
         const anime = await db.anime.delete({ where: { id: animeId } })
-        revalidatePath("/anime")
+       
         return anime
     } catch (error) {
         console.log("deleteAnime error");

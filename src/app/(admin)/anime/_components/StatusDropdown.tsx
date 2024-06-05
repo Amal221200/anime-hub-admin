@@ -20,9 +20,7 @@ const StatusDropdown = ({ row }: { row: Row<Anime> }) => {
     const { onOpen: onDialogOpen } = useDialogModal()
     const { data: userData } = useCurrentUser()
 
-    const { onStatusChange } = useChangeAnimeStatus({
-        animeId: row.getValue('id'), title: row.getValue('title'), status: row.getValue('status')
-    })
+    const { onStatusChange } = useChangeAnimeStatus(row.getValue('id'))
 
     const handleStatus = useCallback(async (status: ANIME_STATUS) => {
         if (userData?.role === 'USER') {
@@ -43,7 +41,7 @@ const StatusDropdown = ({ row }: { row: Row<Anime> }) => {
             title: 'Are you sure',
             description: `Do you want to change the status from ${status === 'ONGOING' ? '"COMPLETED"' : '"ONGOING"'} to ${status === 'ONGOING' ? '"ONGOING"' : '"COMPLETED"'}`,
             async action() {
-                await onStatusChange(row.getValue('id'), status)
+                await onStatusChange(status)
             }
         })
     }, [onStatusChange, userData, onAlertOpen, onDialogOpen, row])

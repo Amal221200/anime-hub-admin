@@ -24,7 +24,7 @@ const ActionsDropdown = ({ row }: { row: Row<BlogType> }) => {
     const { onOpen: onDialogOpen } = useDialogModal()
     const { onOpen: onAlertOpen } = useAlertModal()
     
-    const { onDelete } = useDeleteblog({ title: row.getValue('title') })
+    const { onDelete } = useDeleteblog(row.getValue('id'))
 
     const handleDelete = useCallback(async () => {
         if (userData?.role === 'USER') {
@@ -34,11 +34,11 @@ const ActionsDropdown = ({ row }: { row: Row<BlogType> }) => {
         }
         onDialogOpen({
             title: 'Are you sure?', description: "Once done, it's irreversible.", async action() {
-                onDelete(row.getValue("id"))
+                onDelete()
             }
         })
 
-    }, [onDelete, userData, onAlertOpen, onDialogOpen, row])
+    }, [onDelete, userData, onAlertOpen, onDialogOpen])
 
     return (
         <DropdownMenu>

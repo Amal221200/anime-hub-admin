@@ -2,12 +2,13 @@
 import useTable from "@/hooks/useTable"
 import blogColumns from "./blog-table-columns"
 import ReactTable from "@/components/ReactTable"
-import { BlogType } from "@/lib/types"
+import useFetchBlogs from "@/hooks/blog/useFetchBlogs"
 
-export default function BlogTable({ blogs }: { blogs: BlogType[] }) {
-
+export default function BlogTable() {
+    const { blogs, isLoading } = useFetchBlogs()
     const { table, pagination } = useTable(blogs || [], blogColumns)
+
     return (
-        <ReactTable table={table} pagination={pagination} columns={blogColumns} filterColumn="title" label="blog" />
+        <ReactTable table={table} isLoading={isLoading} pagination={pagination} columns={blogColumns} filterColumn="title" label="blog" />
     )
 }

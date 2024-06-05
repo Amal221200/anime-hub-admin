@@ -30,7 +30,6 @@ export async function updateAdminUserRole(id: string, role: USER_ROLE) {
             }
         })
         
-        revalidatePath("/admin-user")
         return updatedUser
     } catch (error) {
         console.log("updateUserRole error");

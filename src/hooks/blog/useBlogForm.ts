@@ -9,10 +9,13 @@ import { toast } from "sonner";
 import { useCallback } from "react";
 import useCurrentUser from "../current-user/useCurrentUser";
 import { addBlog, updateBlog } from "@/lib/actions/blog";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 
 export default function useBlogForm(type: FORM_TYPE, blog?: Blog) {
     const { data: user } = useCurrentUser()
     const { onOpen } = useAlertModal()
+    const queryClient = useQueryClient()
 
     const form = useForm<z.infer<typeof blogSchema>>({
         resolver: zodResolver(blogSchema),
@@ -24,22 +27,26 @@ export default function useBlogForm(type: FORM_TYPE, blog?: Blog) {
         },
     })
 
-    const onSubmit = useCallback(async (blogData: z.infer<typeof blogSchema>) => {
-        try {
-            if (type === FORM_TYPE.ADD) {
-                await addBlog(blogData, user?.id!)
-            } else {
-                await updateBlog(blog?.id!, blogData)
-            }
-
-            toast.success(type === FORM_TYPE.ADD ? `CREATED` : `EDITED ${form.getValues().title}`,
-                {
-                    description: type === FORM_TYPE.ADD ? `Successfully added ${form.getValues().title}` : `Successfully edited ${blog?.title}`
-                })
-        } catch (error: any) {
-            onOpen({ title: 'Internal Server Error', description: error.message })
+    const handleSubmit = useCallback(() => {
+        return async (blogData: z.infer<typeof blogSchema>) => {
+            return type === FORM_TYPE.ADD ? await addBlog(blogData, user?.id!) : await updateBlog(blog?.id!, blogData);
         }
-    }, [type, blog, form, onOpen, user])
+    }, [blog, type, user])
+
+    const { mutateAsync: onSubmit } = useMutation({
+        mutationKey: [type === FORM_TYPE.ADD ? `add_blog` : `edit_blog`, blog?.id],
+        mutationFn: handleSubmit(),
+        onSuccess(data) {
+            queryClient.invalidateQueries({ queryKey: ['fetch_blogs'] })
+            toast.success(type === FORM_TYPE.ADD ? `CREATED` : `EDITED ${data?.title}`,
+                {
+                    description: type === FORM_TYPE.ADD ? `Successfully added ${data?.title}` : `Successfully edited ${data?.title}`
+                })
+        },
+        onError(error: AxiosError | any) {
+            onOpen({ title: 'Internal Server Error', description: error.message })
+        },
+    })
 
     return {
         form,

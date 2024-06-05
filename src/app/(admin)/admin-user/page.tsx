@@ -1,5 +1,4 @@
 import SkeletonSpinner from '@/components/SkeletonSpinner';
-import { getAdminUsers } from '@/lib/actions/admin-user';
 import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 
@@ -15,15 +14,10 @@ export const metadata: Metadata = {
 }
 
 const AdminUsersPage = async () => {
-  const adminUsers = await getAdminUsers()
-
-  if (!adminUsers) {
-    return <h1 className='text-center'>{"Could'nt"} fetch admin users</h1>
-  }
 
   return (
     <main>
-      <AdminUserTable adminUsers={adminUsers} />
+      <AdminUserTable />
     </main>
   )
 }

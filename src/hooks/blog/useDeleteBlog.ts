@@ -1,19 +1,30 @@
 import { toast } from "sonner";
 import useAlertModal from "../useAlertModal";
-import {  useCallback } from "react";
+import { useCallback } from "react";
 import { deleteBlog } from "@/lib/actions/blog";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 
-export default function useDeleteblog(blog: { title: string }) {
+export default function useDeleteblog(blogId: string ) {
     const { onOpen: onAlertOpen } = useAlertModal()
-
-    const onDelete = useCallback((blogId: string) => {
-        try {
-            deleteBlog(blogId)
-            toast.success("BLOG DELETED", { description: `${blog.title} is deleted.` })
-        } catch (error: any) {
-            onAlertOpen({ title: 'Internal Server Error', description: error.message })
+    const queryClient = useQueryClient()
+    const handleDelete = useCallback((blogId: string) => {
+        return async () => {
+            return await deleteBlog(blogId)
         }
-    }, [onAlertOpen, blog.title])
+    }, [])
+
+    const { mutateAsync: onDelete } = useMutation({
+        mutationKey: [`delete_blog`, blogId],
+        mutationFn: handleDelete(blogId),
+        onSuccess(data) {
+            queryClient.invalidateQueries({ queryKey: ['fetch_blogs'] })
+            toast("BLOG DELETED", { description: `${data?.title} is deleted.` })
+        },
+        onError(error: AxiosError | any, variables, context) {
+            onAlertOpen({ title: 'Internal Server Error', description: error.message })
+        },
+    })
 
     return {
         onDelete

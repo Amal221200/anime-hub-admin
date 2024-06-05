@@ -20,7 +20,7 @@ const RoleDropdown = ({ row }: { row: Row<AdminUser> }) => {
     const { onOpen: onAlertOpen } = useAlertModal()
     const { onOpen: onDialogOpen } = useDialogModal()
 
-    const { onRoleChange } = useChangeAdminUserRole({ username: row.getValue('username') })
+    const { onRoleChange } = useChangeAdminUserRole(row.getValue('id'))
 
     const handleRole = useCallback(async (role: USER_ROLE) => {
         if (userData?.role !== 'SUPER_ADMIN') {
@@ -38,7 +38,7 @@ const RoleDropdown = ({ row }: { row: Row<AdminUser> }) => {
             title: 'Are you sure?',
             description: "Do yo want to change the role of the user?",
             async action() {
-                await onRoleChange(row.getValue('id'), role)
+                await onRoleChange({ role })
             }
         })
     }, [onRoleChange, userData, onAlertOpen, onDialogOpen, row])

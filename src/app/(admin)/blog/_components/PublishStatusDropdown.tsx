@@ -20,9 +20,7 @@ const PublishStatusDropdown = ({ row }: { row: Row<BlogType> }) => {
     const { onOpen: onDialogOpen } = useDialogModal()
     const { data: userData } = useCurrentUser()
 
-    const { onPublishStatusChange } = useChangeBlogPublishStatus({
-        blogId: row.getValue('id'), title: row.getValue('title'), publish: row.getValue('published')
-    })
+    const { onPublishStatusChange } = useChangeBlogPublishStatus(row.getValue('id'))
 
     const handleStatus = useCallback(async (publish: boolean) => {
         if (userData?.role === 'USER') {
@@ -50,7 +48,7 @@ const PublishStatusDropdown = ({ row }: { row: Row<BlogType> }) => {
             title: 'Are you sure',
             description: `Do you want to change the status from ${publish ? '"FALSE"' : '"TRUE"'} to ${publish ? '"TRUE"' : '"FALSE"'}`,
             async action() {
-                await onPublishStatusChange(row.getValue('id'), publish)
+                await onPublishStatusChange(publish)
             }
         })
     }, [onPublishStatusChange, userData, onAlertOpen, onDialogOpen, row])

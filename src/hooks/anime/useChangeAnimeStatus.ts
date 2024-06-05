@@ -3,20 +3,32 @@ import { toast } from "sonner"
 import useAlertModal from "../useAlertModal"
 import { useCallback } from "react"
 import { updateAnimeStatus } from "@/lib/actions/anime"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { AxiosError } from "axios"
 
-export default function useChangeAnimeStatus(anime: { animeId: string, title: string, status: ANIME_STATUS }) {
+export default function useChangeAnimeStatus(animeId: string) {
     const { onOpen: onAlertOpen } = useAlertModal()
+    const queryClient = useQueryClient()
 
-    const onStatusChange = useCallback(async (animeId: string, status: ANIME_STATUS) => {
-        try {
-            await updateAnimeStatus(animeId, status)
-            toast.success("STATUS CHANGED", {
-                description: `Status of ${anime.title} has changed to ${status}`,
-            })
-        } catch (error: any) {
-            onAlertOpen({ title: 'Internal Server Error', description: error.message })
+    const handleStatusChange = useCallback((animeId: string) => {
+        return async (status: ANIME_STATUS) => {
+            return await updateAnimeStatus(animeId, status)
         }
-    }, [onAlertOpen, anime.title])
+    }, [])
+
+    const { mutateAsync: onStatusChange } = useMutation({
+        mutationKey: [`status_change`, animeId],
+        mutationFn: handleStatusChange(animeId),
+        onSuccess(data) {
+            queryClient.invalidateQueries({ queryKey: ['fetch_animes'] })
+            toast.success("STATUS CHANGED", {
+                description: `Status of ${data?.title} has changed to ${data?.status}`,
+            })
+        },
+        onError(error: AxiosError | any, variables, context) {
+            onAlertOpen({ title: 'Internal Server Error', description: error.message })
+        },
+    })
 
     return {
         onStatusChange,

@@ -2,11 +2,11 @@
 import adminUserColumns from "./admin-user-table-columns"
 import useTable from "@/hooks/useTable"
 import ReactTable from "@/components/ReactTable"
-import { AdminUser } from "@prisma/client"
+import useFetchAdminUsers from "@/hooks/admin-user/useFetchAdminUsers"
 
 
-export default function UserTable({ adminUsers }: { adminUsers: AdminUser[] }) {
-
+export default function UserTable() {
+    const { adminUsers } = useFetchAdminUsers()
     const { table, pagination } = useTable(adminUsers || [], adminUserColumns, { visibility: { id: false } })
 
     return (

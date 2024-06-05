@@ -2,14 +2,14 @@
 import userColumns from "./user-table-columns"
 import useTable from "@/hooks/useTable"
 import ReactTable from "@/components/ReactTable"
-import { User } from "@prisma/client"
+import useFetchUsers from "@/hooks/user/useFetchUsers"
 
 
-export default function UserTable({ users }: { users: User[] }) {
-
+export default function UserTable() {
+    const { users, isLoading } = useFetchUsers()
     const { table, pagination } = useTable(users || [], userColumns, { visibility: { id: false } })
 
     return (
-        <ReactTable table={table} pagination={pagination} columns={userColumns} label="user" filterColumn="username" />
+        <ReactTable table={table} isLoading={isLoading} pagination={pagination} columns={userColumns} label="user" filterColumn="username" />
     )
 }

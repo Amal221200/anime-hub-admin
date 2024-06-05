@@ -23,7 +23,7 @@ const ActionsDropdown = ({ row }: { row: Row<Anime> }) => {
 
     const { onOpen: onDialogOpen } = useDialogModal()
     const { onOpen: onAlertOpen } = useAlertModal()
-    const { onDelete } = useDeleteAnime({ animeId: row.getValue('id'), title: row.getValue('title') })
+    const { onDelete } = useDeleteAnime(row.getValue('id'))
 
     const handleDelete = useCallback(async () => {
         if (userData?.role === 'USER') {
@@ -36,10 +36,10 @@ const ActionsDropdown = ({ row }: { row: Row<Anime> }) => {
             title: 'Are you sure?',
             description: "Once done, it's irreversible.",
             async action() {
-                await onDelete(row.getValue('id'))
+                await onDelete()
             }
         })
-    }, [onDelete, userData, onAlertOpen, onDialogOpen, row])
+    }, [onDelete, userData, onAlertOpen, onDialogOpen])
 
     return (
         <DropdownMenu>

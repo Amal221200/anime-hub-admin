@@ -40,7 +40,7 @@ export async function addBlog(blog: z.infer<typeof blogSchema>, authorId: string
             }
         })
 
-        revalidatePath("/blog")
+        
         return newBlog
     } catch (error) {
         console.log("getBlog error");
@@ -51,7 +51,7 @@ export async function addBlog(blog: z.infer<typeof blogSchema>, authorId: string
 export async function deleteBlog(blogId: string) {
     try {
         const blog = await db.blog.delete({ where: { id: blogId } })
-        revalidatePath("/blog")
+        
         return blog
     } catch (error) {
         console.log("deleteBlog error");
@@ -69,7 +69,6 @@ export async function updateBlog(blogId: string, blogData: z.infer<typeof blogSc
                 published: blogData.published
             }
         })
-        revalidatePath(`/blog/${blogId}`)
         return updatedBlog
     } catch (error) {
         console.log("updateBlog error");
@@ -85,7 +84,7 @@ export async function updateBlogPublish(id: string, publish: boolean) {
             }
         })
 
-        revalidatePath("/blog")
+        
         return updatedBlog
     } catch (error) {
         console.log("updateBlogPublish error");
@@ -100,7 +99,7 @@ export async function updateBlogContent(blogId: string, content: string) {
                 content
             }
         })
-        revalidatePath(`/blog/${blogId}`)
+
         return updatedBlog
     } catch (error) {
         console.log("updateBlogContent error");
