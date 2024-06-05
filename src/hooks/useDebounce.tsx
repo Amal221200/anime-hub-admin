@@ -10,10 +10,6 @@ export default function useDebounce(callback: Function, options?: { delay?: numb
     const innerFunc = async (...params: any[]) => {
         parameters = params
 
-        // id = toast("Saving", {
-        //     action: 10_000, icon: <LoaderPinwheel className="animate-spin" />
-        // })
-
         if (pending.current) {
             toast.dismiss(id)
             clearTimeout(pending.current)
@@ -42,7 +38,7 @@ export default function useDebounce(callback: Function, options?: { delay?: numb
                     <p>SAVING...</p>
                 </div>
             ,
-            success: (data: { title: string }) => data.title,
+            success: (data) => data.title,
             duration: 5000,
             error: (error) => error,
         })
