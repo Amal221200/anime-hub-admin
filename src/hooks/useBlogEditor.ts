@@ -5,7 +5,7 @@ import useUpdateBlogContent from "./blog/useUpdateBlogContent";
 
 
 
-export default function useBlogEditor({ initialContent, blogId }: { initialContent?: string, blogId: string }) {
+export default function useBlogEditor({ initialContent, blogId, editable }: { initialContent?: string, blogId: string, editable: boolean }) {
     const { onBlogUpdateContent } = useUpdateBlogContent(blogId);
     const updateContent = useDebounce(async (content: string) => {
         await onBlogUpdateContent(content)
@@ -23,6 +23,7 @@ export default function useBlogEditor({ initialContent, blogId }: { initialConte
             updateContent(editor.getHTML())
         },
         autofocus: 'end',
+        editable
     })
 
     return {

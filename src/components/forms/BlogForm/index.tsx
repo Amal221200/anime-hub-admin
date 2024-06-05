@@ -2,7 +2,7 @@
 import useBlogForm from "@/hooks/blog/useBlogForm"
 import useCurrentUser from "@/hooks/current-user/useCurrentUser"
 import useAlertModal from "@/hooks/useAlertModal"
-import { FORM_TYPE } from "@/lib/types"
+import { BlogType, FORM_TYPE } from "@/lib/types"
 import { Blog } from "@prisma/client"
 import { useRouter } from "next/navigation"
 import { blogSchema } from "@/lib/schema"
@@ -20,7 +20,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 interface BlogFormProps {
     heading: string,
     type: FORM_TYPE,
-    blog?: Blog,
+    blog?: BlogType,
 }
 
 const BlogForm = ({ heading, blog, type }: BlogFormProps) => {
@@ -31,6 +31,7 @@ const BlogForm = ({ heading, blog, type }: BlogFormProps) => {
     const { form, onSubmit } = useBlogForm(type, blog)
 
     const handleSubmit = useCallback(async (values: z.infer<typeof blogSchema>) => {
+        
         const payload = { ...values }
 
         await onSubmit(payload)
@@ -78,7 +79,7 @@ const BlogForm = ({ heading, blog, type }: BlogFormProps) => {
                     }
                 </div>
                 <Button type="submit"
-                    disabled={form.formState.isLoading || form.formState.isSubmitting || userData?.role === 'USER'} className="block w-full disabled:cursor-null disabled:opacity-60 sm:w-max">
+                    disabled={form.formState.isLoading || form.formState.isSubmitting || userData?.role === 'USER' || userData?.username !== blog?.author!} className="block w-full disabled:cursor-null disabled:opacity-60 sm:w-max">
                     Submit
                 </Button>
             </form>

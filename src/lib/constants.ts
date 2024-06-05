@@ -41,7 +41,7 @@ export const bubbleMenuData = {
 export const extensions = [
     StarterKit,
     LinkKit.configure({ protocols: ['https', 'http'] }),
-    ImageKit.configure({ HTMLAttributes: { class: 'mx-auto rounded' } }),
+    ImageKit.configure({ HTMLAttributes: { class: 'mx-auto rounded' }}),
     TypographyKit,
     TextAlignKit.configure({
         types: ['heading', 'paragraph', 'link'],

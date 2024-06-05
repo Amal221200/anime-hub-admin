@@ -1,5 +1,5 @@
 "use client"
-import { AlignCenter, AlignLeft, AlignRight, Heading2, List, ListOrdered, Table2 } from "lucide-react"
+import { AlignCenter, AlignLeft, AlignRight, Heading2, List, ListOrdered, Plus, Table2 } from "lucide-react"
 import { Toggle } from "@/components/ui/toggle"
 import { Editor } from "@tiptap/react"
 import AddImage from "./AddImage"
@@ -7,7 +7,7 @@ import { useCallback } from "react"
 
 const Toolbar = ({ editor }: { editor: Editor | null, blog: { content: string, blogId: string } }) => {
     const handleUpload = useCallback((url: string, name: string) => {
-        editor?.chain().focus().setImage({ src: url, alt: `${name} ${crypto.randomUUID()}`}).run()
+        editor?.chain().focus().setImage({ src: url, alt: `${name} ${crypto.randomUUID()}` }).run()
     }, [editor])
 
     if (!editor) {
@@ -38,6 +38,14 @@ const Toolbar = ({ editor }: { editor: Editor | null, blog: { content: string, b
                     editor.chain().focus().toggleOrderedList().run()
                 }}>
                     <ListOrdered />
+                </Toggle>
+                <Toggle size="sm" title="add paragraph" pressed={false} onPressedChange={() => {
+                    const node = editor.schema.nodes.paragraph.create();
+                    const transaction = editor.state.tr.insert(editor.state.doc.content.size, node);
+                    editor.view.dispatch(transaction);
+                    editor.commands.focus(editor.$doc.content.size)
+                }}>
+                    <Plus />
                 </Toggle>
                 <AddImage onUploadComplete={handleUpload} focused={editor?.isActive("image")} />
             </div>

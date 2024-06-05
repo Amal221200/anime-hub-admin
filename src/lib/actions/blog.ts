@@ -20,12 +20,16 @@ export async function getBlogs(): Promise<BlogType[] | null> {
     }
 }
 
-export async function getBlog(id: string) {
+export async function getBlog(id: string): Promise<BlogType | null> {
     try {
-        const anime = await db.blog.findUnique({ where: { id } })
-        return anime
+        const blog = await db.blog.findUnique({ where: { id }, include: { author: { select: { username: true } } } })
+        if (!blog) {
+            return null
+        }
+        return { ...blog, author: blog.author.username }
     } catch (error) {
         console.log("getBlog error");
+        return null
     }
 }
 
@@ -40,7 +44,7 @@ export async function addBlog(blog: z.infer<typeof blogSchema>, authorId: string
             }
         })
 
-        
+
         return newBlog
     } catch (error) {
         console.log("getBlog error");
@@ -51,7 +55,7 @@ export async function addBlog(blog: z.infer<typeof blogSchema>, authorId: string
 export async function deleteBlog(blogId: string) {
     try {
         const blog = await db.blog.delete({ where: { id: blogId } })
-        
+
         return blog
     } catch (error) {
         console.log("deleteBlog error");
@@ -84,7 +88,7 @@ export async function updateBlogPublish(id: string, publish: boolean) {
             }
         })
 
-        
+
         return updatedBlog
     } catch (error) {
         console.log("updateBlogPublish error");
