@@ -25,7 +25,7 @@ const BubbleMenuMain = ({ editor }: { editor: Editor | null }) => {
   
   
   return (
-    <BubbleMenu editor={editor} className={bubbleMenuData.main.class} shouldShow={({ editor }) => !editor.isActive('bulletList') && !editor.isActive('orderedList') && !editor.isActive('image') && !editor.isActive('table') && !editor?.state.selection.empty}
+    <BubbleMenu editor={editor} className={bubbleMenuData.main.class} shouldShow={({ editor }) => !editor.isActive('bulletList') && !editor.isActive('orderedList') && !editor.isActive('resizable-image') && !editor.isActive('table') && !editor?.state.selection.empty}
      pluginKey={bubbleMenuData.main.pluginKey}>
       <div className="flex w-max items-center gap-x-2 rounded-md border border-input bg-background/40 backdrop-blur-sm sm:gap-x-4">
         <div className="flex items-center gap-x-1 rounded-md sm:gap-x-2">

@@ -48,7 +48,7 @@ const FloatingMenuContent = ({ editor }: { editor: Editor | null }) => {
         }}>
           <ListOrdered size={15} />
         </Toggle>
-        <AddImage bubble onUploadComplete={handleUpload} focused={editor?.isActive("image")} />
+        <AddImage bubble onUploadComplete={handleUpload} focused={editor?.isActive("resizable-image")} />
       </div>
     </FloatingMenu>
   )

@@ -1,7 +1,6 @@
 import { PluginKey } from "@tiptap/pm/state";
 import StarterKit from "@tiptap/starter-kit";
 import LinkKit from "@tiptap/extension-link"
-import ImageKit from "@tiptap/extension-image";
 import TypographyKit from "@tiptap/extension-typography";
 import TextAlignKit from "@tiptap/extension-text-align";
 import HighlightKit from "@tiptap/extension-highlight";
@@ -38,10 +37,10 @@ export const bubbleMenuData = {
     },
 }
 
+
 export const extensions = [
     StarterKit,
     LinkKit.configure({ protocols: ['https', 'http'] }),
-    ImageKit.configure({ HTMLAttributes: { class: 'mx-auto rounded' }}),
     TypographyKit,
     TextAlignKit.configure({
         types: ['heading', 'paragraph', 'link'],
@@ -50,10 +49,6 @@ export const extensions = [
     BubbleMenuKit.configure({
         pluginKey: bubbleMenuData.main.pluginKey,
         element: document.querySelector(`.${bubbleMenuData.main.class}`) as HTMLElement,
-    }),
-    BubbleMenuKit.configure({
-        pluginKey: bubbleMenuData.image.pluginKey,
-        element: document.querySelector(`.${bubbleMenuData.image.class}`) as HTMLElement,
     }),
     BubbleMenuKit.configure({
         pluginKey: bubbleMenuData.table.pluginKey,
@@ -66,6 +61,10 @@ export const extensions = [
     BubbleMenuKit.configure({
         pluginKey: bubbleMenuData.bulletList.pluginKey,
         element: document.querySelector(`.${bubbleMenuData.bulletList.class}`) as HTMLElement,
+    }),
+    BubbleMenuKit.configure({
+        pluginKey: bubbleMenuData.image.pluginKey,
+        element: document.querySelector(`.${bubbleMenuData.image.class}`) as HTMLElement,
     }),
     HighlightKit,
     UnderlineKit,

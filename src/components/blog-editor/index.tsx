@@ -41,7 +41,7 @@ const BlogEditor = ({ content, blogId, editable }: BlogEditorProps) => {
     return (
         <div
             className={cn("mx-auto max-w-5xl ",
-                "prose-headings:font-medium prose-headings:my-3 prose-ol:my-3 prose-ul:my-3 prose-table:my-3 prose-h1:mb-3 prose-h1:text-5xl prose-h2:text-4xl prose-h3:text-3xl prose-h4:text-2xl prose-h5:text-xl prose-h6:text-xl prose-p:mb-4 prose-p:text-sm prose-a:underline prose-a:text-blue-800 prose-li:ml-6 prose-table:mx-auto prose-table:border-2 prose-th:bg-zinc-600/20 prose-th:border-2 prose-th:border-zinc-600 prose-td:border-2 prose-td:border-zinc-600 prose-img:my-3 prose-img:w-[700px] sm:prose-p:text-base"
+                "prose-headings:font-medium prose-headings:my-3 prose-ol:my-3 prose-ul:my-3 prose-table:my-3 prose-h1:mb-3 prose-h1:text-5xl prose-h2:text-4xl prose-h3:text-3xl prose-h4:text-2xl prose-h5:text-xl prose-h6:text-xl prose-p:mb-4 prose-p:text-sm prose-a:underline prose-a:text-blue-800 prose-li:ml-6 prose-table:mx-auto prose-table:border-2 prose-th:bg-zinc-600/20 prose-th:border-2 prose-th:border-zinc-600 prose-td:border-2 prose-td:border-zinc-600 prose-img:my-3 sm:prose-p:text-base "
             )} >
             {
                 editable &&

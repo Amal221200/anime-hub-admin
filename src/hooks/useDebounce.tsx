@@ -41,6 +41,11 @@ export default function useDebounce(callback: Function, options?: { delay?: numb
             // success: (data) => data.title,
             duration: 5000,
             // error: (error) => error,
+            finally() {
+                toast.dismiss(id)
+                clearTimeout(pending.current)
+                pending.current = undefined
+            }
         })
     }
 

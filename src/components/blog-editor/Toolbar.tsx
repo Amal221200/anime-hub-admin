@@ -47,7 +47,7 @@ const Toolbar = ({ editor }: { editor: Editor | null, blog: { content: string, b
                 }}>
                     <Plus />
                 </Toggle>
-                <AddImage onUploadComplete={handleUpload} focused={editor?.isActive("image")} />
+                <AddImage onUploadComplete={handleUpload} focused={editor?.isActive("resizable-image")} />
             </div>
             <div className="ml-auto flex items-center gap-x-3 rounded-md md:ml-0">
                 <Toggle title="left" className="p-2" pressed={editor?.isActive({ textAlign: 'left' })} onPressedChange={() => {
