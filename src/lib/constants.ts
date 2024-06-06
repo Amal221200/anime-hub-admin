@@ -13,6 +13,7 @@ import TableRowKit from '@tiptap/extension-table-row'
 import BulletListKit from '@tiptap/extension-bullet-list'
 import ListItemKit from '@tiptap/extension-list-item'
 import OrderedListKit from '@tiptap/extension-ordered-list'
+import ImageKit from "@tiptap/extension-image";
 
 export const bubbleMenuData = {
     main: {
@@ -46,6 +47,7 @@ export const extensions = [
         types: ['heading', 'paragraph', 'link'],
         alignments: ['left', 'right', 'center']
     }),
+    ImageKit.configure({ HTMLAttributes: { class: 'mx-auto rounded' } }),
     BubbleMenuKit.configure({
         pluginKey: bubbleMenuData.main.pluginKey,
         element: document.querySelector(`.${bubbleMenuData.main.class}`) as HTMLElement,

@@ -14,7 +14,7 @@ export default function useBlogEditor({ initialContent, blogId, editable }: { in
     const editor = useEditor({
         extensions: [
             ...extensions,
-            ResizableImageKit.configure({ HTMLAttributes: { class: 'mx-auto rounded', onResize: updateContent } }),
+            // ResizableImageKit.configure({ HTMLAttributes: { class: 'mx-auto rounded', onResize: updateContent } }),
         ],
         content: initialContent || `<h3>Enter your content</h3><p></p>`,
         editorProps: {
