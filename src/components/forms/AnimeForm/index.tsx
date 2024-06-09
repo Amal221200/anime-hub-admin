@@ -13,7 +13,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { Textarea } from "../../ui/textarea"
 import FileUpload from "../../FileUpload"
 import useCurrentUser from "@/hooks/current-user/useCurrentUser"
-import { addAnime, editAnime } from "../form-actions/anime"
 import { FORM_TYPE } from "@/lib/types"
 import useAlertModal from "@/hooks/useAlertModal"
 import DateInput from "../DateInput"

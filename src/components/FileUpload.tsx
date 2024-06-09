@@ -15,7 +15,10 @@ interface FileUploadProps {
 }
 
 async function compress(file: File) {
-    const imageFile = file;
+    if (file.size / 1024 / 1024 > 4) {
+        toast.error('File is too big, max file size is 4MB')
+        return
+    }
 
     const options: Options = {
         maxSizeMB: 0.6,
@@ -23,13 +26,12 @@ async function compress(file: File) {
         useWebWorker: true,
     }
     try {
-        const compressedFile = await imageCompression(imageFile, options);
+        const compressedFile = await imageCompression(file, options);
         return compressedFile
     } catch (error) {
         console.log(error);
     }
 
-    return file;
 }
 
 const FileUpload: React.FC<FileUploadProps> = ({ endpoint, onChange, value, preview }) => {
@@ -48,12 +50,11 @@ const FileUpload: React.FC<FileUploadProps> = ({ endpoint, onChange, value, prev
     }
     return (
         <UploadDropzone endpoint={endpoint} className={cn("upload-button  cursor-pointer", userData?.role === 'USER' && 'cursor-null  pointer-events-none opacity-60')} appearance={{ uploadIcon: { display: 'none' }, label: { display: 'none' }, allowedContent: { display: 'none' }, container: { padding: 0, margin: 0, display: "block" }, button: { padding: 0, marginInline: 0, marginBlock: 10 } }}
-
             onDrop={(files) => {
                 if (files[0].size / 1024 / 1024 > 4) {
-                    return toast.error('File is too big, max file size is 4MB')
+                    toast.error('File is too big, max file size is 4MB')
+                    return []
                 }
-                return []
             }}
             onClientUploadComplete={(res) => {
                 onChange(res?.[0].url, res?.[0].name)
@@ -67,8 +68,9 @@ const FileUpload: React.FC<FileUploadProps> = ({ endpoint, onChange, value, prev
                 console.log(error);
             }}
 
-            onBeforeUploadBegin={(files) => {
-                return compress(files[0]).then(file => [file])
+            onBeforeUploadBegin={async (files) => {
+                const file = await compress(files[0])
+                return file ? [file] : []
             }}
         />
     )
