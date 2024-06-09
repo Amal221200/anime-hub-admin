@@ -7,10 +7,10 @@ export default async function Home() {
   const blogCount = await db.blog.count()
   const userCount = await db.user.count()
   const adminUserCount = await db.adminUser.count({ where: { role: { not: 'SUPER_ADMIN' } } })
- 
+
   return (
     <main>
-      <div className="grid grid-cols-[repeat(1,200px)] justify-center gap-3 sm:grid-cols-[repeat(5,300px)] sm:justify-start">
+      <div className="grid grid-cols-1 justify-center gap-3 sm:grid-cols-2 sm:justify-start md:grid-cols-3 lg:grid-cols-5">
         <Link href="/anime" className="inline-block space-y-3 rounded border p-2">
           <h3>
             <Shell /> Animes
