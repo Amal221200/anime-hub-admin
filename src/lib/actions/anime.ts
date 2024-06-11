@@ -9,9 +9,6 @@ export async function getAnimes() {
     try {
         const animes = await db.anime.findMany(
             {
-                where: {
-                    imageLink: { startsWith: process.env.NODE_ENV === 'development' ? "" : "" },
-                },
                 orderBy: { updatedAt: 'desc' },
             }
         );
@@ -49,7 +46,7 @@ export async function addAnime(anime: z.infer<typeof animeSchema>) {
             }
         })
 
-       
+
         return newAnime
     } catch (error) {
         console.log("getAnime error");
@@ -64,8 +61,8 @@ export async function updateAnimeStatus(id: string, status: ANIME_STATUS) {
                 status
             }
         })
-        
-       
+
+
         return updatedAnime
     } catch (error) {
         console.log("updateAnimeStatus error");
@@ -76,7 +73,7 @@ export async function updateAnimeStatus(id: string, status: ANIME_STATUS) {
 export async function deleteAnime(animeId: string) {
     try {
         const anime = await db.anime.delete({ where: { id: animeId } })
-       
+
         return anime
     } catch (error) {
         console.log("deleteAnime error");

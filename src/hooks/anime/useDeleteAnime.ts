@@ -20,7 +20,7 @@ export default function useDeleteAnime(animeId: string) {
         mutationFn: handleDelete(animeId),
         onSuccess(data) {
             queryClient.invalidateQueries({ queryKey: ['fetch_animes'] })
-            toast("ANIME DELETED", { description: `${data?.title} is deleted.` })
+            toast.success("ANIME DELETED", { description: `${data?.title} is deleted.` })
         },
         onError(error: AxiosError | any, variables, context) {
             onAlertOpen({ title: 'Internal Server Error', description: error.message })

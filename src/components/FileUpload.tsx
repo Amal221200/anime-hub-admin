@@ -1,6 +1,6 @@
 "use client"
 import Image from "next/image"
-import { X } from "lucide-react"
+import { LoaderPinwheel, X } from "lucide-react"
 import { UploadDropzone } from "@/lib/uploadthing"
 import { cn } from "@/lib/utils"
 import useCurrentUser from "@/hooks/current-user/useCurrentUser"
@@ -19,17 +19,37 @@ async function compress(file: File) {
         toast.error('File is too big, max file size is 4MB')
         return
     }
-
+    let id;
     const options: Options = {
         maxSizeMB: 0.6,
         maxWidthOrHeight: 1920,
         useWebWorker: true,
     }
     try {
+        id = toast.loading(
+            <div className="flex w-full gap-x-2">
+                <LoaderPinwheel className="animate-spin" />
+                <p>COMPRESSING IMAGE...</p>
+            </div>,
+            {
+                style: {
+                    backgroundColor: 'rgb(154 52 18)',
+                    color: 'rgb(254 215 170)',
+                    border: '1px solid rgb(249 115 22)',
+                },
+                cancelButtonStyle: {
+                    color: 'rgb(254 215 170)',
+                    border: '1px solid rgb(249 115 22)',
+
+                }
+            }
+        )
         const compressedFile = await imageCompression(file, options);
         return compressedFile
     } catch (error) {
         console.log(error);
+    } finally {
+        toast.dismiss(id)
     }
 
 }

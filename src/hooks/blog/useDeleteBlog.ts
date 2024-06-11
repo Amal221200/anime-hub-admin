@@ -19,7 +19,7 @@ export default function useDeleteblog(blogId: string ) {
         mutationFn: handleDelete(blogId),
         onSuccess(data) {
             queryClient.invalidateQueries({ queryKey: ['fetch_blogs'] })
-            toast("BLOG DELETED", { description: `${data?.title} is deleted.` })
+            toast.success("BLOG DELETED", { description: `${data?.title} is deleted.` })
         },
         onError(error: AxiosError | any, variables, context) {
             onAlertOpen({ title: 'Internal Server Error', description: error.message })
