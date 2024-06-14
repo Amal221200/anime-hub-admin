@@ -3,7 +3,6 @@ import db from "@/lib/db"
 import { z } from "zod";
 import { blogSchema } from "../schema";
 import { BlogType } from "../types";
-import { revalidatePath } from "next/cache";
 
 export async function getBlogs(): Promise<BlogType[] | null> {
     try {

@@ -1,7 +1,6 @@
 "use server"
 import { USER_ROLE } from "@prisma/client";
 import db from "../db";
-import { revalidatePath } from "next/cache";
 
 export async function getAdminUsers() {
     try {
@@ -19,6 +18,7 @@ export async function getAdminUser(id: string) {
         return user
     } catch (error) {
         console.log("getUser error");
+        return null
     }
 }
 
@@ -33,5 +33,6 @@ export async function updateAdminUserRole(id: string, role: USER_ROLE) {
         return updatedUser
     } catch (error) {
         console.log("updateUserRole error");
+        return null
     }
 }

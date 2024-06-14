@@ -38,9 +38,7 @@ export default function useDebounce(callback: Function, options?: { delay?: numb
                     <p>SAVING...</p>
                 </div>
             ,
-            // success: (data) => data.title,
             duration: 5000,
-            // error: (error) => error,
             finally() {
                 toast.dismiss(id)
                 clearTimeout(pending.current)

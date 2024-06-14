@@ -2,7 +2,6 @@ import { useEditor } from "@tiptap/react";
 import useDebounce from "./useDebounce";
 import { extensions } from "@/lib/constants";
 import useUpdateBlogContent from "./blog/useUpdateBlogContent";
-import ResizableImageKit from "@/lib/custom-editor-extensions/ResizableImageKit";
 
 
 export default function useBlogEditor({ initialContent, blogId, editable }: { initialContent?: string, blogId: string, editable: boolean }) {
@@ -14,7 +13,6 @@ export default function useBlogEditor({ initialContent, blogId, editable }: { in
     const editor = useEditor({
         extensions: [
             ...extensions,
-            // ResizableImageKit.configure({ HTMLAttributes: { class: 'mx-auto rounded', onResize: updateContent } }),
         ],
         content: initialContent || `<h3>Enter your content</h3><p></p>`,
         editorProps: {

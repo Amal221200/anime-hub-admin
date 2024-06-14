@@ -22,7 +22,7 @@ export default function useAnimeForm(type: FORM_TYPE, anime?: Anime) {
             artist: anime?.artist || '',
             genre: anime?.genre?.reduce((prev, current) => `${prev}, ${current}`) || '',
             studio: anime?.studio || '',
-            status: anime?.status || '',
+            status: anime?.status || 'ONGOING',
             watchLink: anime?.watchLink || '',
             release: anime?.release,
             episodes: anime?.episodes || 0,
@@ -41,12 +41,15 @@ export default function useAnimeForm(type: FORM_TYPE, anime?: Anime) {
     const { mutateAsync: onSubmit } = useMutation({
         mutationKey: [type === FORM_TYPE.ADD ? `add_anime` : `edit_anime`, anime?.id],
         mutationFn: handleSubmit(),
-        onSuccess(data) {
-            queryClient.invalidateQueries({ queryKey: ['fetch_animes'] })
+        async onSuccess(data) {
+            await queryClient.invalidateQueries({ queryKey: ['fetch_animes'] })
             toast.success(type === FORM_TYPE.ADD ? `CREATED` : `EDITED ${data?.title}`,
                 {
                     description: type === FORM_TYPE.ADD ? `Successfully added ${data?.title}` : `Successfully edited ${data?.title}`
                 })
+            if (type === FORM_TYPE.ADD) {
+                form.reset()
+            }
         },
         onError(error: AxiosError | any) {
             onOpen({ title: 'Internal Server Error', description: error.message })

@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { ArrowUpDown } from "lucide-react";
 import ActionsDropdown from "./ActionsDropdown";
 import { BlogType } from "@/lib/types";
-import Link from "next/link";
 import PublishStatusDropdown from "./PublishStatusDropdown";
+import Link from "next/link";
 
 const blogColumns: ColumnDef<BlogType>[] = [
     {

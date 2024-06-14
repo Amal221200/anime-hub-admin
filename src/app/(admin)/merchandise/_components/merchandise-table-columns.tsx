@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 
-export const animeColums: ColumnDef<Anime>[] = [
+const merchandiseColumns: ColumnDef<Anime>[] = [
     {
         accessorKey: "imageLink",
         header: ()=> (
@@ -122,3 +122,5 @@ export const animeColums: ColumnDef<Anime>[] = [
         ),
     },
 ]
+
+export default merchandiseColumns;

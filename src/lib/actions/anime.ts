@@ -2,7 +2,6 @@
 import db from "@/lib/db"
 import { z } from "zod";
 import { animeSchema } from "../schema";
-import { revalidatePath } from "next/cache";
 import { ANIME_STATUS } from "@prisma/client";
 
 export async function getAnimes() {
@@ -99,7 +98,6 @@ export async function updateAnime(animeId: string, animeData: z.infer<typeof ani
             }
         })
 
-        revalidatePath(`/anime/${animeId}`)
         return updatedAnime
     } catch (error) {
         console.log("updateAnime error");

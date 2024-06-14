@@ -7,7 +7,7 @@ export default function useFetchUsers() {
 
     const handleFetch = useCallback(async () => {
         const users = await getUsers()
-        return users!
+        return users
     }, [])
 
     const { data: users, isLoading } = useQuery({
