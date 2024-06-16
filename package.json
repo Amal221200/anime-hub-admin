@@ -45,7 +45,6 @@
     "@tiptap/react": "^2.4.0",
     "@tiptap/starter-kit": "^2.4.0",
     "@uploadthing/react": "^6.6.0",
-    "axios": "^1.6.8",
     "browser-image-compression": "^2.0.2",
     "date-fns": "^3.6.0",
     "lucide-react": "^0.378.0",

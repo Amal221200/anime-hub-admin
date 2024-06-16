@@ -1,6 +1,5 @@
 import useAlertModal from "../useAlertModal";
 import { toast } from "sonner";
-import { AxiosError } from "axios";
 import { useCallback } from "react";
 import { USER_ROLE } from "@prisma/client";
 import { updateAdminUserRole } from "@/lib/actions/admin-user";
@@ -23,7 +22,7 @@ export default function useChangeAdminUserRole( userId: string ) {
             queryClient.invalidateQueries({ queryKey: ['fetch_admin_users'] })
             toast.success("ROLE UPDATED", { description: `${data?.username} role is updated.` })
         },
-        onError(error: AxiosError | any, variables, context) {
+        onError(error) {
             onAlertOpen({ title: 'Internal Server Error', description: error.message })
         },
     })

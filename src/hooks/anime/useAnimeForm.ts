@@ -9,7 +9,6 @@ import useAlertModal from "../useAlertModal"
 import { useCallback } from "react"
 import { addAnime, updateAnime } from "@/lib/actions/anime"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { AxiosError } from "axios"
 
 export default function useAnimeForm(type: FORM_TYPE, anime?: Anime) {
     const { onOpen } = useAlertModal()
@@ -51,7 +50,7 @@ export default function useAnimeForm(type: FORM_TYPE, anime?: Anime) {
                 form.reset()
             }
         },
-        onError(error: AxiosError | any) {
+        onError(error) {
             onOpen({ title: 'Internal Server Error', description: error.message })
         },
     })

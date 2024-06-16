@@ -3,7 +3,6 @@ import useAlertModal from "../useAlertModal"
 import { useCallback } from "react"
 import { updateBlogPublish } from "@/lib/actions/blog"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { AxiosError } from "axios"
 
 export default function useChangeBlogPublishStatus(blogId: string) {
     const { onOpen: onAlertOpen } = useAlertModal()
@@ -24,7 +23,7 @@ export default function useChangeBlogPublishStatus(blogId: string) {
                 description: `Publish status of ${data?.title} has changed to ${data?.published ? 'TRUE' : 'FALSE'}`,
             })
         },
-        onError(error: AxiosError | any, variables, context) {
+        onError(error) {
             onAlertOpen({ title: 'Internal Server Error', description: error.message })
         },
     })

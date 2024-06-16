@@ -3,7 +3,6 @@ import useAlertModal from "../useAlertModal";
 import { useCallback } from "react";
 import { updateBlogContent } from "@/lib/actions/blog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { AxiosError } from "axios";
 
 export default function useUpdateBlogContent(blogId: string) {
     const { onOpen: onAlertOpen } = useAlertModal()
@@ -22,7 +21,7 @@ export default function useUpdateBlogContent(blogId: string) {
             queryClient.invalidateQueries({ queryKey: ['fetch_blogs'] })
             toast.success("BLOG CONTENT UPDATED", { description: `${data?.title} content is updated.` })
         },
-        onError(error: AxiosError | any) {
+        onError(error) {
             onAlertOpen({ title: 'Internal Server Error', description: error.message })
         },
     })

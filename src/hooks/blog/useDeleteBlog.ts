@@ -3,7 +3,6 @@ import useAlertModal from "../useAlertModal";
 import { useCallback } from "react";
 import { deleteBlog } from "@/lib/actions/blog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { AxiosError } from "axios";
 
 export default function useDeleteblog(blogId: string ) {
     const { onOpen: onAlertOpen } = useAlertModal()
@@ -21,7 +20,7 @@ export default function useDeleteblog(blogId: string ) {
             queryClient.invalidateQueries({ queryKey: ['fetch_blogs'] })
             toast.success("BLOG DELETED", { description: `${data?.title} is deleted.` })
         },
-        onError(error: AxiosError | any, variables, context) {
+        onError(error) {
             onAlertOpen({ title: 'Internal Server Error', description: error.message })
         },
     })

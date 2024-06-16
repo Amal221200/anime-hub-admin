@@ -3,7 +3,6 @@ import useAlertModal from "../useAlertModal";
 import { useCallback } from "react";
 import { deleteAnime } from "@/lib/actions/anime";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { AxiosError } from "axios";
 
 export default function useDeleteAnime(animeId: string) {
     const { onOpen: onAlertOpen } = useAlertModal()
@@ -22,7 +21,7 @@ export default function useDeleteAnime(animeId: string) {
             queryClient.invalidateQueries({ queryKey: ['fetch_animes'] })
             toast.success("ANIME DELETED", { description: `${data?.title} is deleted.` })
         },
-        onError(error: AxiosError | any, variables, context) {
+        onError(error) {
             onAlertOpen({ title: 'Internal Server Error', description: error.message })
         },
     })

@@ -4,7 +4,6 @@ import useAlertModal from "../useAlertModal"
 import { useCallback } from "react"
 import { updateAnimeStatus } from "@/lib/actions/anime"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { AxiosError } from "axios"
 
 export default function useChangeAnimeStatus(animeId: string) {
     const { onOpen: onAlertOpen } = useAlertModal()
@@ -25,7 +24,7 @@ export default function useChangeAnimeStatus(animeId: string) {
                 description: `Status of ${data?.title} has changed to ${data?.status}`,
             })
         },
-        onError(error: AxiosError | any, variables, context) {
+        onError(error) {
             onAlertOpen({ title: 'Internal Server Error', description: error.message })
         },
     })

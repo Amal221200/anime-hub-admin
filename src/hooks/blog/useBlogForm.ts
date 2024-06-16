@@ -10,7 +10,6 @@ import { useCallback } from "react";
 import useCurrentUser from "../current-user/useCurrentUser";
 import { addBlog, updateBlog } from "@/lib/actions/blog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { AxiosError } from "axios";
 
 export default function useBlogForm(type: FORM_TYPE, blog?: Blog) {
     const { data: user } = useCurrentUser()
@@ -43,7 +42,7 @@ export default function useBlogForm(type: FORM_TYPE, blog?: Blog) {
                     description: type === FORM_TYPE.ADD ? `Successfully added ${data?.title}` : `Successfully edited ${data?.title}`
                 })
         },
-        onError(error: AxiosError | any) {
+        onError(error) {
             onOpen({ title: 'Internal Server Error', description: error.message })
         },
     })
