@@ -1,36 +1,26 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Anime Hub Admin
 
-## Getting Started
+![anime_hub_admin](./Anime%20Hub%20Admin.png)
 
-First, run the development server:
+Anime Hub admin is an application for adminsis the one place stop to find anything and everything related to anime, eg:- Information about anime, blogs, etc.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Stack:- 
+* I have developed this application using [Next JS](https://nextjs.org) with TypeScript, powered by it's app router.
+* I have used [ShadCN UI](https://ui.shadcn.com), an awesome, accessible, highly configurable component library powered by [TailwindCSS](https://tailwindcss.com) for designing this app.
+* I have used [Tanstack Query](https://tanstack.com/query/latest) as a data fetching solution, used with [Next JS server actions](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations) to avoid creating unnecessary API endpoints and redundant API calling, along with that I have used [Zustand](https://zustand-demo.pmnd.rs) for creating global stores for UI states.
+* I have used PostgreSQL as my database and [Prisma ORM](https://www.prisma.io) for connecting and querying with my database.
+* I have used [Clerk](https://clerk.com) for authentication service.
+* I have used [Tip Tap Editor](https://tiptap.dev) for developing my rich text editor to write my blogs from scratch, as it give fine grain customization on how this editor works, as well as the design this editor.
+* Last but not the least, there are few more cool stuff like [Uploadthing](https://uploadthing.com) for image uploading, highly advanced form validation using [Zod](https://zod.dev) and [React Hook Form](https://react-hook-form.com), and some amazing components like date picker, and data table.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Cool features:-
+* Data table
+* Role based permissions
+* Rich Text Editor
+* Image Uploading
+* Advanced Form Handling
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+This is an excellent application to show my skills as a frontend engineer with the knowledge of building a fullstack application. I have used a ton of best practises and rules for building a scalable and maintainable application.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Please visit my [application](https://anime-hub-admin.vercel.app), and if you like it, give my repository a star.
