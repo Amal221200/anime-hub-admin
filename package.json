@@ -12,6 +12,7 @@
   "dependencies": {
     "@clerk/nextjs": "^5.1.5",
     "@clerk/themes": "^2.1.9",
+    "@ducanh2912/next-pwa": "^10.2.7",
     "@hookform/resolvers": "^3.4.2",
     "@prisma/client": "^5.15.0",
     "@radix-ui/react-alert-dialog": "^1.0.5",
@@ -49,7 +50,6 @@
     "date-fns": "^3.6.0",
     "lucide-react": "^0.378.0",
     "next": "^14.2.3",
-    "next-pwa": "^5.6.0",
     "next-themes": "^0.3.0",
     "next13-progressbar": "^1.2.1",
     "react": "^18.3.1",
@@ -67,7 +67,6 @@
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.13",
     "@tanstack/react-query-devtools": "^5.39.0",
-    "@types/next-pwa": "^5.6.9",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
@@ -80,6 +79,7 @@
     "tailwind-merge": "^2.3.0",
     "tailwindcss": "^3.4.1",
     "tailwindcss-animate": "^1.0.7",
-    "typescript": "^5"
+    "typescript": "^5",
+    "webpack": "^5.92.0"
   }
 }
