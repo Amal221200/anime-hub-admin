@@ -1,8 +1,8 @@
 # Anime Hub Admin
 
-![anime_hub_admin](./Anime%20Hub%20Admin.png)
+![anime_hub_admin](./anime_hub_admin.png)
 
-Anime Hub admin is an application for adminsis the one place stop to find anything and everything related to anime, eg:- Information about anime, blogs, etc.
+Anime Hub admin is an application for admins to manage data related to this anime, like how many users have signed up, managing the roles of the users, adding/updating animes/blogs, etc.
 
 Stack:- 
 * I have developed this application using [Next JS](https://nextjs.org) with TypeScript, powered by it's app router.
@@ -10,7 +10,7 @@ Stack:-
 * I have used [Tanstack Query](https://tanstack.com/query/latest) as a data fetching solution, used with [Next JS server actions](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations) to avoid creating unnecessary API endpoints and redundant API calling, along with that I have used [Zustand](https://zustand-demo.pmnd.rs) for creating global stores for UI states.
 * I have used PostgreSQL as my database and [Prisma ORM](https://www.prisma.io) for connecting and querying with my database.
 * I have used [Clerk](https://clerk.com) for authentication service.
-* I have used [Tip Tap Editor](https://tiptap.dev) for developing my rich text editor to write my blogs from scratch, as it give fine grain customization on how this editor works, as well as the design this editor.
+* I have used [Tip Tap Editor](https://tiptap.dev) for developing my rich text editor from scratch to write my blogs, as it give fine grain customization on how this editor works, as well as the on design this editor.
 * Last but not the least, there are few more cool stuff like [Uploadthing](https://uploadthing.com) for image uploading, highly advanced form validation using [Zod](https://zod.dev) and [React Hook Form](https://react-hook-form.com), and some amazing components like date picker, and data table.
 
 Cool features:-

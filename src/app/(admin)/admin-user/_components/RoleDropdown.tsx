@@ -52,7 +52,7 @@ const RoleDropdown = ({ row }: { row: Row<AdminUser> }) => {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="space-y-1">
                 <DropdownMenuLabel>Roles</DropdownMenuLabel>
-                {["ADMIN", "USER"].map((role) => (
+                {["ADMIN", "USER", "AUTHOR"].map((role) => (
                     <DropdownMenuItem className="text-xs sm:text-sm" key={role} onClick={() => handleRole(role as USER_ROLE)}>
                         {role}
                     </DropdownMenuItem>
