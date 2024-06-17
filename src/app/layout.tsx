@@ -18,6 +18,7 @@ export const metadata: Metadata = {
     default: "Anime Hub - Admin",
     template: `Anime Hub - Admin | %s`
   },
+  manifest: "/manifest.webmanifest",
   description: "Application for admin users.",
   icons: [{
     url: "/favicon-dark.ico",
