@@ -10,21 +10,47 @@ import ProgressProvider from "@/components/providers/ProgressProvider";
 import QueryProvider from "@/components/providers/QueryProvider";
 import { ourFileRouter } from "../lib/uploadthing/core";
 import { extractRouterConfig } from "uploadthing/server";
+import { APP_DEFAULT_TITLE, APP_DESCRIPTION, APP_NAME, APP_TITLE_TEMPLATE } from "@/lib/server_constants";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
-    default: "Anime Hub - Admin",
-    template: `Anime Hub - Admin | %s`
+    default: APP_DEFAULT_TITLE,
+    template: APP_TITLE_TEMPLATE
   },
-  manifest: "/manifest.webmanifest",
+  manifest: "/manifest.json",
   description: "Application for admin users.",
   icons: [{
     url: "/favicon-dark.ico",
     href: "/favicon-dark.ico",
     type: "icon/ico"
-  }]
+  }],
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: APP_DEFAULT_TITLE,
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  openGraph: {
+    type: "website",
+    siteName: APP_NAME,
+    title: {
+      default: APP_DEFAULT_TITLE,
+      template: APP_TITLE_TEMPLATE,
+    },
+    description: APP_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary",
+    title: {
+      default: APP_DEFAULT_TITLE,
+      template: APP_TITLE_TEMPLATE,
+    },
+    description: APP_DESCRIPTION,
+  },
 };
 
 export default function RootLayout({
