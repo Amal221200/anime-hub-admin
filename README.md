@@ -14,6 +14,7 @@ Stack:-
 * Last but not the least, there are few more cool stuff like [Uploadthing](https://uploadthing.com) for image uploading, highly advanced form validation using [Zod](https://zod.dev) and [React Hook Form](https://react-hook-form.com), and some amazing components like date picker, and data table.
 
 Cool features:-
+* PWA support
 * Data table
 * Role based permissions
 * Rich Text Editor

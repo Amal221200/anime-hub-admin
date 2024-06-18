@@ -21,5 +21,21 @@
     "lang": "en-US",
     "name": "Anime Hub Admin",
     "short_name": "Admin",
-    "start_url": "/"
+    "start_url": "/",
+    "screenshots": [
+        {
+            "src": "./icon512_maskable.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "form_factor": "wide",
+            "label": "Anime Hub"
+        },
+        {
+            "src": "./icon512_rounded.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "form_factor": "narrow",
+            "label": "Anime Hub"
+        }
+    ]
 }
