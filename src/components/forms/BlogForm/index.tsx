@@ -31,7 +31,7 @@ const BlogForm = ({ heading, blog, type }: BlogFormProps) => {
     const { form, onSubmit } = useBlogForm(type, blog)
 
     const handleSubmit = useCallback(async (values: z.infer<typeof blogSchema>) => {
-        
+
         const payload = { ...values }
 
         await onSubmit(payload)
@@ -52,7 +52,7 @@ const BlogForm = ({ heading, blog, type }: BlogFormProps) => {
                 <div className="mb-6 grid grid-cols-1 gap-2 sm:grid-cols-2">
                     <BlogInputWrapper name="title" form={form} label="Title">
                         {(field) => (
-                            <Input {...field} placeholder="" />
+                            <Input {...field} placeholder="Enter a title" />
                         )}
                     </BlogInputWrapper>
                     <BlogInputWrapper name="imageLink" form={form} label="Image">
@@ -62,7 +62,7 @@ const BlogForm = ({ heading, blog, type }: BlogFormProps) => {
                     </BlogInputWrapper>
                     <BlogInputWrapper name="description" form={form} label="Description" className="sm:col-span-2">
                         {(field) => (
-                            <Textarea {...field} placeholder="eg: This is the legend of a young kid called Son Goku..." rows={2}
+                            <Textarea {...field} placeholder="Enter a blog description" rows={2}
                                 className="no-scrollbar" />
                         )}
                     </BlogInputWrapper>
@@ -79,11 +79,11 @@ const BlogForm = ({ heading, blog, type }: BlogFormProps) => {
                     }
                 </div>
                 <Button type="submit"
-                    disabled={form.formState.isLoading || form.formState.isSubmitting || userData?.role === 'USER' || userData?.username !== blog?.author!} className="block w-full disabled:cursor-null disabled:opacity-60 sm:w-max">
+                    disabled={form.formState.isLoading || form.formState.isSubmitting || userData?.role === 'USER'} className="block w-full disabled:cursor-null disabled:opacity-60 sm:w-max">
                     Submit
                 </Button>
             </form>
-        </Form>
+        </Form >
     )
 }
 

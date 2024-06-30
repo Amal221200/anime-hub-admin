@@ -7,7 +7,6 @@ export default async function Home() {
   const blogCount = await db.blog.count()
   const userCount = await db.user.count()
   const adminUserCount = await db.adminUser.count({ where: { role: { not: 'SUPER_ADMIN' } } })
-
   return (
     <main>
       <div className="grid grid-cols-1 justify-center gap-3 sm:grid-cols-2 sm:justify-start md:grid-cols-3 lg:grid-cols-5">
