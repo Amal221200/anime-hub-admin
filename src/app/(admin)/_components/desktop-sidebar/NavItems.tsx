@@ -2,7 +2,7 @@
 import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { sidebarLinks } from "."
+import { sidebarLinks } from "@/lib/server_constants"
 
 
 const NavItems = ({ className }: { className?: string }) => {

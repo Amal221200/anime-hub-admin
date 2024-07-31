@@ -38,7 +38,6 @@ export const bubbleMenuData = {
     },
 }
 
-
 export const extensions = [
     StarterKit,
     LinkKit.configure({ protocols: ['https', 'http'] }),

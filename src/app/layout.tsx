@@ -21,11 +21,6 @@ export const metadata: Metadata = {
   },
   manifest: "/manifest.json",
   description: "Application for admin users.",
-  icons: [{
-    url: "/favicon-dark.ico",
-    href: "/favicon-dark.ico",
-    type: "icon/ico"
-  }],
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
@@ -66,12 +61,6 @@ export default function RootLayout({
             <QueryProvider>
               <ProgressProvider>
                 <NextSSRPlugin
-                  /**
-                   * The `extractRouterConfig` will extract **only** the route configs
-                   * from the router to prevent additional information from being
-                   * leaked to the client. The data passed to the client is the same
-                   * as if you were to fetch `/api/uploadthing` directly.
-                   */
                   routerConfig={extractRouterConfig(ourFileRouter)}
                 />
                 {children}

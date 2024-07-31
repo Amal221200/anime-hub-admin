@@ -1,48 +1,11 @@
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
-import React from 'react'
-import { CircleUserIcon, HomeIcon, NewspaperIcon, PlusIcon, ScanBarcodeIcon, ShellIcon, UserIcon } from "lucide-react"
 import Link from 'next/link'
-import { UserButton } from '@clerk/nextjs'
+import { CircleUserIcon, HomeIcon, NewspaperIcon, PlusIcon, ShellIcon, UserIcon } from "lucide-react"
 import NavItems from './NavItems'
-import { currentUser } from "@clerk/nextjs/server"
 
-export const sidebarLinks = [
-  {
-    href: "/",
-    icon: HomeIcon,
-    label: "Home"
-  },
-  {
-    href: "/user",
-    label: "User",
-    icon: UserIcon
-  },
-  {
-    href: "/admin-user",
-    label: "Admin Users",
-    icon: CircleUserIcon
-  },
-  {
-    href: "/add",
-    label: "Add",
-    icon: PlusIcon
-  },
-  {
-    href: "/anime",
-    label: "Anime",
-    icon: ShellIcon
-  },
-  {
-    href: "/blog",
-    label: "Blog",
-    icon: NewspaperIcon
-  },
-  // {
-  //   href: "/merchandise",
-  //   label: "Merchandise",
-  //   icon: ScanBarcodeIcon
-  // },
-]
+const UserButton = dynamic(() => import('@clerk/nextjs').then(m => m.UserButton), { ssr: false })
+
 
 const DesktopSidebar = () => {
   return (
