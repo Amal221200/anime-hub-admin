@@ -7,12 +7,18 @@ import dynamic from 'next/dynamic'
 
 const BlogForm = dynamic(() => import('@/components/forms/BlogForm'), { ssr: true, loading: () => <SkeletonSpinner className='h-[40vh]' /> })
 
-const BlogEditor = dynamic(() => import('@/components/blog-editor'), { ssr: false, loading: () => <BlogEditorLoading /> })
+const BlogEditor = dynamic(() => import('@/components/blog-editor'), { loading: () => <BlogEditorLoading /> })
 
-const BlogPage = async ({ params: { blogId } }: { params: { blogId: string } }) => {
+const BlogPage = async (props: { params: Promise<{ blogId: string }> }) => {
+    const params = await props.params;
+
+    const {
+        blogId
+    } = params;
+
     const blog = await getBlog(blogId);
     const user = await getCurrentUser()
-    
+
     if (!blog) {
         return <h1>{"Couldn't"} fetch blog</h1>
     }

@@ -6,8 +6,8 @@ const routeMatcher = createRouteMatcher([
     "/api(.*)",
 ])
 
-export default clerkMiddleware((auth, req) => {
-    if (!routeMatcher(req)) auth().protect();
+export default clerkMiddleware(async (auth, req) => {
+    if (!routeMatcher(req)) await auth.protect();
 })
 
 export const config = {

@@ -1,11 +1,7 @@
-import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import Link from 'next/link'
-import { CircleUserIcon, HomeIcon, NewspaperIcon, PlusIcon, ShellIcon, UserIcon } from "lucide-react"
 import NavItems from './NavItems'
-
-const UserButton = dynamic(() => import('@clerk/nextjs').then(m => m.UserButton), { ssr: false })
-
+import ClerkButton from './ClerkButton'
 
 const DesktopSidebar = () => {
   return (
@@ -22,11 +18,15 @@ const DesktopSidebar = () => {
 
       <menu className='flex flex-col items-start pl-2'>
         <li className='flex items-center gap-x-2'>
-          <UserButton showName />
+          <ClerkButton />
         </li>
       </menu>
     </aside>
   )
+}
+
+const Buttons = ()=> {
+
 }
 
 export default DesktopSidebar

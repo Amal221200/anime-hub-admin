@@ -6,10 +6,10 @@ const DesktopSidebar = dynamic(() => import('./_components/desktop-sidebar'), {
     loading: () => <SkeletonSpinner className='fixed left-2 top-10 hidden h-[89vh] w-[200px] items-center justify-center gap-y-4 rounded-md border bg-zinc-900/20 p-2 sm:flex md:left-7' />,
 })
 
-const MobileUserButton = dynamic(() => import('./_components/MobileUserButton'), { ssr: false })
-const DialogModal = dynamic(() => import("@/components/modal/DialogModal"), { ssr: false })
-const AlertModal = dynamic(() => import('@/components/modal/AlertModal'), { ssr: false })
-const Toaster = dynamic(() => import('@/components/ui/sonner'), { ssr: false })
+const MobileUserButton = dynamic(() => import('./_components/MobileUserButton'))
+const DialogModal = dynamic(() => import("@/components/modal/DialogModal"))
+const AlertModal = dynamic(() => import('@/components/modal/AlertModal'))
+const Toaster = dynamic(() => import('@/components/ui/sonner'))
 
 function AdminLayout({ children }: { children: React.ReactNode }) {
 

@@ -6,7 +6,13 @@ import dynamic from 'next/dynamic';
 
 const AnimeForm = dynamic(() => import('@/components/forms/AnimeForm'), { ssr: true, loading: () => <SkeletonSpinner className='h-[80vh]' /> })
 
-export async function generateMetadata({ params: { animeId } }: { params: { animeId: string } }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<{ animeId: string }> }): Promise<Metadata> {
+  const params = await props.params;
+
+  const {
+    animeId
+  } = params;
+
   const anime = await getAnime(animeId);
 
   if (!anime) {
@@ -20,7 +26,13 @@ export async function generateMetadata({ params: { animeId } }: { params: { anim
   }
 }
 
-const AnimePage = async ({ params: { animeId } }: { params: { animeId: string } }) => {
+const AnimePage = async (props: { params: Promise<{ animeId: string }> }) => {
+  const params = await props.params;
+
+  const {
+    animeId
+  } = params;
+
   const anime = await getAnime(animeId);
 
   if (!anime) {

@@ -2,7 +2,7 @@ import SkeletonSpinner from "@/components/SkeletonSpinner"
 import { Metadata } from "next"
 import dynamic from "next/dynamic"
 
-const MerchandiseTable = dynamic(() => import('./_components/MerchandiseTable'), { ssr: false,loading: () => <SkeletonSpinner className="h-[90vh]" /> })
+const MerchandiseTable = dynamic(() => import('./_components/MerchandiseTable'), { loading: () => <SkeletonSpinner className="h-[90vh]" /> })
 
 export const metadata: Metadata = {
   title: 'Merchandise',

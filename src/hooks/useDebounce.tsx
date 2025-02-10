@@ -4,14 +4,14 @@ import { toast } from "sonner"
 
 
 export default function useDebounce(callback: Function, options?: { delay?: number }) {
-    const pending = useRef<NodeJS.Timeout>()
-    let id: string | number;
+    const pending = useRef<NodeJS.Timeout>(undefined)
+    let saveToastId: any;
     let parameters: any[];
     const innerFunc = async (...params: any[]) => {
         parameters = params
 
         if (pending.current) {
-            toast.dismiss(id)
+            toast.dismiss(saveToastId)
             clearTimeout(pending.current)
             pending.current = undefined
         }
@@ -24,14 +24,14 @@ export default function useDebounce(callback: Function, options?: { delay?: numb
                 } catch (error: any) {
                     reject(error.message)
                 } finally {
-                    toast.dismiss(id)
+                    toast.dismiss(saveToastId)
                     clearTimeout(pending.current)
                     pending.current = undefined
                 }
             }, options?.delay || 5000)
         });
 
-        id = toast.promise(promise, {
+        saveToastId = toast.promise(promise, {
             loading:
                 <div className="flex w-full gap-x-2">
                     <LoaderPinwheel className="animate-spin" />
@@ -40,7 +40,7 @@ export default function useDebounce(callback: Function, options?: { delay?: numb
             ,
             duration: 5000,
             finally() {
-                toast.dismiss(id)
+                toast.dismiss(saveToastId)
                 clearTimeout(pending.current)
                 pending.current = undefined
             }
@@ -54,7 +54,7 @@ export default function useDebounce(callback: Function, options?: { delay?: numb
     innerFunc.cancel = () => {
         clearTimeout(pending.current)
         pending.current = undefined
-        toast.dismiss(id)
+        toast.dismiss(saveToastId)
         toast("AUTO SAVE WAS CANCELED")
     }
 
