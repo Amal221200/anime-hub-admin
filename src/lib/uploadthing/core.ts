@@ -11,20 +11,21 @@ const handleAuth = async () => {
     return { userId }
 }
 
+const callbackAuth = async () => await handleAuth();
 // FileRouter for your app, can contain multiple FileRoutes
 export const ourFileRouter = {
     animeImage: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
-        .middleware(async () => await handleAuth())
+        .middleware(callbackAuth)
         .onUploadComplete(() => { }),
     animeBlogImage: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
-        .middleware(async () => await handleAuth())
+        .middleware(callbackAuth)
         .onUploadComplete(() => { }),
     animeBlogContentImage: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
-        .middleware(async () => await handleAuth())
+        .middleware(callbackAuth)
         .onUploadComplete(() => { }),
 
     messageFile: f(["image", "pdf"])
-        .middleware(async () => await handleAuth())
+        .middleware(callbackAuth)
         .onUploadComplete(() => { })
 } satisfies FileRouter;
 
