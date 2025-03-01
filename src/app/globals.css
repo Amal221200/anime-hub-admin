@@ -11,20 +11,6 @@
   @apply hidden;
 }
 
-
-/* .resize-container {
-  @apply relative mx-auto w-max overflow-hidden rounded-md;
-} 
-
-.resize-container .resize-button {
-  background: url(/drag.png) no-repeat center center/contain;
-  @apply top-[50%] transform translate-y-[-50%] absolute right-2 h-7 w-4 bg-zinc-100 invisible text-black cursor-col-resize rounded-[3px];
-}
-
-.resize-container:hover .resize-button {
-  @apply visible;
-} */
-
 .selectedCell {
   background-color: rgb(37 99 235 / 0.4) !important;
 }
